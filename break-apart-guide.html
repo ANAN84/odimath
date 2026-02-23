@@ -1,0 +1,1274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Math Strategy Guide — Break Apart (Distributive)</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --panel:#f9fafb;
+      --ok:#065f46;
+      --warn:#92400e;
+      --bad:#991b1b;
+      --btn:#111827;
+      --btnText:#ffffff;
+      --chip:#eef2ff;
+
+      /* add-on */
+      --soft:#f3f4f6;
+      --ink:#0f172a;
+      --shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:var(--bg);
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:22px}
+    header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+    h1{font-size:20px;margin:0 0 6px 0}
+    .sub{color:var(--muted);font-size:13px;margin:0}
+    .card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
+      background:#fff;
+      box-shadow: var(--shadow);
+    }
+    .grid{display:grid;gap:14px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:800px){ .grid2{grid-template-columns:1fr} }
+
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"], textarea, select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px 12px;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus{border-color:#c7d2fe; box-shadow:0 0 0 3px rgba(99,102,241,.12)}
+    .bigProblem{
+      font-size:28px;
+      font-weight:650;
+      letter-spacing:.2px;
+      padding:10px 12px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+    }
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{
+      border:1px solid var(--btn);
+      background:var(--btn);
+      color:var(--btnText);
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn:active{transform:translateY(1px)}
+    .pill{
+      background:var(--chip);
+      border:1px solid #dbeafe;
+      color:#1f2937;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .strategyTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      padding-bottom:10px;
+      margin-bottom:12px;
+    }
+    .strategyTitle b{font-size:16px}
+    .example{color:var(--muted);font-size:13px}
+
+    .step{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+    }
+    .stepHead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:baseline;
+      margin-bottom:10px;
+    }
+    .stepNum{font-weight:700}
+    .hintTag{color:var(--muted);font-size:12px}
+    .inlineInputs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:10px 0;
+    }
+    @media (max-width:640px){ .inlineInputs{grid-template-columns:1fr} }
+
+    .feedback{
+      margin-top:10px;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .feedback.ok{border-color:rgba(6,95,70,.25); color:var(--ok)}
+    .feedback.warn{border-color:rgba(146,64,14,.25); color:var(--warn)}
+    .feedback.bad{border-color:rgba(153,27,27,.25); color:var(--bad)}
+    .reveal{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px dashed #c7d2fe;
+      background:#fff;
+      font-size:13px;
+    }
+    .muted{color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+    .mini{font-size:12px;color:var(--muted)}
+    .toggle{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .toggle input{transform:scale(1.1)}
+    .choiceRow{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;
+    }
+    .choice{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .choice:hover{border-color:#c7d2fe}
+    pre{
+      margin:0;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:13px;
+    }
+
+    /* =========================
+       ADD-ON: regulation + reflection + teacher + print
+       ========================= */
+
+    .sectionTitle{
+      font-weight:700;
+      font-size:14px;
+      margin:0 0 10px 0;
+    }
+
+    .regWrap{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background: var(--panel);
+    }
+
+    .regGrid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap:14px;
+    }
+    @media (max-width:820px){ .regGrid{grid-template-columns:1fr} }
+
+    .regBox{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .regHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .regHead b{font-size:13px}
+    .regHead span{font-size:12px;color:var(--muted)}
+
+    /* Mood meter */
+    .moodMeter{
+      display:grid;
+      grid-template-columns: 28px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .moodLevels{
+      display:grid;
+      grid-template-rows: repeat(5, 1fr);
+      gap:6px;
+      align-items:stretch;
+    }
+    .lvl{
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:6px 0;
+      background:#fff;
+      user-select:none;
+    }
+
+    .moodGrid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      gap:6px;
+      background: #fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+    }
+    .cell{
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,.06);
+      height:22px;
+      cursor:pointer;
+      user-select:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      color:rgba(17,24,39,.7);
+    }
+    .cell:hover{outline:2px solid rgba(99,102,241,.18)}
+    .cell.selected{
+      outline:3px solid rgba(17,24,39,.85);
+      border-color: rgba(17,24,39,.18);
+    }
+
+    .faces{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .faceBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:16px;
+      line-height:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .faceBtn small{font-size:12px;color:var(--muted)}
+    .faceBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+
+    /* Needs icons grid */
+    .needsGrid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width:540px){ .needsGrid{grid-template-columns: repeat(2, minmax(0,1fr));} }
+    .needBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:10px;
+      cursor:pointer;
+      text-align:left;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-height:54px;
+    }
+    .needBtn:hover{border-color:#c7d2fe}
+    .needBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+    .needIcon{
+      width:36px;height:36px;
+      border-radius:12px;
+      background: var(--soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      flex:0 0 auto;
+    }
+    .needText b{display:block;font-size:13px}
+    .needText span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+
+    .tinyHelp{font-size:12px;color:var(--muted);margin-top:8px}
+
+    .printOnly{display:none;}
+    @media print{
+      body{background:#fff}
+      .wrap{max-width:none;padding:0}
+      header,.pill,#useProblemBtn,#resetBtn,#copyBtn,#summaryBtn,.toggle,.choiceRow,
+      #check1,#check2,#check3,#check4,#show1,#show2,#show3,#show4,
+      #copyNote,#parseNote {display:none !important;}
+      .card,.step,.regBox,.regWrap{box-shadow:none}
+      .printOnly{display:block}
+      .noPrint{display:none !important}
+      .moodGrid{gap:4px;padding:8px}
+      .cell{height:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Math Strategy Guide</h1>
+        <p class="sub">Strategy: <b>Break Apart (Distributive Property)</b></p>
+      </div>
+      <div class="pill" title="This guide is for Savvas problems you type in.">
+        <span>Use with Savvas</span>
+        <span class="muted">•</span>
+        <span class="muted">type/paste problem</span>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:14px;">
+      <!-- Problem input -->
+      <div class="card">
+        <label for="problemInput">Type or paste the Savvas problem here</label>
+        <div class="grid2">
+          <input id="problemInput" type="text" placeholder="Example: 8×91  (or 8 x 91, 8 × 91)" />
+          <button class="btn" id="useProblemBtn">Use this problem</button>
+        </div>
+        <div class="toggle">
+          <label style="margin:0;color:var(--muted);font-size:13px;">
+            <input type="checkbox" id="lowMode" />
+            CHILL MODE (show 2 obvious options)
+          </label>
+        </div>
+        <div class="divider"></div>
+        <div class="bigProblem" id="bigProblem">Your problem: <span class="muted">—</span></div>
+        <p class="mini" id="parseNote" style="margin-top:10px;"></p>
+      </div>
+
+      <!-- Strategy header -->
+      <div class="card">
+        <div class="strategyTitle">
+          <div>
+            <b>We are using: Break Apart (Distributive Property)</b>
+            <div class="example">IF BREAK APART: <span id="exampleLabel">8×91 → 8×90 + 8×1</span></div>
+          </div>
+          <button class="btn secondary" id="resetBtn">Reset steps</button>
+        </div>
+
+        <!-- Steps -->
+        <div class="grid">
+          <!-- Step 1 -->
+          <div class="step" id="step1">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 1</span> — Break the big number apart</div>
+              <div class="hintTag" id="hint1">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">Break <span id="bLabel1">—</span> into: <b>__ + __</b></div>
+
+            <div class="inlineInputs">
+              <div>
+                <label for="s1a">First part</label>
+                <input id="s1a" type="text" placeholder="ex: 90" />
+              </div>
+              <div>
+                <label for="s1b">Second part</label>
+                <input id="s1b" type="text" placeholder="ex: 1" />
+              </div>
+            </div>
+
+            <div class="choiceRow" id="s1Choices" style="display:none;"></div>
+
+            <div class="row">
+              <button class="btn secondary" id="check1">Check my step</button>
+              <button class="btn" id="show1">Show answer</button>
+            </div>
+
+            <div id="fb1"></div>
+            <div id="rev1"></div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step" id="step2">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 2</span> — Rewrite the multiplication</div>
+              <div class="hintTag" id="hint2">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Rewrite: <b><span id="aLabel2">—</span> × <span id="bLabel2">—</span> = <span id="aLabel2b">—</span> × __ + <span id="aLabel2c">—</span> × __</b>
+            </div>
+
+            <div class="inlineInputs">
+              <div>
+                <label for="s2a">First blank</label>
+                <input id="s2a" type="text" placeholder="ex: 90" />
+              </div>
+              <div>
+                <label for="s2b">Second blank</label>
+                <input id="s2b" type="text" placeholder="ex: 1" />
+              </div>
+            </div>
+
+            <div class="choiceRow" id="s2Choices" style="display:none;"></div>
+
+            <div class="row">
+              <button class="btn secondary" id="check2">Check my step</button>
+              <button class="btn" id="show2">Show answer</button>
+            </div>
+
+            <div id="fb2"></div>
+            <div id="rev2"></div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step" id="step3">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 3</span> — Multiply each part</div>
+              <div class="hintTag" id="hint3">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              <b><span id="aLabel3a">—</span> × <span id="part1Label3">—</span> = __</b> and <b><span id="aLabel3b">—</span> × <span id="part2Label3">—</span> = __</b>
+            </div>
+
+            <div class="inlineInputs">
+              <div>
+                <label for="s3a">First product</label>
+                <input id="s3a" type="text" placeholder="ex: 720" />
+              </div>
+              <div>
+                <label for="s3b">Second product</label>
+                <input id="s3b" type="text" placeholder="ex: 8" />
+              </div>
+            </div>
+
+            <div class="choiceRow" id="s3Choices" style="display:none;"></div>
+
+            <div class="row">
+              <button class="btn secondary" id="check3">Check my step</button>
+              <button class="btn" id="show3">Show answer</button>
+            </div>
+
+            <div id="fb3"></div>
+            <div id="rev3"></div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step" id="step4">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 4</span> — Combine the parts</div>
+              <div class="hintTag" id="hint4">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Combine: <b><span id="p1Label4">—</span> + <span id="p2Label4">—</span> = __</b>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s4">Final answer</label>
+              <input id="s4" type="text" placeholder="ex: 728" />
+            </div>
+
+            <div class="choiceRow" id="s4Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check4">Check my step</button>
+              <button class="btn" id="show4">Show answer</button>
+            </div>
+
+            <div id="fb4"></div>
+            <div id="rev4"></div>
+          </div>
+
+          <!-- Quick strategy check -->
+          <div class="card" style="background:#fff;">
+            <div class="grid2">
+              <div>
+                <label for="usedStrategy">I understand we used…</label>
+                <select id="usedStrategy">
+                  <option value="">Pick one</option>
+                  <option value="distributive">Distributive Property (Break Apart)</option>
+                  <option value="idk">I don't know</option>
+                </select>
+                <div id="usedStrategyExplain" class="reveal" style="display:none;margin-top:10px;"></div>
+              </div>
+              <div>
+                <label for="stepsCalled">The steps were called…</label>
+                <select id="stepsCalled">
+                  <option value="">Pick one</option>
+                  <option value="bma">Break apart → Multiply → Add</option>
+                  <option value="msa">Multiply → Subtract → Add</option>
+                  <option value="idk">I don't know</option>
+                </select>
+                <div id="stepsCalledExplain" class="reveal" style="display:none;margin-top:10px;"></div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <button class="btn" id="summaryBtn">Show my summary</button>
+              <button class="btn secondary" id="copyBtn">Copy summary</button>
+              <span class="mini" id="copyNote"></span>
+            </div>
+
+            <div class="reveal" style="margin-top:12px;">
+              <pre id="summaryOut">Summary will appear here.</pre>
+            </div>
+          </div>
+
+          <!-- =========================
+               ADD-ON SECTION START
+               Reflection + self-regulation + teacher Q + print
+               ========================= -->
+          <div class="card" id="reflectionCard">
+            <p class="sectionTitle">Quick Check-In + Report</p>
+
+            <div class="regWrap">
+              <div class="regGrid">
+                <!-- What am I feeling? -->
+                <div class="regBox">
+                  <div class="regHead">
+                    <b>What am I feeling?</b>
+                    <span>Tap a square + a face (optional)</span>
+                  </div>
+
+                  <div class="moodMeter">
+                    <div class="moodLevels" aria-hidden="true">
+                      <div class="lvl">5</div>
+                      <div class="lvl">4</div>
+                      <div class="lvl">3</div>
+                      <div class="lvl">2</div>
+                      <div class="lvl">1</div>
+                    </div>
+
+                    <div>
+                      <div class="moodGrid" id="moodGrid" role="grid" aria-label="Mood meter grid"></div>
+
+                      <div class="faces" role="group" aria-label="Mood faces">
+                        <button class="faceBtn" type="button" data-face="😡"><span>😡</span> <small>big</small></button>
+                        <button class="faceBtn" type="button" data-face="😕"><span>😕</span> <small>meh</small></button>
+                        <button class="faceBtn" type="button" data-face="😐"><span>😐</span> <small>ok</small></button>
+                        <button class="faceBtn" type="button" data-face="🙂"><span>🙂</span> <small>good</small></button>
+                        <button class="faceBtn" type="button" data-face="😁"><span>😁</span> <small>great</small></button>
+                      </div>
+
+                      <div class="tinyHelp" id="moodReadout">Selected: —</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- What is my need? -->
+                <div class="regBox">
+                  <div class="regHead">
+                    <b>What is my need?</b>
+                    <span>Tap one (or none)</span>
+                  </div>
+
+                  <div class="needsGrid" role="group" aria-label="Needs">
+                    <button class="needBtn" type="button" data-need="Plan / clarity">
+                      <div class="needIcon">🗺️</div>
+                      <div class="needText"><b>Plan</b><span>clarity</span></div>
+                    </button>
+                    <button class="needBtn" type="button" data-need="Quiet / listen">
+                      <div class="needIcon">👂</div>
+                      <div class="needText"><b>Quiet</b><span>listen</span></div>
+                    </button>
+                    <button class="needBtn" type="button" data-need="Break / rest">
+                      <div class="needIcon">🧘</div>
+                      <div class="needText"><b>Rest</b><span>pause</span></div>
+                    </button>
+                    <button class="needBtn" type="button" data-need="Support / help">
+                      <div class="needIcon">🤝</div>
+                      <div class="needText"><b>Help</b><span>support</span></div>
+                    </button>
+                    <button class="needBtn" type="button" data-need="Food">
+                      <div class="needIcon">🍽️</div>
+                      <div class="needText"><b>Food</b><span>fuel</span></div>
+                    </button>
+                    <button class="needBtn" type="button" data-need="Move">
+                      <div class="needIcon">🏃</div>
+                      <div class="needText"><b>Move</b><span>body</span></div>
+                    </button>
+                    <button class="needBtn" type="button" data-need="Water">
+                      <div class="needIcon">💧</div>
+                      <div class="needText"><b>Water</b><span>drink</span></div>
+                    </button>
+                    <button class="needBtn" type="button" data-need="Health / sick">
+                      <div class="needIcon">🤒</div>
+                      <div class="needText"><b>Health</b><span>not well</span></div>
+                    </button>
+                  </div>
+
+                  <div class="tinyHelp" id="needReadout">Selected: —</div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="grid2">
+                <div class="regBox">
+                  <div class="regHead">
+                    <b>My strategies are…</b>
+                    <span>short is fine</span>
+                  </div>
+                  <textarea id="myStrategies" rows="4" placeholder="Example: breathing, water, short break, ask for 2 choices"></textarea>
+                </div>
+                <div class="regBox">
+                  <div class="regHead">
+                    <b>Question to teacher (optional)</b>
+                    <span>copy/paste later</span>
+                  </div>
+                  <textarea id="teacherQ" rows="4" placeholder="Example: Can you show 1 more example of break apart with 2-digit numbers?"></textarea>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="grid2">
+                <div class="regBox">
+                  <div class="regHead">
+                    <b>Simple reflection</b>
+                    <span>pick one</span>
+                  </div>
+                  <select id="reflectionPick">
+                    <option value="">Pick one</option>
+                    <option value="I got it">I got it</option>
+                    <option value="I kind of got it">I kind of got it</option>
+                    <option value="I'm not sure yet">I'm not sure yet</option>
+                    <option value="I need help">I need help</option>
+                  </select>
+                  <div class="tinyHelp">Tip: "I'm not sure yet" is allowed.</div>
+                </div>
+
+                <div class="regBox">
+                  <div class="regHead">
+                    <b>Print / Save as PDF</b>
+                    <span>includes summary + answer</span>
+                  </div>
+                  <div class="row">
+                    <button class="btn" type="button" id="reportBtn">Generate report</button>
+                    <button class="btn secondary" type="button" id="printBtn">Print / Save PDF</button>
+                    <span class="mini" id="printNote"></span>
+                  </div>
+                  <div class="reveal" style="margin-top:12px;">
+                    <pre id="reportOut">Report will appear here.</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Print-only header -->
+            <div class="printOnly" style="margin-top:14px;">
+              <div class="divider"></div>
+              <p class="mini">Printed report</p>
+            </div>
+          </div>
+          <!-- =========================
+               ADD-ON SECTION END
+               ========================= -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (id) => document.getElementById(id);
+    const norm = (s) => String(s ?? "").trim();
+    const asInt = (s) => {
+      const t = norm(s).replace(/,/g,"");
+      if(!t) return null;
+      if(!/^[-]?\d+$/.test(t)) return null;
+      return parseInt(t,10);
+    };
+    const product = (a,b) => a*b;
+
+    function parseProblem(raw){
+      // Accept: "8x91", "8 x 91", "8 × 91", "8*91"
+      const s = norm(raw)
+        .replace(/×/g,"x")
+        .replace(/\*/g,"x")
+        .replace(/\s+/g,"")
+        .toLowerCase();
+      const m = s.match(/^(\d+)\s*x\s*(\d+)$/i);
+      if(!m) return null;
+      return { a: parseInt(m[1],10), b: parseInt(m[2],10) };
+    }
+
+    function splitForBreakApart(b){
+      const ones = b % 10;
+      const p1 = b - ones;
+      const p2 = ones;
+      return { p1, p2 };
+    }
+
+    // ---------- State ----------
+    const state = {
+      a: null,
+      b: null,
+      p1: null,
+      p2: null,
+      hints: {1:0,2:0,3:0,4:0},
+      revealed: {1:false,2:false,3:false,4:false},
+      usedLowMode: false
+    };
+
+    function setHint(step){
+      state.hints[step] += 1;
+      $("hint"+step).textContent = "Hints used: " + state.hints[step];
+    }
+
+    function clearFeedback(step){
+      $("fb"+step).innerHTML = "";
+      $("rev"+step).innerHTML = "";
+    }
+
+    function showFeedback(step, kind, msg){
+      const div = document.createElement("div");
+      div.className = "feedback " + kind;
+      div.textContent = msg;
+      $("fb"+step).innerHTML = "";
+      $("fb"+step).appendChild(div);
+    }
+
+    function showReveal(step, answerText, reasonText){
+      setHint(step);
+      state.revealed[step] = true;
+      const div = document.createElement("div");
+      div.className = "reveal";
+      div.innerHTML = "<b>Answer:</b> " + answerText + "<br><span class='muted'>Reason: " + reasonText + "</span>";
+      $("rev"+step).innerHTML = "";
+      $("rev"+step).appendChild(div);
+    }
+
+    function updateExampleLabel(){
+      if(state.a === null || state.b === null) return;
+      $("exampleLabel").textContent = `${state.a}×${state.b} → ${state.a}×${state.p1} + ${state.a}×${state.p2}`;
+    }
+
+    function updateProblemUI(){
+      if(state.a === null || state.b === null){
+        $("bigProblem").innerHTML = "Your problem: <span class='muted'>—</span>";
+        $("parseNote").textContent = "";
+        return;
+      }
+      $("bigProblem").innerHTML = `Your problem: <b>${state.a} × ${state.b}</b>`;
+      $("parseNote").textContent = "Tip: If Savvas shows a different symbol, you can type x, ×, or *.";
+      $("bLabel1").textContent = state.b;
+      $("aLabel2").textContent = state.a;
+      $("aLabel2b").textContent = state.a;
+      $("aLabel2c").textContent = state.a;
+      $("bLabel2").textContent = state.b;
+
+      $("aLabel3a").textContent = state.a;
+      $("aLabel3b").textContent = state.a;
+      $("part1Label3").textContent = state.p1;
+      $("part2Label3").textContent = state.p2;
+
+      const pr1 = product(state.a, state.p1);
+      const pr2 = product(state.a, state.p2);
+      $("p1Label4").textContent = pr1;
+      $("p2Label4").textContent = pr2;
+
+      updateExampleLabel();
+      buildLowModeChoices();
+    }
+
+    function resetSteps(){
+      ["s1a","s1b","s2a","s2b","s3a","s3b","s4"].forEach(id => $(id).value = "");
+      [1,2,3,4].forEach(step=>{
+        clearFeedback(step);
+        state.hints[step]=0;
+        state.revealed[step]=false;
+        $("hint"+step).textContent = "Hints used: 0";
+      });
+      $("usedStrategy").value="";
+      $("stepsCalled").value="";
+      $("usedStrategyExplain").style.display="none";
+      $("stepsCalledExplain").style.display="none";
+      $("summaryOut").textContent = "Summary will appear here.";
+      $("copyNote").textContent = "";
+
+      // add-on reset bits (do not force)
+      $("reportOut").textContent = "Report will appear here.";
+      $("printNote").textContent = "";
+    }
+
+    // ---------- Low mode choices ----------
+    function buildLowModeChoices(){
+      const on = $("lowMode").checked && state.a !== null;
+      state.usedLowMode = on;
+
+      const s1 = $("s1Choices"), s2 = $("s2Choices"), s3 = $("s3Choices"), s4 = $("s4Choices");
+      [s1,s2,s3,s4].forEach(el=>{ el.innerHTML=""; el.style.display = on ? "flex":"none"; });
+
+      if(!on) return;
+
+      const opt1 = {label: `${state.p1} + ${state.p2}`, fill: ()=>{$("s1a").value=state.p1; $("s1b").value=state.p2;}};
+      const altP1 = Math.ceil(state.b/10)*10;
+      const altP2 = altP1 - state.b;
+      const opt2 = {label: `${altP1} − ${altP2}`, fill: ()=>{
+        $("s1a").value = altP1;
+        $("s1b").value = -altP2;
+      }};
+
+      [opt1,opt2].forEach(o=>{
+        const b = document.createElement("button");
+        b.className = "choice";
+        b.type="button";
+        b.textContent = o.label;
+        b.onclick = o.fill;
+        s1.appendChild(b);
+      });
+
+      const r1 = `${state.a}×${state.p1} + ${state.a}×${state.p2}`;
+      const r2 = `${state.a}×${state.b} + ${state.a}×0`;
+      [
+        {label:r1, fill: ()=>{$("s2a").value=state.p1; $("s2b").value=state.p2;}},
+        {label:r2, fill: ()=>{$("s2a").value=state.b; $("s2b").value=0;}}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice";
+        b.type="button";
+        b.textContent=o.label;
+        b.onclick=o.fill;
+        s2.appendChild(b);
+      });
+
+      const pr1 = product(state.a,state.p1);
+      const pr2 = product(state.a,state.p2);
+      [
+        {label:`${pr1} and ${pr2}`, fill: ()=>{$("s3a").value=pr1; $("s3b").value=pr2;}},
+        {label:`${pr2} and ${pr1}`, fill: ()=>{$("s3a").value=pr2; $("s3b").value=pr1;}}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice";
+        b.type="button";
+        b.textContent=o.label;
+        b.onclick=o.fill;
+        s3.appendChild(b);
+      });
+
+      const ans = pr1 + pr2;
+      [
+        {label:`${ans}`, fill: ()=>{$("s4").value=ans;}},
+        {label:`${ans + 10}`, fill: ()=>{$("s4").value=ans + 10;}}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice";
+        b.type="button";
+        b.textContent=o.label;
+        b.onclick=o.fill;
+        s4.appendChild(b);
+      });
+    }
+
+    // ---------- Checks / Answers ----------
+    function checkStep1(){
+      clearFeedback(1);
+      if(state.b === null){ showFeedback(1,"warn","Type/paste a problem first (ex: 8×91)."); return; }
+
+      const a = asInt($("s1a").value);
+      const b = asInt($("s1b").value);
+      if(a === null || b === null){
+        showFeedback(1,"warn","Enter numbers for both blanks (example: 90 and 1).");
+        return;
+      }
+      const sum = a + b;
+      if(sum === state.b){
+        showFeedback(1,"ok",`Yes — ${a} + ${b} = ${state.b}.`);
+      }else{
+        showFeedback(1,"bad",`Not quite — ${a} + ${b} = ${sum}, but we need ${state.b}.`);
+      }
+    }
+
+    function showStep1(){
+      if(state.b === null) return;
+      showReveal(1, `${state.p1} + ${state.p2}`, `${state.b} breaks into tens + ones.`);
+      $("s1a").value = state.p1;
+      $("s1b").value = state.p2;
+    }
+
+    function checkStep2(){
+      clearFeedback(2);
+      if(state.b === null){ showFeedback(2,"warn","Type/paste a problem first (ex: 8×91)."); return; }
+
+      const x = asInt($("s2a").value);
+      const y = asInt($("s2b").value);
+      if(x === null || y === null){
+        showFeedback(2,"warn","Enter numbers for both blanks (example: 90 and 1).");
+        return;
+      }
+
+      const s1a = asInt($("s1a").value), s1b = asInt($("s1b").value);
+      const usesStep1 = (s1a !== null && s1b !== null && x === s1a && y === s1b);
+
+      if((x + y) === state.b && (usesStep1 || (x === state.p1 && y === state.p2))){
+        showFeedback(2,"ok",`Yes — ${state.a}×${state.b} = ${state.a}×${x} + ${state.a}×${y}.`);
+      }else{
+        showFeedback(2,"bad",`Not quite — the two blanks should add back to ${state.b} (and match your break-apart).`);
+      }
+    }
+
+    function showStep2(){
+      if(state.b === null) return;
+      showReveal(2, `${state.a}×${state.p1} + ${state.a}×${state.p2}`, `Multiply ${state.a} by each part.`);
+      $("s2a").value = state.p1;
+      $("s2b").value = state.p2;
+    }
+
+    function checkStep3(){
+      clearFeedback(3);
+      if(state.b === null){ showFeedback(3,"warn","Type/paste a problem first (ex: 8×91)."); return; }
+
+      const v1 = asInt($("s3a").value);
+      const v2 = asInt($("s3b").value);
+      if(v1 === null || v2 === null){
+        showFeedback(3,"warn","Enter both products (example: 720 and 8).");
+        return;
+      }
+      const pr1 = product(state.a,state.p1);
+      const pr2 = product(state.a,state.p2);
+
+      if(v1 === pr1 && v2 === pr2){
+        showFeedback(3,"ok",`Yes — ${state.a}×${state.p1}=${pr1} and ${state.a}×${state.p2}=${pr2}.`);
+      }else{
+        showFeedback(3,"bad",`Not quite — expected ${pr1} and ${pr2}.`);
+      }
+    }
+
+    function showStep3(){
+      if(state.b === null) return;
+      const pr1 = product(state.a,state.p1);
+      const pr2 = product(state.a,state.p2);
+      showReveal(3, `${pr1} and ${pr2}`, `Compute each partial product, then combine.`);
+      $("s3a").value = pr1;
+      $("s3b").value = pr2;
+    }
+
+    function checkStep4(){
+      clearFeedback(4);
+      if(state.b === null){ showFeedback(4,"warn","Type/paste a problem first (ex: 8×91)."); return; }
+
+      const v = asInt($("s4").value);
+      if(v === null){
+        showFeedback(4,"warn","Enter the final answer (example: 728).");
+        return;
+      }
+      const ans = product(state.a,state.b);
+      if(v === ans){
+        showFeedback(4,"ok",`Yes — the answer is ${ans}.`);
+      }else{
+        showFeedback(4,"bad",`Not quite — expected ${ans}.`);
+      }
+    }
+
+    function showStep4(){
+      if(state.b === null) return;
+      const ans = product(state.a,state.b);
+      showReveal(4, `${ans}`, `Combine the partial products to get the final product.`);
+      $("s4").value = ans;
+    }
+
+    // ---------- Strategy check "I don't know" explanations ----------
+    $("usedStrategy").addEventListener("change", ()=>{
+      const v = $("usedStrategy").value;
+      const box = $("usedStrategyExplain");
+      if(v === "idk"){
+        box.style.display = "block";
+        if(state.b === null){
+          box.innerHTML = "<b>Hint:</b> We break the number into tens + ones (example: 91 = 90 + 1). That is the distributive property.";
+        }else{
+          box.innerHTML = `<b>Answer:</b> Distributive Property (Break Apart)<br>
+                           <span class="muted">Because we rewrote ${state.b} as ${state.p1} + ${state.p2}, then multiplied ${state.a} by each part.</span>`;
+          $("usedStrategy").value = "distributive";
+        }
+      }else{
+        box.style.display = "none";
+      }
+    });
+
+    $("stepsCalled").addEventListener("change", ()=>{
+      const v = $("stepsCalled").value;
+      const box = $("stepsCalledExplain");
+      if(v === "idk"){
+        box.style.display = "block";
+        box.innerHTML = "<b>Answer:</b> Break apart → Multiply → Add<br><span class='muted'>That's the sequence for this strategy.</span>";
+        $("stepsCalled").value = "bma";
+      }else{
+        box.style.display = "none";
+      }
+    });
+
+    // ---------- Summary ----------
+    function makeSummary(){
+      if(state.a === null || state.b === null){
+        return "Problem: —\nType/paste a problem first (example: 8×91).";
+      }
+      const pr1 = product(state.a,state.p1);
+      const pr2 = product(state.a,state.p2);
+      const ans = product(state.a,state.b);
+
+      const hintsUsedSteps = Object.entries(state.hints)
+        .filter(([,n])=>n>0)
+        .map(([k,n])=>`Step ${k} (${n})`)
+        .join(", ") || "None";
+
+      return [
+        `Problem: ${state.a} × ${state.b}`,
+        `Strategy: Distributive Property (Break Apart)`,
+        ``,
+        `Break apart: ${state.b} = ${state.p1} + ${state.p2}`,
+        `Rewrite: ${state.a}×${state.b} = ${state.a}×${state.p1} + ${state.a}×${state.p2}`,
+        `Partial products: ${state.a}×${state.p1} = ${pr1}; ${state.a}×${state.p2} = ${pr2}`,
+        `Combine: ${pr1} + ${pr2} = ${ans}`,
+        ``,
+        `Answer: ${ans}`,
+        `Hints used: ${hintsUsedSteps}`
+      ].join("\n");
+    }
+
+    $("summaryBtn").addEventListener("click", ()=>{
+      $("summaryOut").textContent = makeSummary();
+    });
+
+    $("copyBtn").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText($("summaryOut").textContent);
+        $("copyNote").textContent = "Copied.";
+        setTimeout(()=> $("copyNote").textContent = "", 1200);
+      }catch(e){
+        $("copyNote").textContent = "Copy not available in this browser.";
+        setTimeout(()=> $("copyNote").textContent = "", 1600);
+      }
+    });
+
+    // ---------- Bind buttons ----------
+    $("check1").onclick = checkStep1;
+    $("check2").onclick = checkStep2;
+    $("check3").onclick = checkStep3;
+    $("check4").onclick = checkStep4;
+
+    $("show1").onclick = showStep1;
+    $("show2").onclick = showStep2;
+    $("show3").onclick = showStep3;
+    $("show4").onclick = showStep4;
+
+    $("resetBtn").onclick = resetSteps;
+    $("lowMode").addEventListener("change", buildLowModeChoices);
+
+    $("useProblemBtn").onclick = ()=>{
+      const p = parseProblem($("problemInput").value);
+      if(!p){
+        $("parseNote").textContent = "Couldn't read that. Try: 8×91 (or 8 x 91).";
+        $("bigProblem").innerHTML = "Your problem: <span class='muted'>—</span>";
+        return;
+      }
+      state.a = p.a;
+      state.b = p.b;
+
+      const split = splitForBreakApart(state.b);
+      state.p1 = split.p1;
+      state.p2 = split.p2;
+
+      resetSteps();
+      updateProblemUI();
+      updateExampleLabel();
+    };
+
+    // Default example
+    $("problemInput").value = "8×91";
+    $("useProblemBtn").click();
+
+    /* =========================
+       ADD-ON JS: mood + needs + report + print
+       ========================= */
+
+    const reg = {
+      mood: null,      // {row:1..5, col:1..5}
+      face: null,      // emoji
+      need: null       // string
+    };
+
+    function moodColor(row, col){
+      // 5x5: top rows = higher intensity, left cols = "harder" valence.
+      // Simple gradient without naming colors explicitly to keep it minimal and stable.
+      // We'll compute HSL-ish via rgb interpolation (cool -> warm).
+      const r = row; // 1..5 bottom->top is handled by construction
+      const c = col; // 1..5 left->right
+      // Map to 0..1
+      const tRow = (r-1)/4;       // intensity
+      const tCol = (c-1)/4;       // valence
+      // Blend: left=blue-ish, right=green-ish, top adds red warmth.
+      const red   = Math.round( 40 + 150*tRow + 20*(1-tCol) );
+      const green = Math.round( 70 + 140*tCol + 20*(1-tRow) );
+      const blue  = Math.round( 180 - 120*tCol + 20*(1-tRow) );
+      return `rgb(${red},${green},${blue})`;
+    }
+
+    function buildMoodGrid(){
+      const grid = $("moodGrid");
+      grid.innerHTML = "";
+
+      // row 5 at top, row 1 at bottom (like your image)
+      for(let displayRow=5; displayRow>=1; displayRow--){
+        for(let col=1; col<=5; col++){
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.style.background = moodColor(displayRow, col);
+          cell.setAttribute("role","gridcell");
+          cell.setAttribute("tabindex","0");
+          cell.dataset.row = String(displayRow);
+          cell.dataset.col = String(col);
+          cell.onclick = ()=> selectMood(displayRow, col);
+          cell.onkeydown = (e)=>{
+            if(e.key === "Enter" || e.key === " "){
+              e.preventDefault();
+              selectMood(displayRow, col);
+            }
+          };
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    function selectMood(row, col){
+      reg.mood = {row, col};
+      // clear selection
+      Array.from(document.querySelectorAll(".cell.selected")).forEach(el=> el.classList.remove("selected"));
+      // find matching cell
+      const match = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+      if(match) match.classList.add("selected");
+      updateMoodReadout();
+    }
+
+    function updateMoodReadout(){
+      const parts = [];
+      if(reg.mood) parts.push(`grid ${reg.mood.row}/${reg.mood.col}`);
+      if(reg.face) parts.push(`face ${reg.face}`);
+      $("moodReadout").textContent = "Selected: " + (parts.length ? parts.join(" • ") : "—");
+    }
+
+    function bindFaces(){
+      Array.from(document.querySelectorAll(".faceBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          Array.from(document.querySelectorAll(".faceBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          btn.classList.add("selected");
+          reg.face = btn.dataset.face || null;
+          updateMoodReadout();
+        };
+      });
+    }
+
+    function bindNeeds(){
+      Array.from(document.querySelectorAll(".needBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          const already = btn.classList.contains("selected");
+          Array.from(document.querySelectorAll(".needBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          if(already){
+            reg.need = null;
+          }else{
+            btn.classList.add("selected");
+            reg.need = btn.dataset.need || null;
+          }
+          $("needReadout").textContent = "Selected: " + (reg.need ?? "—");
+        };
+      });
+    }
+
+    function makeReport(){
+      const base = makeSummary();
+
+      const reflection = $("reflectionPick").value || "—";
+      const myStrats = norm($("myStrategies").value) || "—";
+      const teacherQ = norm($("teacherQ").value) || "—";
+
+      const moodPart = (()=> {
+        const parts = [];
+        if(reg.mood) parts.push(`Mood grid: ${reg.mood.row}/${reg.mood.col}`);
+        if(reg.face) parts.push(`Face: ${reg.face}`);
+        return parts.length ? parts.join(" | ") : "—";
+      })();
+
+      const needPart = reg.need ?? "—";
+
+      return [
+        base,
+        "",
+        "=== Check-In ===",
+        `Feeling: ${moodPart}`,
+        `Need: ${needPart}`,
+        `My strategies: ${myStrats}`,
+        "",
+        "=== Reflection ===",
+        `Today: ${reflection}`,
+        "",
+        "=== Question to teacher ===",
+        teacherQ
+      ].join("\n");
+    }
+
+    $("reportBtn").addEventListener("click", ()=>{
+      $("reportOut").textContent = makeReport();
+      $("printNote").textContent = "Report ready.";
+      setTimeout(()=> $("printNote").textContent = "", 1200);
+    });
+
+    $("printBtn").addEventListener("click", ()=>{
+      // Ensure report is current before printing
+      $("reportOut").textContent = makeReport();
+      window.print(); // user can "Save as PDF" from print dialog
+    });
+
+    // Init add-on UI
+    buildMoodGrid();
+    bindFaces();
+    bindNeeds();
+    $("needReadout").textContent = "Selected: —";
+    updateMoodReadout();
+  </script>
+</body>
+</html>
