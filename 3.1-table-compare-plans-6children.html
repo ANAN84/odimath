@@ -1,0 +1,1361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3.1 Table Compare Plans – 6 Children</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --panel:#f9fafb;
+      --ok:#065f46;
+      --warn:#92400e;
+      --bad:#991b1b;
+      --btn:#111827;
+      --btnText:#ffffff;
+      --chip:#eef2ff;
+      --soft:#f3f4f6;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:var(--bg);
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:22px}
+    header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+    h1{font-size:20px;margin:0 0 6px 0}
+    .sub{color:var(--muted);font-size:13px;margin:0}
+    .pill{
+      background:var(--chip);
+      border:1px solid #dbeafe;
+      color:#1f2937;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
+      background:#fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .grid{display:grid;gap:14px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:800px){ .grid2{grid-template-columns:1fr} }
+
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"], textarea, select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px 12px;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus{
+      border-color:#c7d2fe;
+      box-shadow:0 0 0 3px rgba(99,102,241,.12)
+    }
+    textarea{min-height:110px; resize:vertical;}
+
+    .bigProblem{
+      font-size:16px;
+      font-weight:650;
+      line-height:1.35;
+      padding:12px 12px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      white-space:pre-wrap;
+    }
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{
+      border:1px solid var(--btn);
+      background:var(--btn);
+      color:var(--btnText);
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn:active{transform:translateY(1px)}
+    .toggle{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;}
+    .toggle input{transform:scale(1.1)}
+
+    .strategyTitle{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      padding-bottom:10px;
+      margin-bottom:12px;
+    }
+    .strategyTitle b{font-size:16px}
+    .example{color:var(--muted);font-size:13px}
+
+    .step{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+    }
+    .stepHead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:baseline;
+      margin-bottom:10px;
+    }
+    .stepNum{font-weight:800}
+    .hintTag{color:var(--muted);font-size:12px}
+
+    .mini{font-size:12px;color:var(--muted)}
+    .muted{color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+
+    .feedback{
+      margin-top:10px;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .feedback.ok{border-color:rgba(6,95,70,.25); color:var(--ok)}
+    .feedback.warn{border-color:rgba(146,64,14,.25); color:var(--warn)}
+    .feedback.bad{border-color:rgba(153,27,27,.25); color:var(--bad)}
+    .reveal{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px dashed #c7d2fe;
+      background:#fff;
+      font-size:13px;
+    }
+
+    .qa{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .qa b{font-size:13px}
+    .snippet{
+      margin-top:6px;
+      font-size:13px;
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px dashed #e5e7eb;
+      background:#fff;
+    }
+
+    .choiceRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .choice{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+      text-align:left;
+    }
+    .choice:hover{border-color:#c7d2fe}
+
+    pre{
+      margin:0;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:13px;
+    }
+
+    /* =========================
+       ADD-ON: regulation + reflection + teacher + print
+       ========================= */
+    .sectionTitle{
+      font-weight:700;
+      font-size:14px;
+      margin:0 0 10px 0;
+    }
+    .regWrap{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background:var(--panel);
+    }
+    .regGrid{
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:14px;
+      align-items:flex-start;
+    }
+    @media (max-width:800px){
+      .regGrid{grid-template-columns:1fr;}
+    }
+    .regBox{
+      border-radius:12px;
+      border:1px solid var(--line);
+      padding:10px 12px;
+      background:#fff;
+      margin-bottom:12px;
+    }
+    .regHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .regHead b{font-size:13px}
+    .regHead span{font-size:12px;color:var(--muted)}
+
+    .moodMeter{
+      display:grid;
+      grid-template-columns:28px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .moodLevels{
+      display:grid;
+      grid-template-rows:repeat(5,1fr);
+      gap:6px;
+    }
+    .lvl{
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:6px 0;
+      background:#fff;
+      user-select:none;
+    }
+    .moodGrid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      grid-template-rows:repeat(5,1fr);
+      gap:6px;
+    }
+    .cell{
+      border-radius:10px;
+      height:32px;
+      border:1px solid rgba(0,0,0,.04);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      color:rgba(17,24,39,.7);
+    }
+    .cell:hover{outline:2px solid rgba(99,102,241,.18)}
+    .cell.selected{
+      outline:3px solid rgba(17,24,39,.85);
+      border-color:rgba(17,24,39,.18);
+    }
+    .faces{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .faceBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:16px;
+      line-height:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .faceBtn small{font-size:12px;color:var(--muted)}
+    .faceBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+    .needsGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+    @media (max-width:640px){
+      .needsGrid{grid-template-columns:1fr;}
+    }
+    .needBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      text-align:left;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-height:54px;
+      font-size:13px;
+    }
+    .needBtn:hover{border-color:#c7d2fe}
+    .needBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+    .needIcon{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      background:var(--soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      flex:0 0 auto;
+    }
+    .needText b{display:block;font-size:13px}
+    .needText span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+    .tinyHelp{font-size:12px;color:var(--muted);margin-top:8px}
+    .moodLegend{
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+    .printOnly{display:none;}
+
+    @media print{
+      body{background:#fff}
+      .wrap{max-width:none;padding:0}
+      header,.pill,.toggle,
+      #useProblemBtn,#resetBtn,#copyBtn,#summaryBtn,
+      #check1,#check2,#check3,#check4,
+      #show1,#show2,#show3,#show4,
+      #copyNote,#parseNote,
+      #reportBtn,#printBtn{
+        display:none !important;
+      }
+      .card{box-shadow:none;border:none;}
+      .printOnly{display:block;}
+    }
+
+    .tableBox{
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px;
+      margin-top:8px;
+      font-size:13px;
+    }
+    .tableBox table{
+      width:100%;
+      border-collapse:collapse;
+    }
+    .tableBox th,.tableBox td{
+      border:1px solid #d1d5db;
+      padding:4px 6px;
+      text-align:center;
+      font-size:13px;
+    }
+    .tableBox th{
+      background:#f3f4f6;
+      font-weight:700;
+    }
+    .tableBox caption{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Lesson 3-1</h1>
+        <p class="sub">3.1 Table Compare Plans – 6 Children</p>
+      </div>
+      <div class="pill">
+        <span>Ticket Table</span>
+        <span class="muted">•</span>
+        <span class="muted">Compare Plan C vs Plan A + B</span>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:14px;">
+      <!-- Problem input -->
+      <div class="card">
+        <label for="problemInput">Type or paste Problem 15 here</label>
+        <div class="grid2">
+          <textarea id="problemInput" placeholder="Paste: Lizzy visited the Science Museum with 3 adults and 5 friends..."></textarea>
+          <button class="btn" id="useProblemBtn">Use this problem</button>
+        </div>
+
+        <div class="toggle">
+          <label style="margin:0;color:var(--muted);font-size:13px;">
+            <input type="checkbox" id="lowMode" />
+            CHILL MODE (show 2 obvious options)
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="tableBox" aria-hidden="true">
+          <caption>Science Museum Ticket Prices</caption>
+          <table>
+            <thead>
+              <tr><th>Plans</th><th>Adult</th><th>Child</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Plan A Museum Tour</td><td>$50</td><td>$30</td></tr>
+              <tr><td>Plan B Planetarium</td><td>$60</td><td>$40</td></tr>
+              <tr><td>Plan C Combined A + B</td><td>$80</td><td>$50</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="divider"></div>
+
+        <label class="mini">Big problem</label>
+        <div class="bigProblem" id="bigProblem">—</div>
+        <p class="mini" id="parseNote" style="margin-top:10px;"></p>
+      </div>
+
+      <!-- Strategy + steps -->
+      <div class="card">
+        <div class="strategyTitle">
+          <div>
+            <b>We are using: Use a Table to Compare Plans (Find Savings)</b>
+            <div class="example" id="exampleLabel">Example: (30 + 40) − 50 = 20; 6 × 20 = 120</div>
+          </div>
+          <button class="btn secondary" id="resetBtn">Reset steps</button>
+        </div>
+
+        <div class="grid">
+          <!-- STEP 1 -->
+          <div class="step" id="step1">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 1</span> — Focus on children and the plans</div>
+              <div class="hintTag" id="hint1">Hints used: 0</div>
+            </div>
+
+            <div class="qa">
+              <b>What kind of tickets is the question about?</b>
+              <div class="snippet">“…the 6 children’s tickets for Plan C instead of buying separate tickets for Plan A and Plan B.”</div>
+              <label for="s1type" style="margin-top:8px;">Tickets</label>
+              <select id="s1type">
+                <option value="">Pick one</option>
+                <option value="child">children’s tickets</option>
+                <option value="adult">adult tickets</option>
+              </select>
+              <div class="choiceRow" id="s1typeChoices" style="display:none;"></div>
+            </div>
+
+            <div class="qa">
+              <b>Which plans are we comparing?</b>
+              <div class="snippet">“…Plan C instead of buying separate tickets for Plan A and Plan B.”</div>
+              <label for="s1plans" style="margin-top:8px;">Plans</label>
+              <select id="s1plans">
+                <option value="">Pick one</option>
+                <option value="CvsAB">Plan C and Plan A + Plan B</option>
+                <option value="AandB">Plan A and Plan B only</option>
+              </select>
+              <div class="choiceRow" id="s1plansChoices" style="display:none;"></div>
+            </div>
+
+            <p class="mini" style="margin-top:8px;">We ignore adult prices. Only use the <b>Child</b> column in the table.</p>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check1">Check my step</button>
+              <button class="btn" id="show1">Show answer</button>
+            </div>
+            <div id="fb1"></div>
+            <div id="rev1"></div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="step" id="step2">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 2</span> — Read child prices from the table</div>
+              <div class="hintTag" id="hint2">Hints used: 0</div>
+            </div>
+
+            <div class="qa">
+              <b>Child price for Plan A Museum Tour (Child column)</b>
+              <div class="snippet">Row “Plan A Museum Tour” → Child</div>
+              <label for="s2A" style="margin-top:8px;">Plan A child price</label>
+              <select id="s2A">
+                <option value="">Pick one</option>
+                <option value="30">$30</option>
+                <option value="50">$50</option>
+              </select>
+              <div class="choiceRow" id="s2AChoices" style="display:none;"></div>
+            </div>
+
+            <div class="qa">
+              <b>Child price for Plan B Planetarium (Child column)</b>
+              <div class="snippet">Row “Plan B Planetarium” → Child</div>
+              <label for="s2B" style="margin-top:8px;">Plan B child price</label>
+              <select id="s2B">
+                <option value="">Pick one</option>
+                <option value="40">$40</option>
+                <option value="80">$80</option>
+              </select>
+              <div class="choiceRow" id="s2BChoices" style="display:none;"></div>
+            </div>
+
+            <div class="qa">
+              <b>Child price for Plan C Combined A + B (Child column)</b>
+              <div class="snippet">Row “Plan C Combined A + B” → Child</div>
+              <label for="s2C" style="margin-top:8px;">Plan C child price</label>
+              <select id="s2C">
+                <option value="">Pick one</option>
+                <option value="50">$50</option>
+                <option value="70">$70</option>
+              </select>
+              <div class="choiceRow" id="s2CChoices" style="display:none;"></div>
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check2">Check my step</button>
+              <button class="btn" id="show2">Show answer</button>
+            </div>
+            <div id="fb2"></div>
+            <div id="rev2"></div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="step" id="step3">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 3</span> — Compare the cost for 1 child</div>
+              <div class="hintTag" id="hint3">Hints used: 0</div>
+            </div>
+
+            <div class="qa">
+              <b>Separate tickets for 1 child (Plan A + Plan B)</b>
+              <div class="snippet">30 + 40 = ?</div>
+              <label for="s3sep" style="margin-top:8px;">Separate cost for 1 child</label>
+              <input id="s3sep" type="text" placeholder="ex: 70" />
+              <div class="choiceRow" id="s3sepChoices" style="display:none;"></div>
+            </div>
+
+            <div class="qa">
+              <b>Plan C for 1 child</b>
+              <div class="snippet">Use Plan C child price from the table.</div>
+              <label for="s3C" style="margin-top:8px;">Plan C cost for 1 child</label>
+              <input id="s3C" type="text" placeholder="ex: 50" />
+              <div class="choiceRow" id="s3CChoices" style="display:none;"></div>
+            </div>
+
+            <div class="qa">
+              <b>Savings for 1 child</b>
+              <div class="snippet">separate − Plan C = savings</div>
+              <label for="s3save" style="margin-top:8px;">Savings for 1 child</label>
+              <input id="s3save" type="text" placeholder="ex: 20" />
+              <div class="choiceRow" id="s3saveChoices" style="display:none;"></div>
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check3">Check my step</button>
+              <button class="btn" id="show3">Show answer</button>
+            </div>
+            <div id="fb3"></div>
+            <div id="rev3"></div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="step" id="step4">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 4</span> — Scale to 6 children and label the savings</div>
+              <div class="hintTag" id="hint4">Hints used: 0</div>
+            </div>
+
+            <div class="qa">
+              <b>How many children?</b>
+              <div class="snippet">“…on the 6 children’s tickets…”</div>
+              <label for="s4count" style="margin-top:8px;">Number of children</label>
+              <select id="s4count">
+                <option value="">Pick one</option>
+                <option value="6">6</option>
+                <option value="3">3</option>
+              </select>
+              <div class="choiceRow" id="s4countChoices" style="display:none;"></div>
+            </div>
+
+            <div class="qa">
+              <b>Total savings on 6 children’s tickets</b>
+              <div class="snippet">savings for 1 child × 6 children</div>
+              <label for="s4total" style="margin-top:8px;">Total savings</label>
+              <input id="s4total" type="text" placeholder="ex: 120" />
+              <div class="choiceRow" id="s4totalChoices" style="display:none;"></div>
+            </div>
+
+            <div class="qa">
+              <b>Write the answer in a sentence</b>
+              <label for="s4sentence" style="margin-top:8px;">Sentence</label>
+              <input id="s4sentence" type="text" placeholder="They saved $120 on the 6 children’s tickets." />
+              <div class="choiceRow" id="s4sentenceChoices" style="display:none;"></div>
+            </div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check4">Check my step</button>
+              <button class="btn" id="show4">Show answer</button>
+            </div>
+            <div id="fb4"></div>
+            <div id="rev4"></div>
+          </div>
+
+          <!-- Summary -->
+          <div class="card" style="background:#fff;">
+            <div class="row">
+              <button class="btn" id="summaryBtn">Show my summary</button>
+              <button class="btn secondary" id="copyBtn">Copy summary</button>
+              <span class="mini" id="copyNote"></span>
+            </div>
+
+            <div class="reveal" style="margin-top:12px;">
+              <pre id="summaryOut">Summary will appear here.</pre>
+            </div>
+          </div>
+
+          <!-- Reflection + regulation + report -->
+          <div class="card" id="reflectionCard">
+            <p class="sectionTitle">Quick Check-In + Report</p>
+            <div class="regWrap">
+              <div class="regGrid">
+                <!-- Left column -->
+                <div>
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>What am I feeling?</b>
+                      <span>Tap a square + a face (optional)</span>
+                    </div>
+                    <div class="moodMeter">
+                      <div class="moodLevels" aria-hidden="true">
+                        <div class="lvl">5</div><div class="lvl">4</div><div class="lvl">3</div><div class="lvl">2</div><div class="lvl">1</div>
+                      </div>
+                      <div>
+                        <div class="moodGrid" id="moodGrid" role="grid" aria-label="Feeling intensity grid"></div>
+                        <div class="faces" role="group" aria-label="Mood faces">
+                          <button class="faceBtn" type="button" data-face="😣"><span>😣</span><small>rough</small></button>
+                          <button class="faceBtn" type="button" data-face="😕"><span>😕</span><small>iffy</small></button>
+                          <button class="faceBtn" type="button" data-face="😐"><span>😐</span><small>okay</small></button>
+                          <button class="faceBtn" type="button" data-face="🙂"><span>🙂</span><small>good</small></button>
+                          <button class="faceBtn" type="button" data-face="😄"><span>😄</span><small>great</small></button>
+                        </div>
+                        <div class="tinyHelp" id="moodReadout">Selected: —</div>
+                      </div>
+                    </div>
+                    <div class="moodLegend"><span>😞 harder</span><span>🙂 better</span></div>
+                    <div class="moodLegend" style="margin-top:-6px;"><span>low energy</span><span>high energy</span></div>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>What is my need?</b>
+                      <span>Tap one (or none)</span>
+                    </div>
+                    <div class="needsGrid" role="group" aria-label="Needs">
+                      <button class="needBtn" type="button" data-need="Plan"><div class="needIcon">🗺</div><div class="needText"><b>Plan</b><span>clarity</span></div></button>
+                      <button class="needBtn" type="button" data-need="Quiet"><div class="needIcon">👂</div><div class="needText"><b>Quiet</b><span>listen</span></div></button>
+                      <button class="needBtn" type="button" data-need="Break"><div class="needIcon">🧘</div><div class="needText"><b>Break</b><span>rest</span></div></button>
+                      <button class="needBtn" type="button" data-need="Help"><div class="needIcon">🤝</div><div class="needText"><b>Help</b><span>support</span></div></button>
+                      <button class="needBtn" type="button" data-need="Food"><div class="needIcon">🍽</div><div class="needText"><b>Food</b><span>fuel</span></div></button>
+                      <button class="needBtn" type="button" data-need="Move"><div class="needIcon">🏃</div><div class="needText"><b>Move</b><span>body</span></div></button>
+                      <button class="needBtn" type="button" data-need="Water"><div class="needIcon">💧</div><div class="needText"><b>Water</b><span>drink</span></div></button>
+                      <button class="needBtn" type="button" data-need="Health"><div class="needIcon">❤️</div><div class="needText"><b>Health</b><span>check-in</span></div></button>
+                    </div>
+                    <div class="tinyHelp" id="needReadout">Selected: —</div>
+                  </div>
+                </div>
+
+                <!-- Right column -->
+                <div>
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>My strategies are…</b>
+                      <span>short is fine</span>
+                    </div>
+                    <textarea id="myStrategies" rows="4" placeholder="Example: I used the child column, found separate cost and Plan C cost, then multiplied savings for 6 children."></textarea>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Simple reflection</b>
+                      <span>pick one</span>
+                    </div>
+                    <select id="reflectionPick">
+                      <option value="">Pick one</option>
+                      <option value="I got it">I got it</option>
+                      <option value="I kind of got it">I kind of got it</option>
+                      <option value="I’m not sure yet">I’m not sure yet</option>
+                      <option value="I need help">I need help</option>
+                    </select>
+                    <div class="tinyHelp">Tip: “I’m not sure yet” is allowed.</div>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Question to teacher (optional)</b>
+                      <span>copy/paste later</span>
+                    </div>
+                    <textarea id="teacherQ" rows="4" placeholder="Example: Can you help me understand why we subtract to find savings?"></textarea>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Print / Save as PDF</b>
+                      <span>includes summary + check-in</span>
+                    </div>
+                    <div class="row">
+                      <button class="btn" type="button" id="reportBtn">Make report</button>
+                      <button class="btn secondary" type="button" id="printBtn">Print / Save</button>
+                      <span class="mini" id="printNote"></span>
+                    </div>
+                    <div class="reveal" style="margin-top:10px;">
+                      <pre id="reportOut">Report will appear here.</pre>
+                    </div>
+                    <p class="mini printOnly">Printed report</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /grid -->
+      </div><!-- /card -->
+    </div><!-- /grid -->
+  </div><!-- /wrap -->
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (id) => document.getElementById(id);
+    const norm = (s) => String(s ?? "").trim();
+    const asInt = (s) => {
+      const t = norm(s).replace(/,/g,"").replace(/\$/g,"");
+      if(!t) return null;
+      if(!/^[-]?\d+$/.test(t)) return null;
+      return parseInt(t,10);
+    };
+    const comma = (n) => {
+      const s = String(n);
+      const sign = s.startsWith("-") ? "-" : "";
+      const t = sign ? s.slice(1) : s;
+      return sign + t.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+    // ---------- Parser for child count (6 children) ----------
+    function parseSavingProblem(raw){
+      const text = norm(raw);
+      if(!text) return null;
+      const nums = (text.match(/\d+/g) || []).map(n=>parseInt(n,10)).filter(Number.isFinite);
+      const nChildren = nums.length ? nums[nums.length-1] : 6; // often 6 is last number
+      return {nChildren, rawText:text};
+    }
+
+    // ---------- State ----------
+    const state = {
+      aChild:30,
+      bChild:40,
+      cChild:50,
+      separatePer:30+40,
+      cPer:50,
+      savingPer:(30+40)-50,
+      nChildren:6,
+      totalSaving:6*((30+40)-50),
+      hints:{1:0,2:0,3:0,4:0},
+      revealed:{1:false,2:false,3:false,4:false},
+      rawText:"",
+      usedLowMode:false
+    };
+
+    function refreshSaving(){
+      state.separatePer = state.aChild + state.bChild;
+      state.cPer = state.cChild;
+      state.savingPer = state.separatePer - state.cPer;
+      state.totalSaving = state.nChildren * state.savingPer;
+      $("exampleLabel").textContent =
+        `Example: (${state.aChild} + ${state.bChild}) − ${state.cChild} = ${state.savingPer}; ${state.nChildren} × ${state.savingPer} = ${state.totalSaving}`;
+    }
+
+    function setHint(step){
+      state.hints[step]+=1;
+      $("hint"+step).textContent="Hints used: "+state.hints[step];
+    }
+    function clearFeedback(step){
+      $("fb"+step).innerHTML="";
+      $("rev"+step).innerHTML="";
+    }
+    function showFeedback(step,kind,msg){
+      const div=document.createElement("div");
+      div.className="feedback "+kind;
+      div.textContent=msg;
+      $("fb"+step).innerHTML="";
+      $("fb"+step).appendChild(div);
+    }
+    function showReveal(step,answerText,reasonText){
+      setHint(step);
+      state.revealed[step]=true;
+      const div=document.createElement("div");
+      div.className="reveal";
+      div.innerHTML="<b>Answer:</b> "+answerText+
+        "<br><span class='muted'>Reason: "+reasonText+"</span>";
+      $("rev"+step).innerHTML="";
+      $("rev"+step).appendChild(div);
+    }
+
+    function updateProblemUI(){
+      $("bigProblem").textContent = state.rawText || "—";
+      $("parseNote").textContent =
+        `Using child prices: Plan A $${state.aChild}, Plan B $${state.bChild}, Plan C $${state.cChild}. Comparing for ${state.nChildren} children.`;
+      refreshSaving();
+      buildLowModeChoices();
+    }
+
+    function resetSteps(){
+      $("s1type").value="";
+      $("s1plans").value="";
+      $("s2A").value="";
+      $("s2B").value="";
+      $("s2C").value="";
+      $("s3sep").value="";
+      $("s3C").value="";
+      $("s3save").value="";
+      $("s4count").value="";
+      $("s4total").value="";
+      $("s4sentence").value="";
+
+      [1,2,3,4].forEach(step=>{
+        clearFeedback(step);
+        state.hints[step]=0;
+        state.revealed[step]=false;
+        $("hint"+step).textContent="Hints used: 0";
+      });
+      $("summaryOut").textContent="Summary will appear here.";
+      $("copyNote").textContent="";
+    }
+
+    // ---------- CHILL MODE ----------
+    function buildLowModeChoices(){
+      const on = $("lowMode").checked;
+      state.usedLowMode = on;
+
+      const c1t=$("s1typeChoices"),c1p=$("s1plansChoices"),
+            c2A=$("s2AChoices"),c2B=$("s2BChoices"),c2C=$("s2CChoices"),
+            c3sep=$("s3sepChoices"),c3C=$("s3CChoices"),c3save=$("s3saveChoices"),
+            c4count=$("s4countChoices"),c4total=$("s4totalChoices"),c4sent=$("s4sentenceChoices");
+      [c1t,c1p,c2A,c2B,c2C,c3sep,c3C,c3save,c4count,c4total,c4sent].forEach(el=>{
+        el.innerHTML=""; el.style.display=on?"flex":"none";
+      });
+      if(!on) return;
+
+      // Step1 tickets
+      [
+        {label:"Children’s tickets (correct)",val:"child"},
+        {label:"Adult tickets",val:"adult"}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s1type").value=o.val;};
+        c1t.appendChild(b);
+      });
+
+      // Step1 plans
+      [
+        {label:"Plan C and Plan A + Plan B (correct)",val:"CvsAB"},
+        {label:"Plan A and Plan B only",val:"AandB"}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s1plans").value=o.val;};
+        c1p.appendChild(b);
+      });
+
+      // Step2 prices
+      [
+        {label:"Plan A child $30 (correct)",val:"30"},
+        {label:"Plan A child $50",val:"50"}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s2A").value=o.val;};
+        c2A.appendChild(b);
+      });
+
+      [
+        {label:"Plan B child $40 (correct)",val:"40"},
+        {label:"Plan B child $80",val:"80"}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s2B").value=o.val;};
+        c2B.appendChild(b);
+      });
+
+      [
+        {label:"Plan C child $50 (correct)",val:"50"},
+        {label:"Plan C child $70",val:"70"}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s2C").value=o.val;};
+        c2C.appendChild(b);
+      });
+
+      // Step3 separate, C, savings
+      const sep = state.separatePer;
+      const cPer = state.cPer;
+      const save = state.savingPer;
+
+      [
+        {label:`Separate cost 1 child: 30 + 40 = ${sep} (correct)`,val:sep},
+        {label:`Separate cost 1 child: ${sep+10}`,val:sep+10}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s3sep").value=String(o.val);};
+        c3sep.appendChild(b);
+      });
+
+      [
+        {label:`Plan C cost 1 child: ${cPer} (correct)`,val:cPer},
+        {label:`Plan C cost 1 child: ${cPer+20}`,val:cPer+20}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s3C").value=String(o.val);};
+        c3C.appendChild(b);
+      });
+
+      [
+        {label:`Savings 1 child: ${sep} − ${cPer} = ${save} (correct)`,val:save},
+        {label:`Savings 1 child: ${save+100}`,val:save+100}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s3save").value=String(o.val);};
+        c3save.appendChild(b);
+      });
+
+      // Step4
+      [
+        {label:"6 children (correct)",val:"6"},
+        {label:"3 children",val:"3"}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s4count").value=o.val;};
+        c4count.appendChild(b);
+      });
+
+      const total = state.totalSaving;
+      [
+        {label:`Total savings: 6 × ${save} = ${total} (correct)`,val:total},
+        {label:`Total savings: ${total-60}`,val:total-60}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s4total").value=String(o.val);};
+        c4total.appendChild(b);
+      });
+
+      [
+        {label:`They saved $${total} on the 6 children’s tickets.`,val:`They saved $${total} on the 6 children’s tickets.`},
+        {label:`They saved $${total-60} on the 6 children’s tickets.`,val:`They saved $${total-60} on the 6 children’s tickets.`}
+      ].forEach(o=>{
+        const b=document.createElement("button");
+        b.type="button";b.className="choice";b.textContent=o.label;
+        b.onclick=()=>{$("s4sentence").value=o.val;};
+        c4sent.appendChild(b);
+      });
+    }
+
+    // ---------- Step checks ----------
+    function checkStep1(){
+      clearFeedback(1);
+      const t=$("s1type").value;
+      const p=$("s1plans").value;
+      if(!t || !p){
+        showFeedback(1,"warn","Answer both questions in Step 1.");
+        return;
+      }
+      const okT=(t==="child");
+      const okP=(p==="CvsAB");
+      if(okT && okP){
+        showFeedback(1,"ok","Yes — the question is about children’s tickets, comparing Plan C with Plan A + Plan B.");
+      }else{
+        const msgs=[];
+        if(!okT) msgs.push("The question says “6 children’s tickets,” so we focus on child tickets.");
+        if(!okP) msgs.push("We compare Plan C with buying separate tickets for Plan A and Plan B.");
+        showFeedback(1,"bad",msgs.join(" "));
+      }
+    }
+
+    function showStep1(){
+      showReveal(1,
+        "Children’s tickets; Plan C vs Plan A + Plan B",
+        "The question mentions “6 children’s tickets” and “Plan C instead of Plan A and Plan B.”"
+      );
+      $("s1type").value="child";
+      $("s1plans").value="CvsAB";
+    }
+
+    function checkStep2(){
+      clearFeedback(2);
+      const a=$("s2A").value;
+      const b=$("s2B").value;
+      const c=$("s2C").value;
+      if(!a || !b || !c){
+        showFeedback(2,"warn","Pick all three child prices from the table.");
+        return;
+      }
+      const okA=(asInt(a)===state.aChild);
+      const okB=(asInt(b)===state.bChild);
+      const okC=(asInt(c)===state.cChild);
+      if(okA && okB && okC){
+        showFeedback(2,"ok","Yes — Plan A $30, Plan B $40, Plan C $50 for child tickets.");
+      }else{
+        const msgs=[];
+        if(!okA) msgs.push("Plan A child ticket is $30.");
+        if(!okB) msgs.push("Plan B child ticket is $40.");
+        if(!okC) msgs.push("Plan C child ticket is $50.");
+        showFeedback(2,"bad",msgs.join(" "));
+      }
+    }
+
+    function showStep2(){
+      showReveal(2,
+        "Plan A $30, Plan B $40, Plan C $50",
+        "Read across the Child column in the table."
+      );
+      $("s2A").value=String(state.aChild);
+      $("s2B").value=String(state.bChild);
+      $("s2C").value=String(state.cChild);
+    }
+
+    function checkStep3(){
+      clearFeedback(3);
+      const sep=asInt($("s3sep").value);
+      const c=asInt($("s3C").value);
+      const save=asInt($("s3save").value);
+      if(sep===null || c===null || save===null){
+        showFeedback(3,"warn","Fill in separate cost, Plan C cost, and savings for 1 child.");
+        return;
+      }
+      const okSep=(sep===state.separatePer);
+      const okC=(c===state.cPer);
+      const okSave=(save===state.savingPer);
+      if(okSep && okC && okSave){
+        showFeedback(3,"ok",`Yes — separate: ${sep}, Plan C: ${c}, savings for 1 child: ${save}.`);
+      }else{
+        const msgs=[];
+        if(!okSep) msgs.push(`Separate cost: 30 + 40 = ${state.separatePer}.`);
+        if(!okC) msgs.push(`Plan C cost for 1 child is ${state.cPer}.`);
+        if(!okSave) msgs.push(`Savings: ${state.separatePer} − ${state.cPer} = ${state.savingPer}.`);
+        showFeedback(3,"bad",msgs.join(" "));
+      }
+    }
+
+    function showStep3(){
+      showReveal(3,
+        `Separate $${state.separatePer}, Plan C $${state.cPer}, savings $${state.savingPer}`,
+        "Use the child prices: add A and B, then subtract Plan C."
+      );
+      $("s3sep").value=String(state.separatePer);
+      $("s3C").value=String(state.cPer);
+      $("s3save").value=String(state.savingPer);
+    }
+
+    function checkStep4(){
+      clearFeedback(4);
+      const count=$("s4count").value;
+      const total=asInt($("s4total").value);
+      const sent=norm($("s4sentence").value);
+      if(!count || total===null || !sent){
+        showFeedback(4,"warn","Pick the number of children, fill in total savings, and write a sentence.");
+        return;
+      }
+      const okCount=(count==="6");
+      const okTotal=(total===state.totalSaving);
+      const hasDollar=/\$/i.test(sent);
+      const hasNumber = sent.includes(String(state.totalSaving)) || sent.includes(comma(state.totalSaving));
+      if(okCount && okTotal && hasDollar && hasNumber){
+        showFeedback(4,"ok","Yes — 6 children, total savings $"+state.totalSaving+".");
+      }else{
+        const msgs=[];
+        if(!okCount) msgs.push("The problem says 6 children’s tickets.");
+        if(!okTotal) msgs.push(`Total savings: 6 × ${state.savingPer} = ${state.totalSaving}.`);
+        if(!hasDollar) msgs.push("Include the dollar sign $.");
+        if(!hasNumber) msgs.push(`Include ${state.totalSaving} in your sentence.`);
+        showFeedback(4,"bad",msgs.join(" "));
+      }
+    }
+
+    function showStep4(){
+      const sentence = `They saved $${state.totalSaving} on the 6 children’s tickets.`;
+      showReveal(4,
+        sentence,
+        `Multiply savings for 1 child (${state.savingPer}) by ${state.nChildren}.`
+      );
+      $("s4count").value="6";
+      $("s4total").value=String(state.totalSaving);
+      $("s4sentence").value=sentence;
+    }
+
+    // ---------- Summary ----------
+    function makeSummary(){
+      if(!state.rawText){
+        return "Problem: —\nUse the problem first.";
+      }
+      const hintsUsed = Object.entries(state.hints)
+        .filter(([,n])=>n>0)
+        .map(([k,n])=>`Step ${k} (${n})`).join(", ") || "None";
+
+      return [
+        "Problem (ticket savings):",
+        state.rawText,
+        "",
+        "Strategy: Use a Table to Compare Plans (Find Savings)",
+        "",
+        `Child prices: Plan A $${state.aChild}, Plan B $${state.bChild}, Plan C $${state.cChild}`,
+        `Separate cost for 1 child: ${state.aChild} + ${state.bChild} = ${state.separatePer}`,
+        `Plan C cost for 1 child: ${state.cPer}`,
+        `Savings for 1 child: ${state.separatePer} − ${state.cPer} = ${state.savingPer}`,
+        `Children: ${state.nChildren}`,
+        `Total savings: ${state.nChildren} × ${state.savingPer} = ${state.totalSaving}`,
+        "",
+        `Answer: They saved $${state.totalSaving} on the ${state.nChildren} children’s tickets.`,
+        "",
+        `Hints used: ${hintsUsed}`
+      ].join("\n");
+    }
+
+    $("summaryBtn").addEventListener("click", ()=>{
+      $("summaryOut").textContent = makeSummary();
+    });
+
+    $("copyBtn").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText($("summaryOut").textContent);
+        $("copyNote").textContent = "Copied.";
+        setTimeout(()=> $("copyNote").textContent = "", 1200);
+      }catch(e){
+        $("copyNote").textContent = "Copy not available in this browser.";
+        setTimeout(()=> $("copyNote").textContent = "", 1600);
+      }
+    });
+
+    // ---------- Bind ----------
+    $("check1").onclick = checkStep1;
+    $("check2").onclick = checkStep2;
+    $("check3").onclick = checkStep3;
+    $("check4").onclick = checkStep4;
+
+    $("show1").onclick = showStep1;
+    $("show2").onclick = showStep2;
+    $("show3").onclick = showStep3;
+    $("show4").onclick = showStep4;
+
+    $("resetBtn").onclick = resetSteps;
+    $("lowMode").addEventListener("change", buildLowModeChoices);
+
+    $("useProblemBtn").onclick = ()=>{
+      const parsed = parseSavingProblem($("problemInput").value);
+      if(!parsed){
+        $("parseNote").textContent = "Couldn’t read that. Paste the story with the 6 children’s tickets.";
+        return;
+      }
+      state.nChildren = parsed.nChildren || 6;
+      state.rawText = parsed.rawText;
+      refreshSaving();
+      updateProblemUI();
+      resetSteps();
+    };
+
+    /* =========================
+       ADD-ON JS: mood + needs + report + print
+       (exact block you provided)
+       ========================= */
+    const reg = {
+      mood: null, // {row:1..5, col:1..5}
+      face: null, // emoji
+      need: null // string
+    };
+
+    function moodColor(row, col){
+      // 5x5: top rows = higher intensity, left cols = "harder" valence.
+      // Simple gradient without naming colors explicitly to keep it minimal and stable.
+      // We'll compute HSL-ish via rgb interpolation (cool -> warm).
+      const r = row; // 1..5 bottom->top is handled by construction
+      const c = col; // 1..5 left->right
+      // Map to 0..1
+      const tRow = (r-1)/4; // intensity
+      const tCol = (c-1)/4; // valence
+      // Blend: left=blue-ish, right=green-ish, top adds red warmth.
+      const red = Math.round( 40 + 150*tRow + 20*(1-tCol) );
+      const green = Math.round( 70 + 140*tCol + 20*(1-tRow) );
+      const blue = Math.round( 180 - 120*tCol + 20*(1-tRow) );
+      return `rgb(${red},${green},${blue})`;
+    }
+
+    function buildMoodGrid(){
+      const grid = $("moodGrid");
+      grid.innerHTML = "";
+
+      // row 5 at top, row 1 at bottom (like your image)
+      for(let displayRow=5; displayRow>=1; displayRow--){
+        for(let col=1; col<=5; col++){
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.style.background = moodColor(displayRow, col);
+          cell.setAttribute("role","gridcell");
+          cell.setAttribute("tabindex","0");
+          cell.dataset.row = String(displayRow);
+          cell.dataset.col = String(col);
+          cell.onclick = ()=> selectMood(displayRow, col);
+          cell.onkeydown = (e)=>{
+            if(e.key === "Enter" || e.key === " "){
+              e.preventDefault();
+              selectMood(displayRow, col);
+            }
+          };
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    function selectMood(row, col){
+      reg.mood = {row, col};
+      // clear selection
+      Array.from(document.querySelectorAll(".cell.selected")).forEach(el=> el.classList.remove("selected"));
+      // find matching cell
+      const match = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+      if(match) match.classList.add("selected");
+      updateMoodReadout();
+    }
+
+    function updateMoodReadout(){
+      const parts = [];
+      if(reg.mood) parts.push(`grid ${reg.mood.row}/${reg.mood.col}`);
+      if(reg.face) parts.push(`face ${reg.face}`);
+      $("moodReadout").textContent = "Selected: " + (parts.length ? parts.join(" • ") : "—");
+    }
+
+    function bindFaces(){
+      Array.from(document.querySelectorAll(".faceBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          Array.from(document.querySelectorAll(".faceBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          btn.classList.add("selected");
+          reg.face = btn.dataset.face || null;
+          updateMoodReadout();
+        };
+      });
+    }
+
+    function bindNeeds(){
+      Array.from(document.querySelectorAll(".needBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          const already = btn.classList.contains("selected");
+          Array.from(document.querySelectorAll(".needBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          if(already){
+            reg.need = null;
+          }else{
+            btn.classList.add("selected");
+            reg.need = btn.dataset.need || null;
+          }
+          $("needReadout").textContent = "Selected: " + (reg.need ?? "—");
+        };
+      });
+    }
+
+    function makeReport(){
+      const base = makeSummary();
+
+      const reflection = $("reflectionPick").value || "—";
+      const myStrats = norm($("myStrategies").value) || "—";
+      const teacherQ = norm($("teacherQ").value) || "—";
+
+      const moodPart = (()=>{
+        const parts = [];
+        if(reg.mood) parts.push(`Mood grid: ${reg.mood.row}/${reg.mood.col}`);
+        if(reg.face) parts.push(`Face: ${reg.face}`);
+        return parts.length ? parts.join(" | ") : "—";
+      })();
+
+      const needPart = reg.need ?? "—";
+
+      return [
+        base,
+        "",
+        "=== Check-In ===",
+        `Feeling: ${moodPart}`,
+        `Need: ${needPart}`,
+        `My strategies: ${myStrats}`,
+        "",
+        "=== Reflection ===",
+        `Today: ${reflection}`,
+        "",
+        "=== Question to teacher ===",
+        teacherQ
+      ].join("\n");
+    }
+
+    $("reportBtn").addEventListener("click", ()=>{
+      $("reportOut").textContent = makeReport();
+      $("printNote").textContent = "Report ready.";
+      setTimeout(()=> $("printNote").textContent = "", 1200);
+    });
+
+    $("printBtn").addEventListener("click", ()=>{
+      // Ensure report is current before printing
+      $("reportOut").textContent = makeReport();
+      window.print(); // user can "Save as PDF" from print dialog
+    });
+
+    // Init add-on UI
+    buildMoodGrid();
+    bindFaces();
+    bindNeeds();
+    $("needReadout").textContent = "Selected: —";
+    updateMoodReadout();
+
+    // Default example
+    $("problemInput").value =
+`Lizzy visited the Science Museum with 3 adults and 5 friends. They bought tickets for Plan C. How much money did they save on the 6 children's tickets for Plan C instead of buying separate tickets for Plan A and Plan B?`;
+    const parsed0 = parseSavingProblem($("problemInput").value);
+    state.nChildren = parsed0.nChildren;
+    state.rawText = parsed0.rawText;
+    refreshSaving();
+    updateProblemUI();
+    resetSteps();
+  </script>
+</body>
+</html>
+
+<!-- COPY/PASTE LINK LINE FOR YOUR LIST:
+<a href="3.1-table-compare-plans-6children.html">3.1 Table Compare Plans – 6 Children</a>
+-->
