@@ -79,6 +79,16 @@
       white-space:pre-wrap;
     }
 
+    .metaGoalBlock{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:var(--panel);
+      border:1px dashed var(--line);
+      font-size:13px;
+    }
+    .metaGoalBlock p{margin:4px 0;}
+
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .btn{
       border:1px solid var(--btn);
@@ -402,14 +412,14 @@
       <div class="pill">
         <span>Ticket Table</span>
         <span class="muted">•</span>
-        <span class="muted">Compare Plan C vs Plan A + B</span>
+        <span class="muted">Plan C vs Plan A + B (6 children)</span>
       </div>
     </header>
 
     <div class="grid" style="margin-top:14px;">
       <!-- Problem input -->
       <div class="card">
-        <label for="problemInput">Type or paste Problem 15 here</label>
+        <label for="problemInput">Type or paste the full question here</label>
         <div class="grid2">
           <textarea id="problemInput" placeholder="Paste: Lizzy visited the Science Museum with 3 adults and 5 friends..."></textarea>
           <button class="btn" id="useProblemBtn">Use this problem</button>
@@ -418,17 +428,18 @@
         <div class="toggle">
           <label style="margin:0;color:var(--muted);font-size:13px;">
             <input type="checkbox" id="lowMode" />
-            CHILL MODE (show 2 obvious options)
+            CHILL MODE (show 2 choices)
           </label>
         </div>
 
         <div class="divider"></div>
 
-        <div class="tableBox" aria-hidden="true">
+        <!-- table always visible -->
+        <div class="tableBox">
           <caption>Science Museum Ticket Prices</caption>
           <table>
             <thead>
-              <tr><th>Plans</th><th>Adult</th><th>Child</th></tr>
+              <tr><th>Plan</th><th>Adult</th><th>Child</th></tr>
             </thead>
             <tbody>
               <tr><td>Plan A Museum Tour</td><td>$50</td><td>$30</td></tr>
@@ -440,8 +451,14 @@
 
         <div class="divider"></div>
 
-        <label class="mini">Big problem</label>
+        <label class="mini">Big problem (exact words)</label>
         <div class="bigProblem" id="bigProblem">—</div>
+
+        <div class="metaGoalBlock">
+          <p><strong>Goal question:</strong> How much money did they save on the 6 children’s tickets for Plan C instead of buying separate tickets for Plan A and Plan B?</p>
+          <p><strong>Plan:</strong> 1) Read child prices from the table. 2) Find savings for 1 child. 3) Multiply by 6.</p>
+        </div>
+
         <p class="mini" id="parseNote" style="margin-top:10px;"></p>
       </div>
 
@@ -449,7 +466,7 @@
       <div class="card">
         <div class="strategyTitle">
           <div>
-            <b>We are using: Use a Table to Compare Plans (Find Savings)</b>
+            <b>Strategy: Use a Table to Compare Plans (Savings)</b>
             <div class="example" id="exampleLabel">Example: (30 + 40) − 50 = 20; 6 × 20 = 120</div>
           </div>
           <button class="btn secondary" id="resetBtn">Reset steps</button>
@@ -459,12 +476,12 @@
           <!-- STEP 1 -->
           <div class="step" id="step1">
             <div class="stepHead">
-              <div><span class="stepNum">STEP 1</span> — Focus on children and the plans</div>
+              <div><span class="stepNum">STEP 1</span> — What are we comparing?</div>
               <div class="hintTag" id="hint1">Hints used: 0</div>
             </div>
 
             <div class="qa">
-              <b>What kind of tickets is the question about?</b>
+              <b>Who are the tickets for?</b>
               <div class="snippet">“…the 6 children’s tickets for Plan C instead of buying separate tickets for Plan A and Plan B.”</div>
               <label for="s1type" style="margin-top:8px;">Tickets</label>
               <select id="s1type">
@@ -476,7 +493,7 @@
             </div>
 
             <div class="qa">
-              <b>Which plans are we comparing?</b>
+              <b>Which plans?</b>
               <div class="snippet">“…Plan C instead of buying separate tickets for Plan A and Plan B.”</div>
               <label for="s1plans" style="margin-top:8px;">Plans</label>
               <select id="s1plans">
@@ -487,10 +504,10 @@
               <div class="choiceRow" id="s1plansChoices" style="display:none;"></div>
             </div>
 
-            <p class="mini" style="margin-top:8px;">We ignore adult prices. Only use the <b>Child</b> column in the table.</p>
+            <p class="mini" style="margin-top:8px;">We ignore adult prices. Only use the <b>Child</b> column.</p>
 
             <div class="row" style="margin-top:10px;">
-              <button class="btn secondary" id="check1">Check my step</button>
+              <button class="btn secondary" id="check1">Check step</button>
               <button class="btn" id="show1">Show answer</button>
             </div>
             <div id="fb1"></div>
@@ -500,12 +517,12 @@
           <!-- STEP 2 -->
           <div class="step" id="step2">
             <div class="stepHead">
-              <div><span class="stepNum">STEP 2</span> — Read child prices from the table</div>
+              <div><span class="stepNum">STEP 2</span> — Read prices from the table</div>
               <div class="hintTag" id="hint2">Hints used: 0</div>
             </div>
 
             <div class="qa">
-              <b>Child price for Plan A Museum Tour (Child column)</b>
+              <b>Plan A child price</b>
               <div class="snippet">Row “Plan A Museum Tour” → Child</div>
               <label for="s2A" style="margin-top:8px;">Plan A child price</label>
               <select id="s2A">
@@ -517,7 +534,7 @@
             </div>
 
             <div class="qa">
-              <b>Child price for Plan B Planetarium (Child column)</b>
+              <b>Plan B child price</b>
               <div class="snippet">Row “Plan B Planetarium” → Child</div>
               <label for="s2B" style="margin-top:8px;">Plan B child price</label>
               <select id="s2B">
@@ -529,7 +546,7 @@
             </div>
 
             <div class="qa">
-              <b>Child price for Plan C Combined A + B (Child column)</b>
+              <b>Plan C child price</b>
               <div class="snippet">Row “Plan C Combined A + B” → Child</div>
               <label for="s2C" style="margin-top:8px;">Plan C child price</label>
               <select id="s2C">
@@ -541,7 +558,7 @@
             </div>
 
             <div class="row" style="margin-top:10px;">
-              <button class="btn secondary" id="check2">Check my step</button>
+              <button class="btn secondary" id="check2">Check step</button>
               <button class="btn" id="show2">Show answer</button>
             </div>
             <div id="fb2"></div>
@@ -551,36 +568,36 @@
           <!-- STEP 3 -->
           <div class="step" id="step3">
             <div class="stepHead">
-              <div><span class="stepNum">STEP 3</span> — Compare the cost for 1 child</div>
+              <div><span class="stepNum">STEP 3</span> — Find savings for 1 child</div>
               <div class="hintTag" id="hint3">Hints used: 0</div>
             </div>
 
             <div class="qa">
-              <b>Separate tickets for 1 child (Plan A + Plan B)</b>
+              <b>Separate cost for 1 child (Plan A + Plan B)</b>
               <div class="snippet">30 + 40 = ?</div>
-              <label for="s3sep" style="margin-top:8px;">Separate cost for 1 child</label>
+              <label for="s3sep" style="margin-top:8px;">Separate cost</label>
               <input id="s3sep" type="text" placeholder="ex: 70" />
               <div class="choiceRow" id="s3sepChoices" style="display:none;"></div>
             </div>
 
             <div class="qa">
-              <b>Plan C for 1 child</b>
+              <b>Plan C cost for 1 child</b>
               <div class="snippet">Use Plan C child price from the table.</div>
-              <label for="s3C" style="margin-top:8px;">Plan C cost for 1 child</label>
+              <label for="s3C" style="margin-top:8px;">Plan C cost</label>
               <input id="s3C" type="text" placeholder="ex: 50" />
               <div class="choiceRow" id="s3CChoices" style="display:none;"></div>
             </div>
 
             <div class="qa">
               <b>Savings for 1 child</b>
-              <div class="snippet">separate − Plan C = savings</div>
+              <div class="snippet">Separate − Plan C</div>
               <label for="s3save" style="margin-top:8px;">Savings for 1 child</label>
               <input id="s3save" type="text" placeholder="ex: 20" />
               <div class="choiceRow" id="s3saveChoices" style="display:none;"></div>
             </div>
 
             <div class="row" style="margin-top:10px;">
-              <button class="btn secondary" id="check3">Check my step</button>
+              <button class="btn secondary" id="check3">Check step</button>
               <button class="btn" id="show3">Show answer</button>
             </div>
             <div id="fb3"></div>
@@ -590,7 +607,7 @@
           <!-- STEP 4 -->
           <div class="step" id="step4">
             <div class="stepHead">
-              <div><span class="stepNum">STEP 4</span> — Scale to 6 children and label the savings</div>
+              <div><span class="stepNum">STEP 4</span> — Multiply by 6 and answer the question</div>
               <div class="hintTag" id="hint4">Hints used: 0</div>
             </div>
 
@@ -607,22 +624,23 @@
             </div>
 
             <div class="qa">
-              <b>Total savings on 6 children’s tickets</b>
-              <div class="snippet">savings for 1 child × 6 children</div>
+              <b>Total savings</b>
+              <div class="snippet">Savings for 1 child × 6 children</div>
               <label for="s4total" style="margin-top:8px;">Total savings</label>
               <input id="s4total" type="text" placeholder="ex: 120" />
               <div class="choiceRow" id="s4totalChoices" style="display:none;"></div>
             </div>
 
             <div class="qa">
-              <b>Write the answer in a sentence</b>
+              <b>Answer sentence (use the question words)</b>
+              <div class="snippet">“How much money did they save on the 6 children’s tickets for Plan C…?”</div>
               <label for="s4sentence" style="margin-top:8px;">Sentence</label>
               <input id="s4sentence" type="text" placeholder="They saved $120 on the 6 children’s tickets." />
               <div class="choiceRow" id="s4sentenceChoices" style="display:none;"></div>
             </div>
 
             <div class="row" style="margin-top:10px;">
-              <button class="btn secondary" id="check4">Check my step</button>
+              <button class="btn secondary" id="check4">Check step</button>
               <button class="btn" id="show4">Show answer</button>
             </div>
             <div id="fb4"></div>
@@ -700,7 +718,7 @@
                       <b>My strategies are…</b>
                       <span>short is fine</span>
                     </div>
-                    <textarea id="myStrategies" rows="4" placeholder="Example: I used the child column, found separate cost and Plan C cost, then multiplied savings for 6 children."></textarea>
+                    <textarea id="myStrategies" rows="4" placeholder="Example: I used the child column, found savings for 1 child, then multiplied by 6."></textarea>
                   </div>
 
                   <div class="regBox">
@@ -723,7 +741,7 @@
                       <b>Question to teacher (optional)</b>
                       <span>copy/paste later</span>
                     </div>
-                    <textarea id="teacherQ" rows="4" placeholder="Example: Can you help me understand why we subtract to find savings?"></textarea>
+                    <textarea id="teacherQ" rows="4" placeholder="Example: Can you help me see why we subtract to find savings?"></textarea>
                   </div>
 
                   <div class="regBox">
@@ -768,12 +786,12 @@
       return sign + t.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     };
 
-    // ---------- Parser for child count (6 children) ----------
+    // ---------- Parser for child count ----------
     function parseSavingProblem(raw){
       const text = norm(raw);
       if(!text) return null;
       const nums = (text.match(/\d+/g) || []).map(n=>parseInt(n,10)).filter(Number.isFinite);
-      const nChildren = nums.length ? nums[nums.length-1] : 6; // often 6 is last number
+      const nChildren = nums.length ? nums[nums.length-1] : 6; // usually 6
       return {nChildren, rawText:text};
     }
 
@@ -831,7 +849,7 @@
     function updateProblemUI(){
       $("bigProblem").textContent = state.rawText || "—";
       $("parseNote").textContent =
-        `Using child prices: Plan A $${state.aChild}, Plan B $${state.bChild}, Plan C $${state.cChild}. Comparing for ${state.nChildren} children.`;
+        `We will use child prices: Plan A $${state.aChild}, Plan B $${state.bChild}, Plan C $${state.cChild}, for ${state.nChildren} children.`;
       refreshSaving();
       buildLowModeChoices();
     }
@@ -1006,7 +1024,7 @@
       const okT=(t==="child");
       const okP=(p==="CvsAB");
       if(okT && okP){
-        showFeedback(1,"ok","Yes — the question is about children’s tickets, comparing Plan C with Plan A + Plan B.");
+        showFeedback(1,"ok","Yes — children’s tickets, comparing Plan C with Plan A + Plan B.");
       }else{
         const msgs=[];
         if(!okT) msgs.push("The question says “6 children’s tickets,” so we focus on child tickets.");
@@ -1037,7 +1055,7 @@
       const okB=(asInt(b)===state.bChild);
       const okC=(asInt(c)===state.cChild);
       if(okA && okB && okC){
-        showFeedback(2,"ok","Yes — Plan A $30, Plan B $40, Plan C $50 for child tickets.");
+        showFeedback(2,"ok","Yes — Plan A $30, Plan B $40, Plan C $50 (child tickets).");
       }else{
         const msgs=[];
         if(!okA) msgs.push("Plan A child ticket is $30.");
@@ -1139,7 +1157,7 @@
         "Problem (ticket savings):",
         state.rawText,
         "",
-        "Strategy: Use a Table to Compare Plans (Find Savings)",
+        "Strategy: Use a Table to Compare Plans (Savings)",
         "",
         `Child prices: Plan A $${state.aChild}, Plan B $${state.bChild}, Plan C $${state.cChild}`,
         `Separate cost for 1 child: ${state.aChild} + ${state.bChild} = ${state.separatePer}`,
@@ -1343,7 +1361,7 @@
     $("needReadout").textContent = "Selected: —";
     updateMoodReadout();
 
-    // Default example
+    // Default example problem
     $("problemInput").value =
 `Lizzy visited the Science Museum with 3 adults and 5 friends. They bought tickets for Plan C. How much money did they save on the 6 children's tickets for Plan C instead of buying separate tickets for Plan A and Plan B?`;
     const parsed0 = parseSavingProblem($("problemInput").value);
