@@ -1,0 +1,1291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Math Strategy Guide — Zeros Rule (Place Value)</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --panel:#f9fafb;
+      --ok:#065f46;
+      --warn:#92400e;
+      --bad:#991b1b;
+      --btn:#111827;
+      --btnText:#ffffff;
+      --chip:#eef2ff;
+      --zero:#dc2626; /* red for zeros */
+      /* add-on */
+      --soft:#f3f4f6;
+      --ink:#0f172a;
+      --shadow:0 1px 0 rgba(0,0,0,.02);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:var(--bg);
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:22px}
+    header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+    h1{font-size:20px;margin:0 0 6px 0}
+    .sub{color:var(--muted);font-size:13px;margin:0}
+    .card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
+      background:#fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .grid{display:grid;gap:14px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:800px){ .grid2{grid-template-columns:1fr} }
+
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"], textarea, select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px 12px;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus{border-color:#c7d2fe; box-shadow:0 0 0 3px rgba(99,102,241,.12)}
+
+    .bigProblem{
+      font-size:28px;
+      font-weight:650;
+      letter-spacing:.2px;
+      padding:10px 12px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+    }
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{
+      border:1px solid var(--btn);
+      background:var(--btn);
+      color:var(--btnText);
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn:active{transform:translateY(1px)}
+    .pill{
+      background:var(--chip);
+      border:1px solid #dbeafe;
+      color:#1f2937;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .strategyTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      padding-bottom:10px;
+      margin-bottom:12px;
+    }
+    .strategyTitle b{font-size:16px}
+    .example{color:var(--muted);font-size:13px}
+
+    .step{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+    }
+    .stepHead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:baseline;
+      margin-bottom:10px;
+    }
+    .stepNum{font-weight:700}
+    .hintTag{color:var(--muted);font-size:12px}
+    .inlineInputs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:10px 0;
+    }
+    @media (max-width:640px){ .inlineInputs{grid-template-columns:1fr} }
+
+    .feedback{
+      margin-top:10px;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .feedback.ok{border-color:rgba(6,95,70,.25); color:var(--ok)}
+    .feedback.warn{border-color:rgba(146,64,14,.25); color:var(--warn)}
+    .feedback.bad{border-color:rgba(153,27,27,.25); color:var(--bad)}
+    .reveal{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px dashed #c7d2fe;
+      background:#fff;
+      font-size:13px;
+    }
+    .muted{color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+    .mini{font-size:12px;color:var(--muted)}
+    .toggle{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;}
+    .toggle input{transform:scale(1.1)}
+    .choiceRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .choice{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .choice:hover{border-color:#c7d2fe}
+    pre{
+      margin:0;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:13px;
+    }
+    .zero{color:var(--zero); font-weight:800;}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:2px 8px;
+      font-size:12px;
+      color:#111827;
+    }
+
+    /* =========================
+       ADD-ON: regulation + reflection + teacher + print
+       (same as Break Apart guide)
+       ========================= */
+    .sectionTitle{
+      font-weight:700;
+      font-size:14px;
+      margin:0 0 10px 0;
+    }
+    .regWrap{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background:var(--panel);
+    }
+    .regGrid{
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:14px;
+      align-items:flex-start;
+    }
+    @media (max-width:800px){
+      .regGrid{grid-template-columns:1fr;}
+    }
+    .regBox{
+      border-radius:12px;
+      border:1px solid var(--line);
+      padding:10px 12px;
+      background:#fff;
+      margin-bottom:12px;
+    }
+    .regHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .regHead b{font-size:13px}
+    .regHead span{font-size:12px;color:var(--muted)}
+
+    /* Mood meter */
+    .moodMeter{
+      display:grid;
+      grid-template-columns:28px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .moodLevels{
+      display:grid;
+      grid-template-rows:repeat(5,1fr);
+      gap:6px;
+    }
+    .lvl{
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:6px 0;
+      background:#fff;
+      user-select:none;
+    }
+    .moodGrid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      grid-template-rows:repeat(5,1fr);
+      gap:6px;
+    }
+    .cell{
+      border-radius:10px;
+      height:32px;
+      border:1px solid rgba(0,0,0,.04);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      color:rgba(17,24,39,.7);
+    }
+    .cell:hover{outline:2px solid rgba(99,102,241,.18)}
+    .cell.selected{
+      outline:3px solid rgba(17,24,39,.85);
+      border-color:rgba(17,24,39,.18);
+    }
+    .faces{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .faceBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:16px;
+      line-height:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .faceBtn small{font-size:12px;color:var(--muted)}
+    .faceBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+    .needsGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+    @media (max-width:640px){
+      .needsGrid{grid-template-columns:1fr;}
+    }
+    .needBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      text-align:left;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-height:54px;
+      font-size:13px;
+    }
+    .needBtn:hover{border-color:#c7d2fe}
+    .needBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+    .needIcon{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      background:var(--soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      flex:0 0 auto;
+    }
+    .needText b{display:block;font-size:13px}
+    .needText span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+    .tinyHelp{font-size:12px;color:var(--muted);margin-top:8px}
+    .moodLegend{
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+    .printOnly{display:none;}
+
+    @media print{
+      body{background:#fff}
+      .wrap{max-width:none;padding:0}
+      header,.pill,.toggle,
+      #useProblemBtn,#resetBtn,#copyBtn,#summaryBtn,
+      #check1,#check2,#check3,#check4,
+      #show1,#show2,#show3,#show4,
+      #copyNote,#parseNote,
+      #reportBtn,#printBtn{
+        display:none !important;
+      }
+      .card{box-shadow:none;border:none;}
+      .printOnly{display:block;}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Math Strategy Guide</h1>
+        <p class="sub">Strategy: <b>Basic Fact + Place Value (Zeros Rule)</b></p>
+      </div>
+      <div class="pill" title="Type/paste a multiplication problem.">
+        <span>Zeros Rule</span>
+        <span class="muted">•</span>
+        <span class="muted">multiply then add zeros</span>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:14px;">
+      <!-- Problem input -->
+      <div class="card">
+        <label for="problemInput">Type or paste the problem here</label>
+        <div class="grid2">
+          <input id="problemInput" type="text" placeholder="Example: 6×700  (or 6 x 700, 6 * 700)" />
+          <button class="btn" id="useProblemBtn">Use this problem</button>
+        </div>
+        <div class="toggle">
+          <label style="margin:0;color:var(--muted);font-size:13px;">
+            <input type="checkbox" id="lowMode" />
+            CHILL MODE (show 2 obvious options)
+          </label>
+        </div>
+        <div class="divider"></div>
+        <div class="bigProblem" id="bigProblem">Your problem: <span class="muted">—</span></div>
+        <p class="mini" id="parseNote" style="margin-top:10px;"></p>
+      </div>
+
+      <!-- Strategy header + steps -->
+      <div class="card">
+        <div class="strategyTitle">
+          <div>
+            <b>We are using: Zeros Rule (Place Value)</b>
+            <div class="example">IF ZEROS RULE: <span id="exampleLabel">6×700 → 6×7 = 42 → add 2 zeros → 4,200</span></div>
+          </div>
+          <button class="btn secondary" id="resetBtn">Reset steps</button>
+        </div>
+
+        <div class="grid">
+          <!-- Step 1 -->
+          <div class="step" id="step1">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 1</span> — Find the basic fact (ignore the zeros)</div>
+              <div class="hintTag" id="hint1">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Basic fact for <b><span id="probLabel1">—</span></b> is: <b>__ × __</b>
+              <span class="mini" style="display:block;margin-top:6px;">Tip: take off the trailing zeros first.</span>
+            </div>
+
+            <div class="inlineInputs">
+              <div>
+                <label for="s1a">First number</label>
+                <input id="s1a" type="text" placeholder="ex: 6" />
+              </div>
+              <div>
+                <label for="s1b">Second number</label>
+                <input id="s1b" type="text" placeholder="ex: 7" />
+              </div>
+            </div>
+
+            <div class="choiceRow" id="s1Choices" style="display:none;"></div>
+
+            <div class="row">
+              <button class="btn secondary" id="check1">Check my step</button>
+              <button class="btn" id="show1">Show answer</button>
+            </div>
+
+            <div id="fb1"></div>
+            <div id="rev1"></div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step" id="step2">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 2</span> — Multiply the basic fact</div>
+              <div class="hintTag" id="hint2">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              <b><span id="bfA">—</span> × <span id="bfB">—</span> = __</b>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s2">Basic fact product</label>
+              <input id="s2" type="text" placeholder="ex: 42" />
+            </div>
+
+            <div class="choiceRow" id="s2Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check2">Check my step</button>
+              <button class="btn" id="show2">Show answer</button>
+            </div>
+
+            <div id="fb2"></div>
+            <div id="rev2"></div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step" id="step3">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 3</span> — Count the zeros</div>
+              <div class="hintTag" id="hint3">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Total trailing zeros in the original problem: <b>__</b>
+              <span class="mini" style="display:block;margin-top:6px;">Example: 700 has 2 zeros. 50 has 1 zero.</span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s3">How many zeros?</label>
+              <input id="s3" type="text" placeholder="ex: 2" />
+            </div>
+
+            <div class="choiceRow" id="s3Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check3">Check my step</button>
+              <button class="btn" id="show3">Show answer</button>
+            </div>
+
+            <div id="fb3"></div>
+            <div id="rev3"></div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step" id="step4">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 4</span> — Add the zeros back</div>
+              <div class="hintTag" id="hint4">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Take <b><span id="bfProdLabel">—</span></b> and add <b><span id="zerosLabel">—</span></b> zeros → <b>__</b>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s4">Final answer</label>
+              <input id="s4" type="text" placeholder="ex: 4,200 (or 4200)" />
+            </div>
+
+            <div class="choiceRow" id="s4Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check4">Check my step</button>
+              <button class="btn" id="show4">Show answer</button>
+            </div>
+
+            <div id="fb4"></div>
+            <div id="rev4"></div>
+          </div>
+
+          <!-- Quick strategy check + Summary -->
+          <div class="card" style="background:#fff;">
+            <div class="grid2">
+              <div>
+                <label for="usedStrategy">I understand we used…</label>
+                <select id="usedStrategy">
+                  <option value="">Pick one</option>
+                  <option value="zeros">Basic Fact + Place Value (Zeros Rule)</option>
+                  <option value="idk">I don’t know</option>
+                </select>
+                <div id="usedStrategyExplain" class="reveal" style="display:none;margin-top:10px;"></div>
+              </div>
+              <div>
+                <label for="stepsCalled">The steps were called…</label>
+                <select id="stepsCalled">
+                  <option value="">Pick one</option>
+                  <option value="mz">Multiply basic fact → Add zeros</option>
+                  <option value="idk">I don’t know</option>
+                </select>
+                <div id="stepsCalledExplain" class="reveal" style="display:none;margin-top:10px;"></div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <button class="btn" id="summaryBtn">Show my summary</button>
+              <button class="btn secondary" id="copyBtn">Copy summary</button>
+              <span class="mini" id="copyNote"></span>
+            </div>
+
+            <div class="reveal" style="margin-top:12px;">
+              <pre id="summaryOut">Summary will appear here.</pre>
+            </div>
+          </div>
+
+          <!-- =========================
+               ADD-ON SECTION START
+               Reflection + self-regulation + teacher Q + print
+               (shared with Break Apart)
+               ========================= -->
+          <div class="card" id="reflectionCard">
+            <p class="sectionTitle">Quick Check-In + Report</p>
+            <div class="regWrap">
+              <div class="regGrid">
+                <!-- Left column: feeling + needs -->
+                <div>
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>What am I feeling?</b>
+                      <span>Tap a square + a face (optional)</span>
+                    </div>
+                    <div class="moodMeter">
+                      <div class="moodLevels" aria-hidden="true">
+                        <div class="lvl">5</div>
+                        <div class="lvl">4</div>
+                        <div class="lvl">3</div>
+                        <div class="lvl">2</div>
+                        <div class="lvl">1</div>
+                      </div>
+                      <div>
+                        <div class="moodGrid" id="moodGrid" role="grid" aria-label="Feeling intensity grid"></div>
+                        <div class="faces" role="group" aria-label="Mood faces">
+                          <button class="faceBtn" type="button" data-face="😣">
+                            <span>😣</span><small>rough</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="😕">
+                            <span>😕</span><small>iffy</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="😐">
+                            <span>😐</span><small>okay</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="🙂">
+                            <span>🙂</span><small>good</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="😄">
+                            <span>😄</span><small>great</small>
+                          </button>
+                        </div>
+                        <div class="tinyHelp" id="moodReadout">Selected: —</div>
+                      </div>
+                    </div>
+                    <div class="moodLegend">
+                      <span>😞 harder</span>
+                      <span>🙂 better</span>
+                    </div>
+                    <div class="moodLegend" style="margin-top:-6px;">
+                      <span>low energy</span>
+                      <span>high energy</span>
+                    </div>
+                    <div class="mini" id="moodLabel" style="margin-top:4px;"></div>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>What is my need?</b>
+                      <span>Tap one (or none)</span>
+                    </div>
+                    <div class="needsGrid" role="group" aria-label="Needs">
+                      <button class="needBtn" type="button" data-need="Plan">
+                        <div class="needIcon">🗺</div>
+                        <div class="needText">
+                          <b>Plan</b><span>clarity</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Quiet">
+                        <div class="needIcon">👂</div>
+                        <div class="needText">
+                          <b>Quiet</b><span>listen</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Break">
+                        <div class="needIcon">🧘</div>
+                        <div class="needText">
+                          <b>Break</b><span>rest</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Help">
+                        <div class="needIcon">🤝</div>
+                        <div class="needText">
+                          <b>Help</b><span>support</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Food">
+                        <div class="needIcon">🍽</div>
+                        <div class="needText">
+                          <b>Food</b><span>fuel</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Move">
+                        <div class="needIcon">🏃</div>
+                        <div class="needText">
+                          <b>Move</b><span>body</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Water">
+                        <div class="needIcon">💧</div>
+                        <div class="needText">
+                          <b>Water</b><span>drink</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Health">
+                        <div class="needIcon">❤️</div>
+                        <div class="needText">
+                          <b>Health</b><span>check-in</span>
+                        </div>
+                      </button>
+                    </div>
+                    <div class="tinyHelp" id="needReadout">Selected: —</div>
+                  </div>
+                </div>
+
+                <!-- Right column: strategies + reflection + teacher + print -->
+                <div>
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>My strategies are…</b>
+                      <span>short is fine</span>
+                    </div>
+                    <textarea id="myStrategies" rows="4" placeholder="Example: I used the picture, broke apart the numbers, asked for a hint..."></textarea>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Simple reflection</b>
+                      <span>pick one</span>
+                    </div>
+                    <select id="reflectionPick">
+                      <option value="">Pick one</option>
+                      <option value="I got it">I got it</option>
+                      <option value="I kind of got it">I kind of got it</option>
+                      <option value="I’m not sure yet">I’m not sure yet</option>
+                      <option value="I need help">I need help</option>
+                    </select>
+                    <div class="tinyHelp">Tip: “I’m not sure yet” is allowed.</div>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Question to teacher (optional)</b>
+                      <span>copy/paste later</span>
+                    </div>
+                    <textarea id="teacherQ" rows="4" placeholder="Example: Can we practice more with zeros rule using word problems?"></textarea>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Print / Save as PDF</b>
+                      <span>includes summary + answer</span>
+                    </div>
+                    <div class="row">
+                      <button class="btn" type="button" id="reportBtn">Make report</button>
+                      <button class="btn secondary" type="button" id="printBtn">Print / Save</button>
+                      <span class="mini" id="printNote"></span>
+                    </div>
+                    <div class="reveal" style="margin-top:10px;">
+                      <pre id="reportOut">Report will appear here.</pre>
+                    </div>
+                    <p class="mini printOnly">Printed report</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- =========================
+               ADD-ON SECTION END
+               ========================= -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (id) => document.getElementById(id);
+    const norm = (s) => String(s ?? "").trim();
+    const asInt = (s) => {
+      const t = norm(s).replace(/,/g,"");
+      if(!t) return null;
+      if(!/^[-]?\d+$/.test(t)) return null;
+      return parseInt(t,10);
+    };
+    const product = (a,b) => a*b;
+
+    function parseProblem(raw){
+      // Accept: "6x700", "6 x 700", "6 × 700", "6*700"
+      const s = norm(raw)
+        .replace(/×/g,"x")
+        .replace(/\*/g,"x")
+        .replace(/\s+/g,"")
+        .toLowerCase();
+      const m = s.match(/^(\d+)\s*x\s*(\d+)$/i);
+      if(!m) return null;
+      return { a: parseInt(m[1],10), b: parseInt(m[2],10) };
+    }
+
+    function trailingZeros(n){
+      // count trailing zeros in base-10 integer
+      if(n === 0) return 0;
+      let z = 0;
+      while(n % 10 === 0){
+        z++;
+        n = Math.floor(n / 10);
+      }
+      return z;
+    }
+
+    function stripZeros(n){
+      // returns { core, zeros }
+      const z = trailingZeros(n);
+      return { core: z ? Math.floor(n / Math.pow(10,z)) : n, zeros: z };
+    }
+
+    function withZeroHighlight(n){
+      // highlight trailing zeros only (e.g., 700 -> 7<span class="zero">00</span>)
+      const s = String(n);
+      let i = s.length - 1;
+      while(i >= 0 && s[i] === "0") i--;
+      const core = s.slice(0, i+1);
+      const zeros = s.slice(i+1);
+      if(!zeros) return core;
+      return `${core}<span class="zero">${zeros}</span>`;
+    }
+
+    function comma(n){
+      const s = String(n);
+      const sign = s.startsWith("-") ? "-" : "";
+      const t = sign ? s.slice(1) : s;
+      return sign + t.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // ---------- State ----------
+    const state = {
+      a: null,
+      b: null,
+      coreA: null,
+      coreB: null,
+      zerosA: 0,
+      zerosB: 0,
+      zerosTotal: 0,
+      basicProduct: null,
+      answer: null,
+      hints: {1:0,2:0,3:0,4:0},
+      revealed: {1:false,2:false,3:false,4:false},
+      usedLowMode: false
+    };
+
+    function setHint(step){
+      state.hints[step] += 1;
+      $("hint"+step).textContent = "Hints used: " + state.hints[step];
+    }
+
+    function clearFeedback(step){
+      $("fb"+step).innerHTML = "";
+      $("rev"+step).innerHTML = "";
+    }
+
+    function showFeedback(step, kind, msg){
+      const div = document.createElement("div");
+      div.className = "feedback " + kind;
+      div.textContent = msg;
+      $("fb"+step).innerHTML = "";
+      $("fb"+step).appendChild(div);
+    }
+
+    function showReveal(step, answerText, reasonText){
+      setHint(step);
+      state.revealed[step] = true;
+      const div = document.createElement("div");
+      div.className = "reveal";
+      div.innerHTML = "<b>Answer:</b> " + answerText + "<br><span class='muted'>Reason: " + reasonText + "</span>";
+      $("rev"+step).innerHTML = "";
+      $("rev"+step).appendChild(div);
+    }
+
+    function updateExampleLabel(){
+      if(state.a === null || state.b === null) return;
+      const ex = `${state.coreA}×${state.coreB} = ${state.basicProduct} → add ${state.zerosTotal} zeros → ${comma(state.answer)}`;
+      $("exampleLabel").innerHTML = `${state.a}×${state.b} → ${ex}`;
+    }
+
+    function updateProblemUI(){
+      if(state.a === null || state.b === null){
+        $("bigProblem").innerHTML = "Your problem: <span class='muted'>—</span>";
+        $("parseNote").textContent = "";
+        return;
+      }
+
+      // Big display with red zeros
+      const aHtml = withZeroHighlight(state.a);
+      const bHtml = withZeroHighlight(state.b);
+      $("bigProblem").innerHTML = `Your problem: <b>${aHtml} × ${bHtml}</b>`;
+      $("parseNote").innerHTML = `Tip: Zeros are shown in <span class="zero">red</span>.`;
+
+      $("probLabel1").innerHTML = `${aHtml} × ${bHtml}`;
+      $("bfA").textContent = state.coreA;
+      $("bfB").textContent = state.coreB;
+      $("bfProdLabel").textContent = comma(state.basicProduct);
+      $("zerosLabel").textContent = state.zerosTotal;
+
+      updateExampleLabel();
+      buildLowModeChoices();
+    }
+
+    function resetSteps(){
+      ["s1a","s1b","s2","s3","s4"].forEach(id => $(id).value = "");
+      [1,2,3,4].forEach(step=>{
+        clearFeedback(step);
+        state.hints[step]=0;
+        state.revealed[step]=false;
+        $("hint"+step).textContent = "Hints used: 0";
+      });
+      $("usedStrategy").value="";
+      $("stepsCalled").value="";
+      $("usedStrategyExplain").style.display="none";
+      $("stepsCalledExplain").style.display="none";
+      $("summaryOut").textContent = "Summary will appear here.";
+      $("copyNote").textContent = "";
+    }
+
+    // ---------- Low mode choices ----------
+    function buildLowModeChoices(){
+      const on = $("lowMode").checked && state.a !== null;
+      state.usedLowMode = on;
+
+      const s1 = $("s1Choices"), s2 = $("s2Choices"), s3 = $("s3Choices"), s4 = $("s4Choices");
+      [s1,s2,s3,s4].forEach(el=>{ el.innerHTML=""; el.style.display = on ? "flex":"none"; });
+
+      if(!on) return;
+
+      // Step 1: basic fact choices
+      [
+        {label:`${state.coreA} × ${state.coreB}`, fill: ()=>{$("s1a").value=state.coreA; $("s1b").value=state.coreB;}},
+        {label:`${state.a} × ${state.b}`, fill: ()=>{$("s1a").value=state.a; $("s1b").value=state.b;}}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label; b.onclick=o.fill;
+        s1.appendChild(b);
+      });
+
+      // Step 2: product choices
+      [
+        {label:`${state.basicProduct}`, fill: ()=>{$("s2").value=state.basicProduct;}},
+        {label:`${state.basicProduct + 1}`, fill: ()=>{$("s2").value=state.basicProduct + 1;}}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label; b.onclick=o.fill;
+        s2.appendChild(b);
+      });
+
+      // Step 3: zeros choices
+      [
+        {label:`${state.zerosTotal}`, fill: ()=>{$("s3").value=state.zerosTotal;}},
+        {label:`${Math.max(0, state.zerosTotal - 1)}`, fill: ()=>{$("s3").value=Math.max(0, state.zerosTotal - 1);}}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label; b.onclick=o.fill;
+        s3.appendChild(b);
+      });
+
+      // Step 4: final answer choices
+      [
+        {label:`${comma(state.answer)}`, fill: ()=>{$("s4").value=state.answer;}},
+        {label:`${comma(state.answer + Math.pow(10, state.zerosTotal || 1))}`, fill: ()=>{
+          $("s4").value = state.answer + Math.pow(10, state.zerosTotal || 1);
+        }}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label; b.onclick=o.fill;
+        s4.appendChild(b);
+      });
+    }
+
+    // ---------- Checks / Answers ----------
+    function checkStep1(){
+      clearFeedback(1);
+      if(state.a === null){ showFeedback(1,"warn","Type/paste a problem first (ex: 6×700)."); return; }
+
+      const x = asInt($("s1a").value);
+      const y = asInt($("s1b").value);
+      if(x === null || y === null){
+        showFeedback(1,"warn","Enter both numbers (example: 6 and 7).");
+        return;
+      }
+      // accept either order
+      const ok = (x === state.coreA && y === state.coreB) || (x === state.coreB && y === state.coreA);
+      if(ok){
+        showFeedback(1,"ok",`Yes — the basic fact is ${state.coreA} × ${state.coreB}.`);
+      }else{
+        showFeedback(1,"bad",`Not quite — ignore the trailing zeros first. Try ${state.coreA} and ${state.coreB}.`);
+      }
+    }
+
+    function showStep1(){
+      if(state.a === null) return;
+      showReveal(1, `${state.coreA} × ${state.coreB}`, `Take off the trailing zeros, then use the smaller numbers.`);
+      $("s1a").value = state.coreA;
+      $("s1b").value = state.coreB;
+    }
+
+    function checkStep2(){
+      clearFeedback(2);
+      if(state.a === null){ showFeedback(2,"warn","Type/paste a problem first (ex: 6×700)."); return; }
+
+      const v = asInt($("s2").value);
+      if(v === null){
+        showFeedback(2,"warn","Enter the product of the basic fact (example: 42).");
+        return;
+      }
+      if(v === state.basicProduct){
+        showFeedback(2,"ok",`Yes — ${state.coreA}×${state.coreB} = ${state.basicProduct}.`);
+      }else{
+        showFeedback(2,"bad",`Not quite — expected ${state.basicProduct}.`);
+      }
+    }
+
+    function showStep2(){
+      if(state.a === null) return;
+      showReveal(2, `${state.basicProduct}`, `Multiply the basic fact.`);
+      $("s2").value = state.basicProduct;
+    }
+
+    function checkStep3(){
+      clearFeedback(3);
+      if(state.a === null){ showFeedback(3,"warn","Type/paste a problem first (ex: 6×700)."); return; }
+
+      const v = asInt($("s3").value);
+      if(v === null){
+        showFeedback(3,"warn","Enter how many trailing zeros are in the original problem (example: 2).");
+        return;
+      }
+      if(v === state.zerosTotal){
+        showFeedback(3,"ok",`Yes — total trailing zeros = ${state.zerosTotal}.`);
+      }else{
+        showFeedback(3,"bad",`Not quite — count the trailing zeros at the end. Expected ${state.zerosTotal}.`);
+      }
+    }
+
+    function showStep3(){
+      if(state.a === null) return;
+      showReveal(3, `${state.zerosTotal}`, `Count the trailing zeros in the original factors and add them.`);
+      $("s3").value = state.zerosTotal;
+    }
+
+    function checkStep4(){
+      clearFeedback(4);
+      if(state.a === null){ showFeedback(4,"warn","Type/paste a problem first (ex: 6×700)."); return; }
+
+      const v = asInt($("s4").value);
+      if(v === null){
+        showFeedback(4,"warn","Enter the final answer (example: 4200).");
+        return;
+      }
+      if(v === state.answer){
+        showFeedback(4,"ok",`Yes — the answer is ${comma(state.answer)}.`);
+      }else{
+        showFeedback(4,"bad",`Not quite — expected ${comma(state.answer)}.`);
+      }
+    }
+
+    function showStep4(){
+      if(state.a === null) return;
+      showReveal(4, `${comma(state.answer)}`, `Add the zeros back to the basic-fact product.`);
+      $("s4").value = state.answer;
+    }
+
+    // ---------- Strategy check "I don't know" explanations ----------
+    $("usedStrategy").addEventListener("change", ()=>{
+      const v = $("usedStrategy").value;
+      const box = $("usedStrategyExplain");
+      if(v === "idk"){
+        box.style.display = "block";
+        if(state.a === null){
+          box.innerHTML = "<b>Hint:</b> Use the Zeros Rule when a factor ends in 0, 00, or 000. Multiply the basic fact, then add the zeros back.";
+        }else{
+          box.innerHTML = `<b>Answer:</b> Basic Fact + Place Value (Zeros Rule)<br>
+                           <span class="muted">Because the problem has trailing zeros. We used ${state.coreA}×${state.coreB}, then added ${state.zerosTotal} zeros.</span>`;
+          $("usedStrategy").value = "zeros";
+        }
+      }else{
+        box.style.display = "none";
+      }
+    });
+
+    $("stepsCalled").addEventListener("change", ()=>{
+      const v = $("stepsCalled").value;
+      const box = $("stepsCalledExplain");
+      if(v === "idk"){
+        box.style.display = "block";
+        box.innerHTML = "<b>Answer:</b> Multiply basic fact → Add zeros<br><span class='muted'>That’s the Zeros Rule sequence.</span>";
+        $("stepsCalled").value = "mz";
+      }else{
+        box.style.display = "none";
+      }
+    });
+
+    // ---------- Summary ----------
+    function makeSummary(){
+      if(state.a === null){
+        return "Problem: —\nType/paste a problem first (example: 6×700).";
+      }
+      const hintsUsedSteps = Object.entries(state.hints)
+        .filter(([,n])=>n>0)
+        .map(([k,n])=>`Step ${k} (${n})`)
+        .join(", ") || "None";
+
+      return [
+        `Problem: ${state.a} × ${state.b}`,
+        `Strategy: Basic Fact + Place Value (Zeros Rule)`,
+        ``,
+        `Basic fact: ${state.coreA} × ${state.coreB}`,
+        `Basic fact product: ${state.basicProduct}`,
+        `Total trailing zeros: ${state.zerosTotal}`,
+        `Add zeros back: ${state.basicProduct} → ${comma(state.answer)}`,
+        ``,
+        `Answer: ${comma(state.answer)}`,
+        `Hints used: ${hintsUsedSteps}`
+      ].join("\n");
+    }
+
+    $("summaryBtn").addEventListener("click", ()=>{
+      $("summaryOut").textContent = makeSummary();
+    });
+
+    $("copyBtn").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText($("summaryOut").textContent);
+        $("copyNote").textContent = "Copied.";
+        setTimeout(()=> $("copyNote").textContent = "", 1200);
+      }catch(e){
+        $("copyNote").textContent = "Copy not available in this browser.";
+        setTimeout(()=> $("copyNote").textContent = "", 1600);
+      }
+    });
+
+    // ---------- Bind buttons ----------
+    $("check1").onclick = checkStep1;
+    $("check2").onclick = checkStep2;
+    $("check3").onclick = checkStep3;
+    $("check4").onclick = checkStep4;
+
+    $("show1").onclick = showStep1;
+    $("show2").onclick = showStep2;
+    $("show3").onclick = showStep3;
+    $("show4").onclick = showStep4;
+
+    $("resetBtn").onclick = resetSteps;
+    $("lowMode").addEventListener("change", buildLowModeChoices);
+
+    $("useProblemBtn").onclick = ()=>{
+      const p = parseProblem($("problemInput").value);
+      if(!p){
+        $("parseNote").textContent = "Couldn’t read that. Try: 6×700 (or 6 x 700).";
+        $("bigProblem").innerHTML = "Your problem: <span class='muted'>—</span>";
+        return;
+      }
+
+      state.a = p.a;
+      state.b = p.b;
+
+      const sa = stripZeros(state.a);
+      const sb = stripZeros(state.b);
+
+      state.coreA = sa.core;
+      state.coreB = sb.core;
+      state.zerosA = sa.zeros;
+      state.zerosB = sb.zeros;
+      state.zerosTotal = state.zerosA + state.zerosB;
+
+      state.basicProduct = product(state.coreA, state.coreB);
+      state.answer = product(state.a, state.b);
+
+      resetSteps();
+      updateProblemUI();
+    };
+
+    /* =========================
+       ADD-ON JS: mood + needs + report + print
+       (same as Break Apart)
+       ========================= */
+    const reg = {
+      mood: null,      // {row:1..5, col:1..5}
+      face: null,      // emoji
+      need: null       // string
+    };
+
+    function moodColor(row, col){
+      // 5x5: top rows = higher intensity, left cols = "harder" valence.
+      // Simple gradient without naming colors explicitly to keep it minimal and stable.
+      // We'll compute HSL-ish via rgb interpolation (cool -> warm).
+      const r = row; // 1..5 bottom->top is handled by construction
+      const c = col; // 1..5 left->right
+      // Map to 0..1
+      const tRow = (r-1)/4;       // intensity
+      const tCol = (c-1)/4;       // valence
+      // Blend: left=blue-ish, right=green-ish, top adds red warmth.
+      const red   = Math.round( 40 + 150*tRow + 20*(1-tCol) );
+      const green = Math.round( 70 + 140*tCol + 20*(1-tRow) );
+      const blue  = Math.round( 180 - 120*tCol + 20*(1-tRow) );
+      return `rgb(${red},${green},${blue})`;
+    }
+
+    function buildMoodGrid(){
+      const grid = $("moodGrid");
+      grid.innerHTML = "";
+
+      // row 5 at top, row 1 at bottom (like your image)
+      for(let displayRow=5; displayRow>=1; displayRow--){
+        for(let col=1; col<=5; col++){
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.style.background = moodColor(displayRow, col);
+          cell.setAttribute("role","gridcell");
+          cell.setAttribute("tabindex","0");
+          cell.dataset.row = String(displayRow);
+          cell.dataset.col = String(col);
+          cell.onclick = ()=> selectMood(displayRow, col);
+          cell.onkeydown = (e)=>{
+            if(e.key === "Enter" || e.key === " "){
+              e.preventDefault();
+              selectMood(displayRow, col);
+            }
+          };
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    function selectMood(row, col){
+      reg.mood = {row, col};
+      // clear selection
+      Array.from(document.querySelectorAll(".cell.selected")).forEach(el=> el.classList.remove("selected"));
+      // find matching cell
+      const match = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+      if(match) match.classList.add("selected");
+      updateMoodReadout();
+    }
+
+    function updateMoodReadout(){
+      const parts = [];
+      if(reg.mood) parts.push(`grid ${reg.mood.row}/${reg.mood.col}`);
+      if(reg.face) parts.push(`face ${reg.face}`);
+      $("moodReadout").textContent = "Selected: " + (parts.length ? parts.join(" • ") : "—");
+    }
+
+    function bindFaces(){
+      Array.from(document.querySelectorAll(".faceBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          Array.from(document.querySelectorAll(".faceBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          btn.classList.add("selected");
+          reg.face = btn.dataset.face || null;
+          updateMoodReadout();
+        };
+      });
+    }
+
+    function bindNeeds(){
+      Array.from(document.querySelectorAll(".needBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          const already = btn.classList.contains("selected");
+          Array.from(document.querySelectorAll(".needBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          if(already){
+            reg.need = null;
+          }else{
+            btn.classList.add("selected");
+            reg.need = btn.dataset.need || null;
+          }
+          $("needReadout").textContent = "Selected: " + (reg.need ?? "—");
+        };
+      });
+    }
+
+    function makeReport(){
+      const base = makeSummary();
+
+      const reflection = $("reflectionPick").value || "—";
+      const myStrats = norm($("myStrategies").value) || "—";
+      const teacherQ = norm($("teacherQ").value) || "—";
+
+      const moodPart = (()=> {
+        const parts = [];
+        if(reg.mood) parts.push(`Mood grid: ${reg.mood.row}/${reg.mood.col}`);
+        if(reg.face) parts.push(`Face: ${reg.face}`);
+        return parts.length ? parts.join(" | ") : "—";
+      })();
+
+      const needPart = reg.need ?? "—";
+
+      return [
+        base,
+        "",
+        "=== Check-In ===",
+        `Feeling: ${moodPart}`,
+        `Need: ${needPart}`,
+        `My strategies: ${myStrats}`,
+        "",
+        "=== Reflection ===",
+        `Today: ${reflection}`,
+        "",
+        "=== Question to teacher ===",
+        teacherQ
+      ].join("\n");
+    }
+
+    $("reportBtn").addEventListener("click", ()=>{
+      $("reportOut").textContent = makeReport();
+      $("printNote").textContent = "Report ready.";
+      setTimeout(()=> $("printNote").textContent = "", 1200);
+    });
+
+    $("printBtn").addEventListener("click", ()=>{
+      // Ensure report is current before printing
+      $("reportOut").textContent = makeReport();
+      window.print(); // user can "Save as PDF" from print dialog
+    });
+
+    // Init add-on UI
+    buildMoodGrid();
+    bindFaces();
+    bindNeeds();
+    $("needReadout").textContent = "Selected: —";
+    updateMoodReadout();
+
+    // Default example
+    $("problemInput").value = "6×700";
+    $("useProblemBtn").click();
+  </script>
+</body>
+</html>
