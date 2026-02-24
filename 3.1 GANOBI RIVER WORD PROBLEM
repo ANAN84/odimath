@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>3.1 Equation Model – 6×600</title>
+
+<style>
+:root{
+--bg:#ffffff;
+--text:#111827;
+--muted:#6b7280;
+--line:#e5e7eb;
+--panel:#f9fafb;
+--ok:#065f46;
+--warn:#92400e;
+--bad:#991b1b;
+--btn:#111827;
+--btnText:#ffffff;
+--chip:#eef2ff;
+--soft:#f3f4f6;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+background:var(--bg);
+color:var(--text);
+}
+.wrap{max-width:920px;margin:0 auto;padding:22px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+h1{font-size:20px;margin:0}
+.sub{color:var(--muted);font-size:13px;margin:4px 0 0 0}
+.card{
+border:1px solid var(--line);
+border-radius:14px;
+padding:16px;
+background:#fff;
+margin-top:14px;
+}
+.bigProblem{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:14px;
+padding:14px;
+font-size:16px;
+line-height:1.5;
+}
+.step{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:14px;
+padding:14px;
+margin-top:14px;
+}
+.stepNum{font-weight:700}
+label{display:block;font-size:13px;color:var(--muted);margin-top:10px}
+select,input,textarea{
+width:100%;
+border:1px solid var(--line);
+border-radius:12px;
+padding:10px;
+font-size:14px;
+}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.btn{
+background:var(--btn);
+color:var(--btnText);
+border:none;
+padding:10px 12px;
+border-radius:12px;
+cursor:pointer;
+font-size:14px;
+}
+.btn.secondary{
+background:#fff;
+color:var(--text);
+border:1px solid var(--line);
+}
+.feedback{
+margin-top:10px;
+padding:10px;
+border-radius:12px;
+font-size:13px;
+}
+.ok{background:#ecfdf5;color:var(--ok)}
+.warn{background:#fffbeb;color:var(--warn)}
+.bad{background:#fef2f2;color:var(--bad)}
+.reveal{
+margin-top:10px;
+padding:10px;
+border:1px dashed #c7d2fe;
+border-radius:12px;
+font-size:13px;
+background:#fff;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<div>
+<h1>Lesson 3-1</h1>
+<p class="sub">3.1 Equation Model – Example: <b>6 × 600</b></p>
+</div>
+</header>
+
+<div class="card">
+<div class="bigProblem">
+The Ganobi River is about <b>6 times</b> the length of the Beecher River.<br>
+If the Beecher River is about <b>600 miles</b> long, about how many miles long is the Ganobi River?<br>
+Let <b>g</b> be the length of the Ganobi River.
+</div>
+</div>
+
+<!-- STEP 1 -->
+<div class="step">
+<div class="stepNum">STEP 1 — Decode the story</div>
+
+<label>
+What are we trying to find?<br>
+<span style="font-size:12px;color:var(--muted)">
+about how many miles long is the Ganobi River?
+</span>
+</label>
+<select id="q1">
+<option value="">Pick one</option>
+<option value="ganobi">Length of the Ganobi River</option>
+<option value="beecher">Length of the Beecher River</option>
+</select>
+
+<label>
+Which length do we already know?<br>
+<span style="font-size:12px;color:var(--muted)">
+If the Beecher River is about 600 miles long…
+</span>
+</label>
+<select id="q2">
+<option value="">Pick one</option>
+<option value="600">600 miles (Beecher River)</option>
+<option value="6">6 miles</option>
+</select>
+
+<label>
+How is g related to 600 miles?<br>
+<span style="font-size:12px;color:var(--muted)">
+The Ganobi River is about 6 times the length of the Beecher River.
+</span>
+</label>
+<select id="q3">
+<option value="">Pick one</option>
+<option value="multiply">g is 6 times 600 → multiply</option>
+<option value="add">g is 6 more than 600 → add</option>
+</select>
+
+<div class="row">
+<button class="btn secondary" onclick="checkStep1()">Check</button>
+<button class="btn" onclick="showStep1()">Show Answer</button>
+</div>
+
+<div id="fb1"></div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step">
+<div class="stepNum">STEP 2 — Write the equation</div>
+
+<label>Fill in the equation:</label>
+<div style="font-size:18px;margin-top:6px;">g = 
+<input id="f1" style="width:80px;display:inline;"> × 
+<input id="f2" style="width:80px;display:inline;">
+</div>
+
+<div class="row">
+<button class="btn secondary" onclick="checkStep2()">Check</button>
+<button class="btn" onclick="showStep2()">Show Answer</button>
+</div>
+
+<div id="fb2"></div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step">
+<div class="stepNum">STEP 3 — Solve</div>
+
+<label>Solve for g:</label>
+<div style="font-size:18px;margin-top:6px;">
+g = <input id="ans" style="width:120px;display:inline;">
+</div>
+
+<div class="row">
+<button class="btn secondary" onclick="checkStep3()">Check</button>
+<button class="btn" onclick="showStep3()">Show Answer</button>
+</div>
+
+<div id="fb3"></div>
+</div>
+
+<!-- STEP 4 -->
+<div class="step">
+<div class="stepNum">STEP 4 — Label the answer</div>
+
+<label>Complete the sentence:</label>
+<textarea id="labelAnswer" rows="2"></textarea>
+
+<div class="row">
+<button class="btn secondary" onclick="checkStep4()">Check</button>
+<button class="btn" onclick="showStep4()">Show Answer</button>
+</div>
+
+<div id="fb4"></div>
+</div>
+
+<script>
+function showFeedback(id,msg,type){
+document.getElementById(id).innerHTML =
+'<div class="feedback '+type+'">'+msg+'</div>';
+}
+
+function checkStep1(){
+if(q1.value==="ganobi" && q2.value==="600" && q3.value==="multiply"){
+showFeedback("fb1","Yes. We are finding the length of the Ganobi River. We know 600 miles. '6 times' means multiply.","ok");
+}else{
+showFeedback("fb1","Check carefully. What are we finding? What do we know? What does '6 times' mean?","bad");
+}
+}
+
+function showStep1(){
+q1.value="ganobi";
+q2.value="600";
+q3.value="multiply";
+showFeedback("fb1","We are finding the length of the Ganobi River. We know 600 miles. '6 times' means multiply.","ok");
+}
+
+function checkStep2(){
+if(f1.value==6 && f2.value==600){
+showFeedback("fb2","Correct. g = 6 × 600","ok");
+}else{
+showFeedback("fb2","Use: g is 6 times 600.","bad");
+}
+}
+
+function showStep2(){
+f1.value=6;
+f2.value=600;
+showFeedback("fb2","g = 6 × 600","ok");
+}
+
+function checkStep3(){
+if(ans.value==3600){
+showFeedback("fb3","Correct. 6 × 600 = 3,600","ok");
+}else{
+showFeedback("fb3","Multiply 6 hundreds.","bad");
+}
+}
+
+function showStep3(){
+ans.value=3600;
+showFeedback("fb3","g = 3,600","ok");
+}
+
+function checkStep4(){
+if(labelAnswer.value.toLowerCase().includes("3600")){
+showFeedback("fb4","Yes. Always include miles.","ok");
+}else{
+showFeedback("fb4","Write: The Ganobi River is about 3,600 miles long.","bad");
+}
+}
+
+function showStep4(){
+labelAnswer.value="The Ganobi River is about 3,600 miles long.";
+showFeedback("fb4","Complete sentence with miles.","ok");
+}
+</script>
+
+</div>
+</body>
+</html>
+
+<!-- COPY THIS INTO YOUR INDEX LIST -->
+<a href="3.1-equation-model-6x600.html">3.1 GANOBI RIVER WORD PROBLEM </a>
