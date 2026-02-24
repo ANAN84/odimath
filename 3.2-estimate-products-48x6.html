@@ -1,1381 +1,1365 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Math Strategy Guide — Estimate Products</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --panel:#f9fafb;
+      --ok:#065f46;
+      --warn:#92400e;
+      --bad:#991b1b;
+      --btn:#111827;
+      --btnText:#ffffff;
+      --chip:#eef2ff;
+      --zero:#dc2626; /* safe to keep, not used here */
+      /* add-on */
+      --soft:#f3f4f6;
+      --ink:#0f172a;
+      --shadow:0 1px 0 rgba(0,0,0,.02);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:var(--bg);
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:22px}
+    header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+    h1{font-size:20px;margin:0 0 6px 0}
+    .sub{color:var(--muted);font-size:13px;margin:0}
+    .card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
+      background:#fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+    }
+    .grid{display:grid;gap:14px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:800px){ .grid2{grid-template-columns:1fr} }
+
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"], textarea, select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px 12px;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus{
+      border-color:#c7d2fe;
+      box-shadow:0 0 0 3px rgba(99,102,241,.12)
+    }
+
+    .bigProblem{
+      font-size:28px;
+      font-weight:650;
+      letter-spacing:.2px;
+      padding:10px 12px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+    }
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{
+      border:1px solid var(--btn);
+      background:var(--btn);
+      color:var(--btnText);
+      padding:10px 12px;
+      border-radius:12px;
+      font-size:14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .btn:active{transform:translateY(1px)}
+    .pill{
+      background:var(--chip);
+      border:1px solid #dbeafe;
+      color:#1f2937;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .strategyTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      padding-bottom:10px;
+      margin-bottom:12px;
+    }
+    .strategyTitle b{font-size:16px}
+    .example{color:var(--muted);font-size:13px}
+
+    .step{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+    }
+    .stepHead{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:baseline;
+      margin-bottom:10px;
+    }
+    .stepNum{font-weight:700}
+    .hintTag{color:var(--muted);font-size:12px}
+    .inlineInputs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:10px 0;
+    }
+    @media (max-width:640px){ .inlineInputs{grid-template-columns:1fr} }
+
+    .feedback{
+      margin-top:10px;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .feedback.ok{border-color:rgba(6,95,70,.25); color:var(--ok)}
+    .feedback.warn{border-color:rgba(146,64,14,.25); color:var(--warn)}
+    .feedback.bad{border-color:rgba(153,27,27,.25); color:var(--bad)}
+    .reveal{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px dashed #c7d2fe;
+      background:#fff;
+      font-size:13px;
+    }
+    .muted{color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:12px 0}
+    .mini{font-size:12px;color:var(--muted)}
+    .toggle{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;}
+    .toggle input{transform:scale(1.1)}
+    .choiceRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .choice{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .choice:hover{border-color:#c7d2fe}
+    pre{
+      margin:0;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:13px;
+    }
+    .zero{color:var(--zero); font-weight:800;}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:2px 8px;
+      font-size:12px;
+      color:#111827;
+    }
+
+    /* =========================
+       ADD-ON: regulation + reflection + teacher + print
+       (same as Break Apart / Zeros Rule)
+       ========================= */
+    .sectionTitle{
+      font-weight:700;
+      font-size:14px;
+      margin:0 0 10px 0;
+    }
+    .regWrap{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      background:var(--panel);
+    }
+    .regGrid{
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:14px;
+      align-items:flex-start;
+    }
+    @media (max-width:800px){
+      .regGrid{grid-template-columns:1fr;}
+    }
+    .regBox{
+      border-radius:12px;
+      border:1px solid var(--line);
+      padding:10px 12px;
+      background:#fff;
+      margin-bottom:12px;
+    }
+    .regHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .regHead b{font-size:13px}
+    .regHead span{font-size:12px;color:var(--muted)}
+
+    /* Mood meter */
+    .moodMeter{
+      display:grid;
+      grid-template-columns:28px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .moodLevels{
+      display:grid;
+      grid-template-rows:repeat(5,1fr);
+      gap:6px;
+    }
+    .lvl{
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:6px 0;
+      background:#fff;
+      user-select:none;
+    }
+    .moodGrid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      grid-template-rows:repeat(5,1fr);
+      gap:6px;
+    }
+    .cell{
+      border-radius:10px;
+      height:32px;
+      border:1px solid rgba(0,0,0,.04);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      color:rgba(17,24,39,.7);
+    }
+    .cell:hover{outline:2px solid rgba(99,102,241,.18)}
+    .cell.selected{
+      outline:3px solid rgba(17,24,39,.85);
+      border-color:rgba(17,24,39,.18);
+    }
+    .faces{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .faceBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:16px;
+      line-height:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .faceBtn small{font-size:12px;color:var(--muted)}
+    .faceBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+    .needsGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+    @media (max-width:640px){
+      .needsGrid{grid-template-columns:1fr;}
+    }
+    .needBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      text-align:left;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      min-height:54px;
+      font-size:13px;
+    }
+    .needBtn:hover{border-color:#c7d2fe}
+    .needBtn.selected{
+      border-color:#111827;
+      box-shadow:0 0 0 3px rgba(17,24,39,.08);
+    }
+    .needIcon{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      background:var(--soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      flex:0 0 auto;
+    }
+    .needText b{display:block;font-size:13px}
+    .needText span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+    .tinyHelp{font-size:12px;color:var(--muted);margin-top:8px}
+    .moodLegend{
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+    .printOnly{display:none;}
+
+    @media print{
+      body{background:#fff}
+      .wrap{max-width:none;padding:0}
+      header,.pill,.toggle,
+      #useProblemBtn,#resetBtn,#copyBtn,#summaryBtn,
+      #check1,#check2,#check3,#check4,
+      #show1,#show2,#show3,#show4,
+      #copyNote,#parseNote,
+      #reportBtn,#printBtn{
+        display:none !important;
+      }
+      .card{box-shadow:none;border:none;}
+      .printOnly{display:block;}
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!doctype html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width,initial-scale=1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Math Strategy Guide — Estimate Products&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg:#ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--text:#111827;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--muted:#6b7280;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--line:#e5e7eb;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--panel:#f9fafb;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--ok:#065f46;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--warn:#92400e;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bad:#991b1b;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--btn:#111827;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--btnText:#ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--chip:#eef2ff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--zero:#dc2626; /* safe to keep, not used here */</p>
-<p class="p1"><span class="Apple-converted-space">      </span>/* add-on */</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--soft:#f3f4f6;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--ink:#0f172a;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--shadow:0 1px 0 rgba(0,0,0,.02);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>*{box-sizing:border-box}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--bg);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.wrap{max-width:920px;margin:0 auto;padding:22px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1{font-size:20px;margin:0 0 6px 0}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sub{color:var(--muted);font-size:13px;margin:0}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 1px 0 rgba(0,0,0,.02);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.grid{display:grid;gap:14px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width:800px){ .grid2{grid-template-columns:1fr} }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>input[type="text"], textarea, select{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width:100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:12px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>outline:none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>input[type="text"]:focus, textarea:focus, select:focus{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-color:#c7d2fe;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow:0 0 0 3px rgba(99,102,241,.12)</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.bigProblem{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:28px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight:650;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing:.2px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:10px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--panel);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--btn);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--btn);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--btnText);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:10px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>user-select:none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn.secondary{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn:active{transform:translateY(1px)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.pill{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--chip);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid #dbeafe;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:#1f2937;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:999px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:6px 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:inline-flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.strategyTitle{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:space-between;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap:wrap;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-bottom:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding-bottom:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom:12px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.strategyTitle b{font-size:16px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.example{color:var(--muted);font-size:13px}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.step{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--panel);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.stepHead{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:space-between;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap:wrap;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:baseline;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom:10px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.stepNum{font-weight:700}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hintTag{color:var(--muted);font-size:12px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.inlineInputs{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns:1fr 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:10px 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width:640px){ .inlineInputs{grid-template-columns:1fr} }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.feedback{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:13px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:10px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.feedback.ok{border-color:rgba(6,95,70,.25); color:var(--ok)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.feedback.warn{border-color:rgba(146,64,14,.25); color:var(--warn)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.feedback.bad{border-color:rgba(153,27,27,.25); color:var(--bad)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.reveal{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:10px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px dashed #c7d2fe;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:13px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.muted{color:var(--muted)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.divider{height:1px;background:var(--line);margin:12px 0}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mini{font-size:12px;color:var(--muted)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.toggle{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.toggle input{transform:scale(1.1)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.choiceRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.choice{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:10px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.choice:hover{border-color:#c7d2fe}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>pre{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>white-space:pre-wrap;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>word-break:break-word;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:13px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.zero{color:var(--zero); font-weight:800;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kbd{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:2px 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:#111827;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* =========================</p>
-<p class="p1"><span class="Apple-converted-space">       </span>ADD-ON: regulation + reflection + teacher + print</p>
-<p class="p1"><span class="Apple-converted-space">       </span>(same as Break Apart / Zeros Rule)</p>
-<p class="p1"><span class="Apple-converted-space">       </span>========================= */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sectionTitle{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight:700;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0 0 10px 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.regWrap{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--panel);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.regGrid{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns:1.05fr 0.95fr;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:flex-start;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width:800px){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.regGrid{grid-template-columns:1fr;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.regBox{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:10px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom:12px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.regHead{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:space-between;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:baseline;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom:10px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.regHead b{font-size:13px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.regHead span{font-size:12px;color:var(--muted)}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* Mood meter */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.moodMeter{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns:28px 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:start;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.moodLevels{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-rows:repeat(5,1fr);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:6px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.lvl{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:6px 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>user-select:none;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.moodGrid{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns:repeat(5,1fr);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-rows:repeat(5,1fr);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:6px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.cell{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height:32px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid rgba(0,0,0,.04);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:rgba(17,24,39,.7);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.cell:hover{outline:2px solid rgba(99,102,241,.18)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.cell.selected{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>outline:3px solid rgba(17,24,39,.85);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-color:rgba(17,24,39,.18);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.faces{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex-wrap:wrap;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.faceBtn{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:8px 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:16px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height:1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.faceBtn small{font-size:12px;color:var(--muted)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.faceBtn.selected{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-color:#111827;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow:0 0 0 3px rgba(17,24,39,.08);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.needsGrid{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns:1fr 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:8px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width:640px){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.needsGrid{grid-template-columns:1fr;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.needBtn{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--line);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:8px 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align:left;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height:54px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:13px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.needBtn:hover{border-color:#c7d2fe}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.needBtn.selected{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-color:#111827;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow:0 0 0 3px rgba(17,24,39,.08);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.needIcon{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width:36px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>height:36px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--soft);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:18px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>flex:0 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.needText b{display:block;font-size:13px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.needText span{display:block;font-size:12px;color:var(--muted);margin-top:2px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tinyHelp{font-size:12px;color:var(--muted);margin-top:8px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.moodLegend{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:space-between;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top:8px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.printOnly{display:none;}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media print{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>body{background:#fff}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.wrap{max-width:none;padding:0}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>header,.pill,.toggle,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#useProblemBtn,#resetBtn,#copyBtn,#summaryBtn,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#check1,#check2,#check3,#check4,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#show1,#show2,#show3,#show4,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#copyNote,#parseNote,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>#reportBtn,#printBtn{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>display:none !important;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.card{box-shadow:none;border:none;}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>.printOnly{display:block;}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="wrap"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Math Strategy Guide&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="sub"&gt;Strategy: &lt;b&gt;Estimate Products (Round and Multiply)&lt;/b&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="pill" title="Type/paste a multiplication problem."&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span&gt;Estimate&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="muted"&gt;•&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="muted"&gt;Round → Multiply → Check&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="grid" style="margin-top:14px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Problem input --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;label for="problemInput"&gt;Type or paste the problem here&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="grid2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;input id="problemInput" type="text" placeholder="Example: 48×6 (or 48 x 6, 48 * 6)" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="btn" id="useProblemBtn"&gt;Use this problem&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="toggle"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;label style="margin:0;color:var(--muted);font-size:13px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="checkbox" id="lowMode" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>CHILL MODE (show 2 obvious options)</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="divider"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bigProblem" id="bigProblem"&gt;Your problem: &lt;span class="muted"&gt;—&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="mini" id="parseNote" style="margin-top:10px;"&gt;&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Strategy header + steps --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="strategyTitle"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;b&gt;We are using: Estimate Products (Rounding)&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="example"&gt;Example: &lt;span id="exampleLabel"&gt;48×6 → round 48 to 50 → 50×6 = 300 (estimate)&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="btn secondary" id="resetBtn"&gt;Reset steps&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- Step 1 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="step" id="step1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stepHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;&lt;span class="stepNum"&gt;STEP 1&lt;/span&gt; — Choose what to round&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="hintTag" id="hint1"&gt;Hints used: 0&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="muted" style="font-size:13px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>For &lt;b&gt;&lt;span id="probLabel1"&gt;—&lt;/span&gt;&lt;/b&gt;, which number will you round to make it easier?</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="mini" style="display:block;margin-top:6px;"&gt;Tip: Round the number that is close to a ten.&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;label for="s1Choice"&gt;I will round…&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;select id="s1Choice"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value=""&gt;Pick one&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="a"&gt;the first number&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="b"&gt;the second number&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="both"&gt;both numbers&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="choiceRow" id="s1Choices" style="display:none;"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="row" style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn secondary" id="check1"&gt;Check my step&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn" id="show1"&gt;Show answer&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="fb1"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="rev1"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- Step 2 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="step" id="step2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stepHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;&lt;span class="stepNum"&gt;STEP 2&lt;/span&gt; — Round the number&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="hintTag" id="hint2"&gt;Hints used: 0&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="muted" style="font-size:13px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>Round the number you chose in Step 1 to the nearest ten.</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="mini" style="display:block;margin-top:6px;"&gt;Look at the digit to the right of the tens place.&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;label for="s2"&gt;Rounded number&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;input id="s2" type="text" placeholder="ex: 50" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="choiceRow" id="s2Choices" style="display:none;"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="row" style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn secondary" id="check2"&gt;Check my step&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn" id="show2"&gt;Show answer&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="fb2"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="rev2"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- Step 3 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="step" id="step3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stepHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;&lt;span class="stepNum"&gt;STEP 3&lt;/span&gt; — Multiply to get an estimate&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="hintTag" id="hint3"&gt;Hints used: 0&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="muted" style="font-size:13px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>Multiply using your rounded number.</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;b&gt;&lt;span id="multLabel"&gt;—&lt;/span&gt; = __&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;label for="s3"&gt;Estimated product&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;input id="s3" type="text" placeholder="ex: 300" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="choiceRow" id="s3Choices" style="display:none;"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="row" style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn secondary" id="check3"&gt;Check my step&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn" id="show3"&gt;Show answer&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="fb3"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="rev3"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- Step 4 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="step" id="step4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stepHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;&lt;span class="stepNum"&gt;STEP 4&lt;/span&gt; — Decide if your estimate is reasonable&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="hintTag" id="hint4"&gt;Hints used: 0&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="muted" style="font-size:13px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>Think about the exact product of &lt;b&gt;&lt;span id="exactLabelProb"&gt;—&lt;/span&gt;&lt;/b&gt;.</p>
-<p class="p1"><span class="Apple-converted-space">              </span>Is your estimate close to the exact answer?</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;label for="s4"&gt;Is your estimate reasonable?&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;select id="s4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value=""&gt;Pick one&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="yes"&gt;Yes, it is close.&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="no"&gt;No, it is not close.&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="choiceRow" id="s4Choices" style="display:none;"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="row" style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn secondary" id="check4"&gt;Check my step&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn" id="show4"&gt;Show answer&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="fb4"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="rev4"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- Quick strategy check + Summary --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="card" style="background:#fff;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="usedStrategy"&gt;I understand we used…&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;select id="usedStrategy"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;option value=""&gt;Pick one&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;option value="estimate"&gt;Estimate Products (Round and Multiply)&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;option value="idk"&gt;I don’t know&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="usedStrategyExplain" class="reveal" style="display:none;margin-top:10px;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="stepsCalled"&gt;The steps were called…&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;select id="stepsCalled"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;option value=""&gt;Pick one&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;option value="rme"&gt;Round → Multiply → Estimate reasonableness&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;option value="idk"&gt;I don’t know&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="stepsCalledExplain" class="reveal" style="display:none;margin-top:10px;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="divider"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn" id="summaryBtn"&gt;Show my summary&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;button class="btn secondary" id="copyBtn"&gt;Copy summary&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="mini" id="copyNote"&gt;&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="reveal" style="margin-top:12px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;pre id="summaryOut"&gt;Summary will appear here.&lt;/pre&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- =========================</p>
-<p class="p1"><span class="Apple-converted-space">               </span>ADD-ON SECTION START</p>
-<p class="p1"><span class="Apple-converted-space">               </span>Reflection + self-regulation + teacher Q + print</p>
-<p class="p1"><span class="Apple-converted-space">               </span>(shared with Break Apart / Zeros Rule)</p>
-<p class="p1"><span class="Apple-converted-space">               </span>========================= --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="card" id="reflectionCard"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="sectionTitle"&gt;Quick Check-In + Report&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="regWrap"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="regGrid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Left column: feeling + needs --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div class="regBox"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="regHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;b&gt;What am I feeling?&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;Tap a square + a face (optional)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="moodMeter"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div class="moodLevels" aria-hidden="true"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lvl"&gt;5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lvl"&gt;4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lvl"&gt;3&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lvl"&gt;2&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="lvl"&gt;1&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="moodGrid" id="moodGrid" role="grid" aria-label="Feeling intensity grid"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="faces" role="group" aria-label="Mood faces"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button class="faceBtn" type="button" data-face="😣"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;😣&lt;/span&gt;&lt;small&gt;rough&lt;/small&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button class="faceBtn" type="button" data-face="😕"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;😕&lt;/span&gt;&lt;small&gt;iffy&lt;/small&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button class="faceBtn" type="button" data-face="😐"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;😐&lt;/span&gt;&lt;small&gt;okay&lt;/small&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button class="faceBtn" type="button" data-face="🙂"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;🙂&lt;/span&gt;&lt;small&gt;good&lt;/small&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button class="faceBtn" type="button" data-face="😄"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;😄&lt;/span&gt;&lt;small&gt;great&lt;/small&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="tinyHelp" id="moodReadout"&gt;Selected: —&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="moodLegend"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;😞 harder&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;🙂 better&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="moodLegend" style="margin-top:-6px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;low energy&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;high energy&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="mini" id="moodLabel" style="margin-top:4px;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div class="regBox"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="regHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;b&gt;What is my need?&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;Tap one (or none)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="needsGrid" role="group" aria-label="Needs"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Plan"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;🗺&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Plan&lt;/b&gt;&lt;span&gt;clarity&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Quiet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;👂&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Quiet&lt;/b&gt;&lt;span&gt;listen&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Break"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;🧘&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Break&lt;/b&gt;&lt;span&gt;rest&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Help"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;🤝&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Help&lt;/b&gt;&lt;span&gt;support&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Food"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;🍽&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Food&lt;/b&gt;&lt;span&gt;fuel&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Move"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;🏃&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Move&lt;/b&gt;&lt;span&gt;body&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Water"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;💧&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Water&lt;/b&gt;&lt;span&gt;drink&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="needBtn" type="button" data-need="Health"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needIcon"&gt;❤️&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="needText"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                          </span>&lt;b&gt;Health&lt;/b&gt;&lt;span&gt;check-in&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="tinyHelp" id="needReadout"&gt;Selected: —&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;!-- Right column: strategies + reflection + teacher + print --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div class="regBox"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="regHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;b&gt;My strategies are…&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;short is fine&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;textarea id="myStrategies" rows="4" placeholder="Example: I rounded 48 to 50, multiplied, and checked if it made sense."&gt;&lt;/textarea&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div class="regBox"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="regHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;b&gt;Simple reflection&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;pick one&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;select id="reflectionPick"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;option value=""&gt;Pick one&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;option value="I got it"&gt;I got it&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;option value="I kind of got it"&gt;I kind of got it&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;option value="I’m not sure yet"&gt;I’m not sure yet&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;option value="I need help"&gt;I need help&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="tinyHelp"&gt;Tip: “I’m not sure yet” is allowed.&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div class="regBox"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="regHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;b&gt;Question to teacher (optional)&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;copy/paste later&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;textarea id="teacherQ" rows="4" placeholder="Example: Can we practice more estimating products with rounding?"&gt;&lt;/textarea&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;div class="regBox"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="regHead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;b&gt;Print / Save as PDF&lt;/b&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span&gt;includes summary + answer&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="btn" type="button" id="reportBtn"&gt;Make report&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;button class="btn secondary" type="button" id="printBtn"&gt;Print / Save&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;span class="mini" id="printNote"&gt;&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="reveal" style="margin-top:10px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                      </span>&lt;pre id="reportOut"&gt;Report will appear here.&lt;/pre&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="mini printOnly"&gt;Printed report&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;!-- ADD-ON SECTION END --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>// ---------- Utilities ----------</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const $ = (id) =&gt; document.getElementById(id);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const norm = (s) =&gt; String(s ?? "").trim();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const asInt = (s) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const t = norm(s).replace(/,/g,"");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!t) return null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!/^[-]?\d+$/.test(t)) return null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return parseInt(t,10);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function parseProblem(raw){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Accept: "48x6", "48 x 6", "48 × 6", "48*6"</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const s = norm(raw)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.replace(/×/g,"x")</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.replace(/\*/g,"x")</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.replace(/\s+/g,"")</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const m = s.match(/^(\d+)\s*x\s*(\d+)$/i);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!m) return null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return { a: parseInt(m[1],10), b: parseInt(m[2],10) };</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function nearestTen(n){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const sign = n &lt; 0 ? -1 : 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const abs = Math.abs(n);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const tens = Math.round(abs/10);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return sign * tens * 10;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function comma(n){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const s = String(n);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const sign = s.startsWith("-") ? "-" : "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const t = sign ? s.slice(1) : s;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return sign + t.replace(/\B(?=(\d{3})+(?!\d))/g, ",");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function chooseTarget(a,b){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Heuristic: round the number that is not already a multiple of 10.</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const a10 = (a % 10 === 0);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const b10 = (b % 10 === 0);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!a10 &amp;&amp; b10) return "a";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!b10 &amp;&amp; a10) return "b";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// if both or neither multiples of 10, pick the larger value</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return a &gt;= b ? "a" : "b";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// ---------- State ----------</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const state = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>a: null,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>b: null,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>target: "a",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>roundedTarget: null,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>estimate: null,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>exact: null,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>hints: {1:0,2:0,3:0,4:0},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>revealed: {1:false,2:false,3:false,4:false},</p>
-<p class="p1"><span class="Apple-converted-space">      </span>usedLowMode: false</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function setHint(step){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.hints[step] += 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("hint"+step).textContent = "Hints used: " + state.hints[step];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function clearFeedback(step){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("fb"+step).innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("rev"+step).innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function showFeedback(step, kind, msg){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const div = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>div.className = "feedback " + kind;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>div.textContent = msg;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("fb"+step).innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("fb"+step).appendChild(div);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function showReveal(step, answerText, reasonText){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>setHint(step);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.revealed[step] = true;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const div = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>div.className = "reveal";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>div.innerHTML = "&lt;b&gt;Answer:&lt;/b&gt; " + answerText +</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"&lt;br&gt;&lt;span class='muted'&gt;Reason: " + reasonText + "&lt;/span&gt;";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("rev"+step).innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("rev"+step).appendChild(div);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateExampleLabel(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null || state.b === null) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const rounded = state.roundedTarget;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const other = (state.target === "a") ? state.b : state.a;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const multStr = `${rounded}×${other}`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("exampleLabel").textContent =</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`${state.a}×${state.b} → round ${state.target === "a" ? state.a : state.b} to ${rounded} → ${multStr} = ${state.estimate} (estimate)`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateProblemUI(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null || state.b === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("bigProblem").innerHTML = "Your problem: &lt;span class='muted'&gt;—&lt;/span&gt;";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("parseNote").textContent = "";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("probLabel1").textContent = "—";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("multLabel").textContent = "—";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("exactLabelProb").textContent = "—";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("bigProblem").innerHTML = `Your problem: &lt;b&gt;${state.a} × ${state.b}&lt;/b&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("parseNote").textContent = "Tip: You can change the problem any time.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("probLabel1").textContent = `${state.a} × ${state.b}`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const rounded = state.roundedTarget;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const other = (state.target === "a") ? state.b : state.a;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("multLabel").textContent = `${rounded} × ${other}`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("exactLabelProb").textContent = `${state.a} × ${state.b}`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>updateExampleLabel();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>buildLowModeChoices();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function resetSteps(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("s1Choice").value = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>["s2","s3"].forEach(id =&gt; $(id).value = "");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("s4").value = "";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>[1,2,3,4].forEach(step=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>clearFeedback(step);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>state.hints[step] = 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>state.revealed[step] = false;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("hint"+step).textContent = "Hints used: 0";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("usedStrategy").value = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("stepsCalled").value = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("usedStrategyExplain").style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("stepsCalledExplain").style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("summaryOut").textContent = "Summary will appear here.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("copyNote").textContent = "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// ---------- Low mode choices ----------</p>
-<p class="p1"><span class="Apple-converted-space">    </span>function buildLowModeChoices(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const on = $("lowMode").checked &amp;&amp; state.a !== null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.usedLowMode = on;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const s1 = $("s1Choices"), s2 = $("s2Choices"),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>s3 = $("s3Choices"), s4 = $("s4Choices");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>[s1,s2,s3,s4].forEach(el=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>el.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>el.style.display = on ? "flex" : "none";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!on) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const first = state.a;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const second = state.b;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const correctTarget = state.target;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Step 1: which to round</p>
-<p class="p1"><span class="Apple-converted-space">      </span>[</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>label:`Round the first number (${first})`,</p>
-<p class="p1"><span class="Apple-converted-space">          </span>val:"a"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>label:`Round the second number (${second})`,</p>
-<p class="p1"><span class="Apple-converted-space">          </span>val:"b"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>].forEach(o=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const b = document.createElement("button");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.className="choice"; b.type="button"; b.textContent=o.label;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.onclick = ()=&gt; {$("s1Choice").value = o.val;};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>s1.appendChild(b);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const rounded = state.roundedTarget;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const originalTarget = (state.target === "a") ? state.a : state.b;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const down = Math.floor(originalTarget/10)*10;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const up = Math.ceil(originalTarget/10)*10;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const alt = (rounded === down ? up : down);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Step 2: rounded number choices</p>
-<p class="p1"><span class="Apple-converted-space">      </span>[</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{label:`${rounded}`, val:rounded},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{label:`${alt}`, val:alt}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>].forEach(o=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const b = document.createElement("button");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.className="choice"; b.type="button"; b.textContent=o.label;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.onclick = ()=&gt; {$("s2").value = o.val;};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>s2.appendChild(b);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const other = (state.target === "a") ? second : first;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const correctEstimate = state.estimate;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const altEstimate = correctEstimate + (other * 10);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Step 3: estimate choices</p>
-<p class="p1"><span class="Apple-converted-space">      </span>[</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{label:`${correctEstimate}`, val:correctEstimate},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{label:`${altEstimate}`, val:altEstimate}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>].forEach(o=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const b = document.createElement("button");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.className="choice"; b.type="button"; b.textContent=o.label;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.onclick = ()=&gt; {$("s3").value = o.val;};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>s3.appendChild(b);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Step 4: reasonable? choices</p>
-<p class="p1"><span class="Apple-converted-space">      </span>[</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{label:"Yes, it is reasonable.", val:"yes"},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>{label:"No, it is not.", val:"no"}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>].forEach(o=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const b = document.createElement("button");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.className="choice"; b.type="button"; b.textContent=o.label;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>b.onclick = ()=&gt; {$("s4").value = o.val;};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>s4.appendChild(b);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// ---------- Checks / Answers ----------</p>
-<p class="p1"><span class="Apple-converted-space">    </span>function checkStep1(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>clearFeedback(1);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(1,"warn","Type/paste a problem first (ex: 48×6).");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const v = $("s1Choice").value;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!v){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(1,"warn","Pick which number you will round.");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === "both"){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(1,"bad","For this strategy, round just one number to make it easier.");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === state.target){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const which = (v === "a") ? "first number" : "second number";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(1,"ok",`Yes — rounding the ${which} makes the multiplication easier.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const correctWhich = (state.target === "a") ? "first number" : "second number";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(1,"bad",`Not quite — it is usually easier to round the ${correctWhich} in this problem.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function showStep1(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const which = (state.target === "a") ? "first number" : "second number";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>showReveal(1, `Round the ${which}.`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Pick the number that is closest to a multiple of ten.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("s1Choice").value = state.target;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function checkStep2(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>clearFeedback(2);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(2,"warn","Type/paste a problem first (ex: 48×6).");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const v = asInt($("s2").value);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(2,"warn","Enter the rounded number (example: 50).");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === state.roundedTarget){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(2,"ok",`Yes — ${state.target === "a" ? state.a : state.b} rounds to ${state.roundedTarget}.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(2,"bad",`Not quite — ${state.target === "a" ? state.a : state.b} rounds to ${state.roundedTarget} when you round to the nearest ten.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function showStep2(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const from = state.target === "a" ? state.a : state.b;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>showReveal(2, `${state.roundedTarget}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Look at the ones digit in ${from}. 5 or more rounds up, 4 or less rounds down.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("s2").value = state.roundedTarget;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function checkStep3(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>clearFeedback(3);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(3,"warn","Type/paste a problem first (ex: 48×6).");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const v = asInt($("s3").value);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(3,"warn","Enter your estimated product (example: 300).");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === state.estimate){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(3,"ok",`Yes — your estimate ${v} matches ${state.roundedTarget}×${state.target === "a" ? state.b : state.a}.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const other = state.target === "a" ? state.b : state.a;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(3,"bad",`Not quite — using ${state.roundedTarget}×${other} gives an estimate of ${state.estimate}.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function showStep3(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const other = state.target === "a" ? state.b : state.a;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>showReveal(3, `${state.roundedTarget} × ${other} = ${state.estimate}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Multiply with your rounded number to get a quick estimate.`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("s3").value = state.estimate;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function isEstimateReasonable(est){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null) return null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const exact = state.exact;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const diff = Math.abs(est - exact);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(exact === 0) return diff === 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const rel = diff / exact;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return rel &lt;= 0.25; // within 25% counts as reasonable</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function checkStep4(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>clearFeedback(4);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(4,"warn","Type/paste a problem first (ex: 48×6).");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const choice = $("s4").value;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!choice){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(4,"warn","Decide yes or no.");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const est = asInt($("s3").value);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(est === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(4,"warn","Enter an estimated product in Step 3 first.");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const reasonable = isEstimateReasonable(est);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(reasonable === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showFeedback(4,"warn","Something went wrong with the estimate. Try the steps again.");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const expect = reasonable ? "yes" : "no";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(choice === expect){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const exact = state.exact;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(reasonable){</p>
-<p class="p1"><span class="Apple-converted-space">          </span>showFeedback(4,"ok",`Yes — ${est} is close to the exact product ${exact}, so it is a reasonable estimate.`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>showFeedback(4,"ok",`Right — ${est} is not close to the exact product ${exact}, so it is not reasonable.`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const exact = state.exact;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(reasonable){</p>
-<p class="p1"><span class="Apple-converted-space">          </span>showFeedback(4,"bad",`Actually, ${est} is close to the exact product ${exact}, so it is a reasonable estimate.`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>showFeedback(4,"bad",`Actually, ${est} is not very close to the exact product ${exact}. It is not a great estimate.`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function showStep4(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const reasonable = isEstimateReasonable(state.estimate);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const exact = state.exact;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const msg = reasonable</p>
-<p class="p1"><span class="Apple-converted-space">        </span>? `Our estimate ${state.estimate} is close to the exact product ${exact}, so it is reasonable.`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>: `Our estimate ${state.estimate} is not close to the exact product ${exact}.`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>showReveal(4, reasonable ? "Yes" : "No", msg);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("s4").value = reasonable ? "yes" : "no";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// ---------- Strategy check "I don't know" explanations ----------</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("usedStrategy").addEventListener("change", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const v = $("usedStrategy").value;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const box = $("usedStrategyExplain");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === "idk"){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>box.style.display = "block";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(state.a === null){</p>
-<p class="p1"><span class="Apple-converted-space">          </span>box.innerHTML = "&lt;b&gt;Hint:&lt;/b&gt; We used estimation by rounding. Round a number to the nearest ten, multiply, and then check if it makes sense.";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const from = state.target === "a" ? state.a : state.b;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>box.innerHTML = `&lt;b&gt;Answer:&lt;/b&gt; Estimate Products (Round and Multiply)&lt;br&gt;&lt;span class="muted"&gt;We rounded ${from} to ${state.roundedTarget}, multiplied, and checked if ${state.estimate} made sense for ${state.a}×${state.b}.&lt;/span&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>$("usedStrategy").value = "estimate";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>box.style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("stepsCalled").addEventListener("change", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const v = $("stepsCalled").value;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const box = $("stepsCalledExplain");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(v === "idk"){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>box.style.display = "block";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>box.innerHTML = "&lt;b&gt;Answer:&lt;/b&gt; Round → Multiply → Estimate reasonableness&lt;br&gt;&lt;span class='muted'&gt;That’s the sequence for this estimating routine.&lt;/span&gt;";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("stepsCalled").value = "rme";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>box.style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// ---------- Summary ----------</p>
-<p class="p1"><span class="Apple-converted-space">    </span>function makeSummary(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(state.a === null){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return "Problem: —\nType/paste a problem first (example: 48×6).";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const hintsUsedSteps = Object.entries(state.hints)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter(([,n])=&gt;n&gt;0)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.map(([k,n])=&gt;`Step ${k} (${n})`)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.join(", ") || "None";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const roundedFrom = state.target === "a" ? state.a : state.b;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const other = state.target === "a" ? state.b : state.a;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>return [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Problem: ${state.a} × ${state.b}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Strategy: Estimate Products (Round and Multiply)`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>``,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Rounded number: ${roundedFrom} → ${state.roundedTarget}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Estimated product: ${state.roundedTarget} × ${other} = ${state.estimate}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Exact product: ${state.exact}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>``,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Answer (estimate): ${state.estimate}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Hints used: ${hintsUsedSteps}`</p>
-<p class="p1"><span class="Apple-converted-space">      </span>].join("\n");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("summaryBtn").addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("summaryOut").textContent = makeSummary();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("copyBtn").addEventListener("click", async ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>try{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>await navigator.clipboard.writeText($("summaryOut").textContent);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("copyNote").textContent = "Copied.";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setTimeout(()=&gt; $("copyNote").textContent = "", 1200);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}catch(e){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("copyNote").textContent = "Copy not available in this browser.";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>setTimeout(()=&gt; $("copyNote").textContent = "", 1600);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// ---------- Bind buttons ----------</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("check1").onclick = checkStep1;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("check2").onclick = checkStep2;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("check3").onclick = checkStep3;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("check4").onclick = checkStep4;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("show1").onclick = showStep1;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("show2").onclick = showStep2;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("show3").onclick = showStep3;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("show4").onclick = showStep4;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("resetBtn").onclick = resetSteps;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("lowMode").addEventListener("change", buildLowModeChoices);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("useProblemBtn").onclick = ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const p = parseProblem($("problemInput").value);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!p){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("parseNote").textContent = "Couldn’t read that. Try: 48×6 (or 48 x 6).";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>$("bigProblem").innerHTML = "Your problem: &lt;span class='muted'&gt;—&lt;/span&gt;";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.a = p.a;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.b = p.b;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.target = chooseTarget(state.a, state.b);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const from = state.target === "a" ? state.a : state.b;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.roundedTarget = nearestTen(from);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const other = state.target === "a" ? state.b : state.a;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.estimate = state.roundedTarget * other;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>state.exact = state.a * state.b;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>resetSteps();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updateProblemUI();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* =========================</p>
-<p class="p1"><span class="Apple-converted-space">       </span>ADD-ON JS: mood + needs + report + print</p>
-<p class="p1"><span class="Apple-converted-space">       </span>(same exact block you provided)</p>
-<p class="p1"><span class="Apple-converted-space">       </span>========================= */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const reg = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>mood: null, // {row:1..5, col:1..5}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>face: null, // emoji</p>
-<p class="p1"><span class="Apple-converted-space">      </span>need: null // string</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function moodColor(row, col){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// 5x5: top rows = higher intensity, left cols = "harder" valence.</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Simple gradient without naming colors explicitly to keep it minimal and stable.</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// We'll compute HSL-ish via rgb interpolation (cool -&gt; warm).</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const r = row; // 1..5 bottom-&gt;top is handled by construction</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const c = col; // 1..5 left-&gt;right</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Map to 0..1</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const tRow = (r-1)/4; // intensity</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const tCol = (c-1)/4; // valence</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Blend: left=blue-ish, right=green-ish, top adds red warmth.</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const red<span class="Apple-converted-space">  </span>= Math.round( 40 + 150*tRow + 20*(1-tCol) );</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const green = Math.round( 70 + 140*tCol + 20*(1-tRow) );</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const blue<span class="Apple-converted-space">  </span>= Math.round( 180 - 120*tCol + 20*(1-tRow) );</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return `rgb(${red},${green},${blue})`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function buildMoodGrid(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const grid = $("moodGrid");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid.innerHTML = "";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>// row 5 at top, row 1 at bottom (like your image)</p>
-<p class="p1"><span class="Apple-converted-space">      </span>for(let displayRow=5; displayRow&gt;=1; displayRow--){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>for(let col=1; col&lt;=5; col++){</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const cell = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.className = "cell";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.style.background = moodColor(displayRow, col);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.setAttribute("role","gridcell");</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.setAttribute("tabindex","0");</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.dataset.row = String(displayRow);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.dataset.col = String(col);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.onclick = ()=&gt; selectMood(displayRow, col);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cell.onkeydown = (e)=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if(e.key === "Enter" || e.key === " "){</p>
-<p class="p1"><span class="Apple-converted-space">              </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">              </span>selectMood(displayRow, col);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>};</p>
-<p class="p1"><span class="Apple-converted-space">          </span>grid.appendChild(cell);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function selectMood(row, col){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>reg.mood = {row, col};</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// clear selection</p>
-<p class="p1"><span class="Apple-converted-space">      </span>Array.from(document.querySelectorAll(".cell.selected")).forEach(el=&gt; el.classList.remove("selected"));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// find matching cell</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const match = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(match) match.classList.add("selected");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>updateMoodReadout();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function updateMoodReadout(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const parts = [];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(reg.mood) parts.push(`grid ${reg.mood.row}/${reg.mood.col}`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(reg.face) parts.push(`face ${reg.face}`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("moodReadout").textContent = "Selected: " + (parts.length ? parts.join(" • ") : "—");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function bindFaces(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>Array.from(document.querySelectorAll(".faceBtn")).forEach(btn=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btn.onclick = ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>Array.from(document.querySelectorAll(".faceBtn.selected")).forEach(b=&gt; b.classList.remove("selected"));</p>
-<p class="p1"><span class="Apple-converted-space">          </span>btn.classList.add("selected");</p>
-<p class="p1"><span class="Apple-converted-space">          </span>reg.face = btn.dataset.face || null;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>updateMoodReadout();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function bindNeeds(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>Array.from(document.querySelectorAll(".needBtn")).forEach(btn=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btn.onclick = ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const already = btn.classList.contains("selected");</p>
-<p class="p1"><span class="Apple-converted-space">          </span>Array.from(document.querySelectorAll(".needBtn.selected")).forEach(b=&gt; b.classList.remove("selected"));</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if(already){</p>
-<p class="p1"><span class="Apple-converted-space">            </span>reg.need = null;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}else{</p>
-<p class="p1"><span class="Apple-converted-space">            </span>btn.classList.add("selected");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>reg.need = btn.dataset.need || null;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>}</p>
-<p class="p1"><span class="Apple-converted-space">          </span>$("needReadout").textContent = "Selected: " + (reg.need ?? "—");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function makeReport(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const base = makeSummary();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const reflection = $("reflectionPick").value || "—";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const myStrats = norm($("myStrategies").value) || "—";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const teacherQ = norm($("teacherQ").value) || "—";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const moodPart = (()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const parts = [];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(reg.mood) parts.push(`Mood grid: ${reg.mood.row}/${reg.mood.col}`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(reg.face) parts.push(`Face: ${reg.face}`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return parts.length ? parts.join(" | ") : "—";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>})();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const needPart = reg.need ?? "—";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>return [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>base,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"=== Check-In ===",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Feeling: ${moodPart}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Need: ${needPart}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`My strategies: ${myStrats}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"=== Reflection ===",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Today: ${reflection}`,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"=== Question to teacher ===",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>teacherQ</p>
-<p class="p1"><span class="Apple-converted-space">      </span>].join("\n");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("reportBtn").addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("reportOut").textContent = makeReport();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("printNote").textContent = "Report ready.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>setTimeout(()=&gt; $("printNote").textContent = "", 1200);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("printBtn").addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>// Ensure report is current before printing</p>
-<p class="p1"><span class="Apple-converted-space">      </span>$("reportOut").textContent = makeReport();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>window.print(); // user can "Save as PDF" from print dialog</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// Init add-on UI</p>
-<p class="p1"><span class="Apple-converted-space">    </span>buildMoodGrid();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>bindFaces();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>bindNeeds();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("needReadout").textContent = "Selected: —";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>updateMoodReadout();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>// Default example for this guide</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("problemInput").value = "48×6";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$("useProblemBtn").click();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Math Strategy Guide</h1>
+        <p class="sub">Strategy: <b>Estimate Products (Round and Multiply)</b></p>
+      </div>
+      <div class="pill" title="Type/paste a multiplication problem.">
+        <span>Estimate</span>
+        <span class="muted">•</span>
+        <span class="muted">Round → Multiply → Check</span>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:14px;">
+      <!-- Problem input -->
+      <div class="card">
+        <label for="problemInput">Type or paste the problem here</label>
+        <div class="grid2">
+          <input id="problemInput" type="text" placeholder="Example: 48×6 (or 48 x 6, 48 * 6)" />
+          <button class="btn" id="useProblemBtn">Use this problem</button>
+        </div>
+        <div class="toggle">
+          <label style="margin:0;color:var(--muted);font-size:13px;">
+            <input type="checkbox" id="lowMode" />
+            CHILL MODE (show 2 obvious options)
+          </label>
+        </div>
+        <div class="divider"></div>
+        <div class="bigProblem" id="bigProblem">Your problem: <span class="muted">—</span></div>
+        <p class="mini" id="parseNote" style="margin-top:10px;"></p>
+      </div>
+
+      <!-- Strategy header + steps -->
+      <div class="card">
+        <div class="strategyTitle">
+          <div>
+            <b>We are using: Estimate Products (Rounding)</b>
+            <div class="example">Example: <span id="exampleLabel">48×6 → round 48 to 50 → 50×6 = 300 (estimate)</span></div>
+          </div>
+          <button class="btn secondary" id="resetBtn">Reset steps</button>
+        </div>
+
+        <div class="grid">
+          <!-- Step 1 -->
+          <div class="step" id="step1">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 1</span> — Choose what to round</div>
+              <div class="hintTag" id="hint1">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              For <b><span id="probLabel1">—</span></b>, which number will you round to make it easier?
+              <span class="mini" style="display:block;margin-top:6px;">Tip: Round the number that is close to a ten.</span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s1Choice">I will round…</label>
+              <select id="s1Choice">
+                <option value="">Pick one</option>
+                <option value="a">the first number</option>
+                <option value="b">the second number</option>
+                <option value="both">both numbers</option>
+              </select>
+            </div>
+
+            <div class="choiceRow" id="s1Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check1">Check my step</button>
+              <button class="btn" id="show1">Show answer</button>
+            </div>
+
+            <div id="fb1"></div>
+            <div id="rev1"></div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step" id="step2">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 2</span> — Round the number</div>
+              <div class="hintTag" id="hint2">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Round the number you chose in Step 1 to the nearest ten.
+              <span class="mini" style="display:block;margin-top:6px;">Look at the digit to the right of the tens place.</span>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s2">Rounded number</label>
+              <input id="s2" type="text" placeholder="ex: 50" />
+            </div>
+
+            <div class="choiceRow" id="s2Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check2">Check my step</button>
+              <button class="btn" id="show2">Show answer</button>
+            </div>
+
+            <div id="fb2"></div>
+            <div id="rev2"></div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step" id="step3">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 3</span> — Multiply to get an estimate</div>
+              <div class="hintTag" id="hint3">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Multiply using your rounded number.
+              <b><span id="multLabel">—</span> = __</b>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s3">Estimated product</label>
+              <input id="s3" type="text" placeholder="ex: 300" />
+            </div>
+
+            <div class="choiceRow" id="s3Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check3">Check my step</button>
+              <button class="btn" id="show3">Show answer</button>
+            </div>
+
+            <div id="fb3"></div>
+            <div id="rev3"></div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step" id="step4">
+            <div class="stepHead">
+              <div><span class="stepNum">STEP 4</span> — Decide if your estimate is reasonable</div>
+              <div class="hintTag" id="hint4">Hints used: 0</div>
+            </div>
+
+            <div class="muted" style="font-size:13px;">
+              Think about the exact product of <b><span id="exactLabelProb">—</span></b>.
+              Is your estimate close to the exact answer?
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="s4">Is your estimate reasonable?</label>
+              <select id="s4">
+                <option value="">Pick one</option>
+                <option value="yes">Yes, it is close.</option>
+                <option value="no">No, it is not close.</option>
+              </select>
+            </div>
+
+            <div class="choiceRow" id="s4Choices" style="display:none;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="btn secondary" id="check4">Check my step</button>
+              <button class="btn" id="show4">Show answer</button>
+            </div>
+
+            <div id="fb4"></div>
+            <div id="rev4"></div>
+          </div>
+
+          <!-- Quick strategy check + Summary -->
+          <div class="card" style="background:#fff;">
+            <div class="grid2">
+              <div>
+                <label for="usedStrategy">I understand we used…</label>
+                <select id="usedStrategy">
+                  <option value="">Pick one</option>
+                  <option value="estimate">Estimate Products (Round and Multiply)</option>
+                  <option value="idk">I don’t know</option>
+                </select>
+                <div id="usedStrategyExplain" class="reveal" style="display:none;margin-top:10px;"></div>
+              </div>
+              <div>
+                <label for="stepsCalled">The steps were called…</label>
+                <select id="stepsCalled">
+                  <option value="">Pick one</option>
+                  <option value="rme">Round → Multiply → Estimate reasonableness</option>
+                  <option value="idk">I don’t know</option>
+                </select>
+                <div id="stepsCalledExplain" class="reveal" style="display:none;margin-top:10px;"></div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <button class="btn" id="summaryBtn">Show my summary</button>
+              <button class="btn secondary" id="copyBtn">Copy summary</button>
+              <span class="mini" id="copyNote"></span>
+            </div>
+
+            <div class="reveal" style="margin-top:12px;">
+              <pre id="summaryOut">Summary will appear here.</pre>
+            </div>
+          </div>
+
+          <!-- =========================
+               ADD-ON SECTION START
+               Reflection + self-regulation + teacher Q + print
+               (shared with Break Apart / Zeros Rule)
+               ========================= -->
+          <div class="card" id="reflectionCard">
+            <p class="sectionTitle">Quick Check-In + Report</p>
+            <div class="regWrap">
+              <div class="regGrid">
+                <!-- Left column: feeling + needs -->
+                <div>
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>What am I feeling?</b>
+                      <span>Tap a square + a face (optional)</span>
+                    </div>
+                    <div class="moodMeter">
+                      <div class="moodLevels" aria-hidden="true">
+                        <div class="lvl">5</div>
+                        <div class="lvl">4</div>
+                        <div class="lvl">3</div>
+                        <div class="lvl">2</div>
+                        <div class="lvl">1</div>
+                      </div>
+                      <div>
+                        <div class="moodGrid" id="moodGrid" role="grid" aria-label="Feeling intensity grid"></div>
+                        <div class="faces" role="group" aria-label="Mood faces">
+                          <button class="faceBtn" type="button" data-face="😣">
+                            <span>😣</span><small>rough</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="😕">
+                            <span>😕</span><small>iffy</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="😐">
+                            <span>😐</span><small>okay</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="🙂">
+                            <span>🙂</span><small>good</small>
+                          </button>
+                          <button class="faceBtn" type="button" data-face="😄">
+                            <span>😄</span><small>great</small>
+                          </button>
+                        </div>
+                        <div class="tinyHelp" id="moodReadout">Selected: —</div>
+                      </div>
+                    </div>
+                    <div class="moodLegend">
+                      <span>😞 harder</span>
+                      <span>🙂 better</span>
+                    </div>
+                    <div class="moodLegend" style="margin-top:-6px;">
+                      <span>low energy</span>
+                      <span>high energy</span>
+                    </div>
+                    <div class="mini" id="moodLabel" style="margin-top:4px;"></div>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>What is my need?</b>
+                      <span>Tap one (or none)</span>
+                    </div>
+                    <div class="needsGrid" role="group" aria-label="Needs">
+                      <button class="needBtn" type="button" data-need="Plan">
+                        <div class="needIcon">🗺</div>
+                        <div class="needText">
+                          <b>Plan</b><span>clarity</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Quiet">
+                        <div class="needIcon">👂</div>
+                        <div class="needText">
+                          <b>Quiet</b><span>listen</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Break">
+                        <div class="needIcon">🧘</div>
+                        <div class="needText">
+                          <b>Break</b><span>rest</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Help">
+                        <div class="needIcon">🤝</div>
+                        <div class="needText">
+                          <b>Help</b><span>support</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Food">
+                        <div class="needIcon">🍽</div>
+                        <div class="needText">
+                          <b>Food</b><span>fuel</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Move">
+                        <div class="needIcon">🏃</div>
+                        <div class="needText">
+                          <b>Move</b><span>body</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Water">
+                        <div class="needIcon">💧</div>
+                        <div class="needText">
+                          <b>Water</b><span>drink</span>
+                        </div>
+                      </button>
+                      <button class="needBtn" type="button" data-need="Health">
+                        <div class="needIcon">❤️</div>
+                        <div class="needText">
+                          <b>Health</b><span>check-in</span>
+                        </div>
+                      </button>
+                    </div>
+                    <div class="tinyHelp" id="needReadout">Selected: —</div>
+                  </div>
+                </div>
+
+                <!-- Right column: strategies + reflection + teacher + print -->
+                <div>
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>My strategies are…</b>
+                      <span>short is fine</span>
+                    </div>
+                    <textarea id="myStrategies" rows="4" placeholder="Example: I rounded 48 to 50, multiplied, and checked if it made sense."></textarea>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Simple reflection</b>
+                      <span>pick one</span>
+                    </div>
+                    <select id="reflectionPick">
+                      <option value="">Pick one</option>
+                      <option value="I got it">I got it</option>
+                      <option value="I kind of got it">I kind of got it</option>
+                      <option value="I’m not sure yet">I’m not sure yet</option>
+                      <option value="I need help">I need help</option>
+                    </select>
+                    <div class="tinyHelp">Tip: “I’m not sure yet” is allowed.</div>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Question to teacher (optional)</b>
+                      <span>copy/paste later</span>
+                    </div>
+                    <textarea id="teacherQ" rows="4" placeholder="Example: Can we practice more estimating products with rounding?"></textarea>
+                  </div>
+
+                  <div class="regBox">
+                    <div class="regHead">
+                      <b>Print / Save as PDF</b>
+                      <span>includes summary + answer</span>
+                    </div>
+                    <div class="row">
+                      <button class="btn" type="button" id="reportBtn">Make report</button>
+                      <button class="btn secondary" type="button" id="printBtn">Print / Save</button>
+                      <span class="mini" id="printNote"></span>
+                    </div>
+                    <div class="reveal" style="margin-top:10px;">
+                      <pre id="reportOut">Report will appear here.</pre>
+                    </div>
+                    <p class="mini printOnly">Printed report</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ADD-ON SECTION END -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (id) => document.getElementById(id);
+    const norm = (s) => String(s ?? "").trim();
+    const asInt = (s) => {
+      const t = norm(s).replace(/,/g,"");
+      if(!t) return null;
+      if(!/^[-]?\d+$/.test(t)) return null;
+      return parseInt(t,10);
+    };
+
+    function parseProblem(raw){
+      // Accept: "48x6", "48 x 6", "48 × 6", "48*6"
+      const s = norm(raw)
+        .replace(/×/g,"x")
+        .replace(/\*/g,"x")
+        .replace(/\s+/g,"")
+        .toLowerCase();
+      const m = s.match(/^(\d+)\s*x\s*(\d+)$/i);
+      if(!m) return null;
+      return { a: parseInt(m[1],10), b: parseInt(m[2],10) };
+    }
+
+    function nearestTen(n){
+      const sign = n < 0 ? -1 : 1;
+      const abs = Math.abs(n);
+      const tens = Math.round(abs/10);
+      return sign * tens * 10;
+    }
+
+    function comma(n){
+      const s = String(n);
+      const sign = s.startsWith("-") ? "-" : "";
+      const t = sign ? s.slice(1) : s;
+      return sign + t.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function chooseTarget(a,b){
+      // Heuristic: round the number that is not already a multiple of 10.
+      const a10 = (a % 10 === 0);
+      const b10 = (b % 10 === 0);
+      if(!a10 && b10) return "a";
+      if(!b10 && a10) return "b";
+      // if both or neither multiples of 10, pick the larger value
+      return a >= b ? "a" : "b";
+    }
+
+    // ---------- State ----------
+    const state = {
+      a: null,
+      b: null,
+      target: "a",
+      roundedTarget: null,
+      estimate: null,
+      exact: null,
+      hints: {1:0,2:0,3:0,4:0},
+      revealed: {1:false,2:false,3:false,4:false},
+      usedLowMode: false
+    };
+
+    function setHint(step){
+      state.hints[step] += 1;
+      $("hint"+step).textContent = "Hints used: " + state.hints[step];
+    }
+
+    function clearFeedback(step){
+      $("fb"+step).innerHTML = "";
+      $("rev"+step).innerHTML = "";
+    }
+
+    function showFeedback(step, kind, msg){
+      const div = document.createElement("div");
+      div.className = "feedback " + kind;
+      div.textContent = msg;
+      $("fb"+step).innerHTML = "";
+      $("fb"+step).appendChild(div);
+    }
+
+    function showReveal(step, answerText, reasonText){
+      setHint(step);
+      state.revealed[step] = true;
+      const div = document.createElement("div");
+      div.className = "reveal";
+      div.innerHTML = "<b>Answer:</b> " + answerText +
+        "<br><span class='muted'>Reason: " + reasonText + "</span>";
+      $("rev"+step).innerHTML = "";
+      $("rev"+step).appendChild(div);
+    }
+
+    function updateExampleLabel(){
+      if(state.a === null || state.b === null) return;
+      const rounded = state.roundedTarget;
+      const other = (state.target === "a") ? state.b : state.a;
+      const multStr = `${rounded}×${other}`;
+      $("exampleLabel").textContent =
+        `${state.a}×${state.b} → round ${state.target === "a" ? state.a : state.b} to ${rounded} → ${multStr} = ${state.estimate} (estimate)`;
+    }
+
+    function updateProblemUI(){
+      if(state.a === null || state.b === null){
+        $("bigProblem").innerHTML = "Your problem: <span class='muted'>—</span>";
+        $("parseNote").textContent = "";
+        $("probLabel1").textContent = "—";
+        $("multLabel").textContent = "—";
+        $("exactLabelProb").textContent = "—";
+        return;
+      }
+
+      $("bigProblem").innerHTML = `Your problem: <b>${state.a} × ${state.b}</b>`;
+      $("parseNote").textContent = "Tip: You can change the problem any time.";
+      $("probLabel1").textContent = `${state.a} × ${state.b}`;
+
+      const rounded = state.roundedTarget;
+      const other = (state.target === "a") ? state.b : state.a;
+      $("multLabel").textContent = `${rounded} × ${other}`;
+      $("exactLabelProb").textContent = `${state.a} × ${state.b}`;
+
+      updateExampleLabel();
+      buildLowModeChoices();
+    }
+
+    function resetSteps(){
+      $("s1Choice").value = "";
+      ["s2","s3"].forEach(id => $(id).value = "");
+      $("s4").value = "";
+
+      [1,2,3,4].forEach(step=>{
+        clearFeedback(step);
+        state.hints[step] = 0;
+        state.revealed[step] = false;
+        $("hint"+step).textContent = "Hints used: 0";
+      });
+
+      $("usedStrategy").value = "";
+      $("stepsCalled").value = "";
+      $("usedStrategyExplain").style.display = "none";
+      $("stepsCalledExplain").style.display = "none";
+      $("summaryOut").textContent = "Summary will appear here.";
+      $("copyNote").textContent = "";
+    }
+
+    // ---------- Low mode choices ----------
+    function buildLowModeChoices(){
+      const on = $("lowMode").checked && state.a !== null;
+      state.usedLowMode = on;
+
+      const s1 = $("s1Choices"), s2 = $("s2Choices"),
+            s3 = $("s3Choices"), s4 = $("s4Choices");
+      [s1,s2,s3,s4].forEach(el=>{
+        el.innerHTML = "";
+        el.style.display = on ? "flex" : "none";
+      });
+      if(!on) return;
+
+      const first = state.a;
+      const second = state.b;
+      const correctTarget = state.target;
+
+      // Step 1: which to round
+      [
+        {
+          label:`Round the first number (${first})`,
+          val:"a"
+        },
+        {
+          label:`Round the second number (${second})`,
+          val:"b"
+        }
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label;
+        b.onclick = ()=> {$("s1Choice").value = o.val;};
+        s1.appendChild(b);
+      });
+
+      const rounded = state.roundedTarget;
+      const originalTarget = (state.target === "a") ? state.a : state.b;
+      const down = Math.floor(originalTarget/10)*10;
+      const up = Math.ceil(originalTarget/10)*10;
+      const alt = (rounded === down ? up : down);
+
+      // Step 2: rounded number choices
+      [
+        {label:`${rounded}`, val:rounded},
+        {label:`${alt}`, val:alt}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label;
+        b.onclick = ()=> {$("s2").value = o.val;};
+        s2.appendChild(b);
+      });
+
+      const other = (state.target === "a") ? second : first;
+      const correctEstimate = state.estimate;
+      const altEstimate = correctEstimate + (other * 10);
+
+      // Step 3: estimate choices
+      [
+        {label:`${correctEstimate}`, val:correctEstimate},
+        {label:`${altEstimate}`, val:altEstimate}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label;
+        b.onclick = ()=> {$("s3").value = o.val;};
+        s3.appendChild(b);
+      });
+
+      // Step 4: reasonable? choices
+      [
+        {label:"Yes, it is reasonable.", val:"yes"},
+        {label:"No, it is not.", val:"no"}
+      ].forEach(o=>{
+        const b = document.createElement("button");
+        b.className="choice"; b.type="button"; b.textContent=o.label;
+        b.onclick = ()=> {$("s4").value = o.val;};
+        s4.appendChild(b);
+      });
+    }
+
+    // ---------- Checks / Answers ----------
+    function checkStep1(){
+      clearFeedback(1);
+      if(state.a === null){
+        showFeedback(1,"warn","Type/paste a problem first (ex: 48×6).");
+        return;
+      }
+      const v = $("s1Choice").value;
+      if(!v){
+        showFeedback(1,"warn","Pick which number you will round.");
+        return;
+      }
+      if(v === "both"){
+        showFeedback(1,"bad","For this strategy, round just one number to make it easier.");
+        return;
+      }
+      if(v === state.target){
+        const which = (v === "a") ? "first number" : "second number";
+        showFeedback(1,"ok",`Yes — rounding the ${which} makes the multiplication easier.`);
+      }else{
+        const correctWhich = (state.target === "a") ? "first number" : "second number";
+        showFeedback(1,"bad",`Not quite — it is usually easier to round the ${correctWhich} in this problem.`);
+      }
+    }
+
+    function showStep1(){
+      if(state.a === null) return;
+      const which = (state.target === "a") ? "first number" : "second number";
+      showReveal(1, `Round the ${which}.`,
+        `Pick the number that is closest to a multiple of ten.`);
+      $("s1Choice").value = state.target;
+    }
+
+    function checkStep2(){
+      clearFeedback(2);
+      if(state.a === null){
+        showFeedback(2,"warn","Type/paste a problem first (ex: 48×6).");
+        return;
+      }
+      const v = asInt($("s2").value);
+      if(v === null){
+        showFeedback(2,"warn","Enter the rounded number (example: 50).");
+        return;
+      }
+      if(v === state.roundedTarget){
+        showFeedback(2,"ok",`Yes — ${state.target === "a" ? state.a : state.b} rounds to ${state.roundedTarget}.`);
+      }else{
+        showFeedback(2,"bad",`Not quite — ${state.target === "a" ? state.a : state.b} rounds to ${state.roundedTarget} when you round to the nearest ten.`);
+      }
+    }
+
+    function showStep2(){
+      if(state.a === null) return;
+      const from = state.target === "a" ? state.a : state.b;
+      showReveal(2, `${state.roundedTarget}`,
+        `Look at the ones digit in ${from}. 5 or more rounds up, 4 or less rounds down.`);
+      $("s2").value = state.roundedTarget;
+    }
+
+    function checkStep3(){
+      clearFeedback(3);
+      if(state.a === null){
+        showFeedback(3,"warn","Type/paste a problem first (ex: 48×6).");
+        return;
+      }
+      const v = asInt($("s3").value);
+      if(v === null){
+        showFeedback(3,"warn","Enter your estimated product (example: 300).");
+        return;
+      }
+      if(v === state.estimate){
+        showFeedback(3,"ok",`Yes — your estimate ${v} matches ${state.roundedTarget}×${state.target === "a" ? state.b : state.a}.`);
+      }else{
+        const other = state.target === "a" ? state.b : state.a;
+        showFeedback(3,"bad",`Not quite — using ${state.roundedTarget}×${other} gives an estimate of ${state.estimate}.`);
+      }
+    }
+
+    function showStep3(){
+      if(state.a === null) return;
+      const other = state.target === "a" ? state.b : state.a;
+      showReveal(3, `${state.roundedTarget} × ${other} = ${state.estimate}`,
+        `Multiply with your rounded number to get a quick estimate.`);
+      $("s3").value = state.estimate;
+    }
+
+    function isEstimateReasonable(est){
+      if(state.a === null) return null;
+      const exact = state.exact;
+      const diff = Math.abs(est - exact);
+      if(exact === 0) return diff === 0;
+      const rel = diff / exact;
+      return rel <= 0.25; // within 25% counts as reasonable
+    }
+
+    function checkStep4(){
+      clearFeedback(4);
+      if(state.a === null){
+        showFeedback(4,"warn","Type/paste a problem first (ex: 48×6).");
+        return;
+      }
+      const choice = $("s4").value;
+      if(!choice){
+        showFeedback(4,"warn","Decide yes or no.");
+        return;
+      }
+      const est = asInt($("s3").value);
+      if(est === null){
+        showFeedback(4,"warn","Enter an estimated product in Step 3 first.");
+        return;
+      }
+      const reasonable = isEstimateReasonable(est);
+      if(reasonable === null){
+        showFeedback(4,"warn","Something went wrong with the estimate. Try the steps again.");
+        return;
+      }
+      const expect = reasonable ? "yes" : "no";
+      if(choice === expect){
+        const exact = state.exact;
+        if(reasonable){
+          showFeedback(4,"ok",`Yes — ${est} is close to the exact product ${exact}, so it is a reasonable estimate.`);
+        }else{
+          showFeedback(4,"ok",`Right — ${est} is not close to the exact product ${exact}, so it is not reasonable.`);
+        }
+      }else{
+        const exact = state.exact;
+        if(reasonable){
+          showFeedback(4,"bad",`Actually, ${est} is close to the exact product ${exact}, so it is a reasonable estimate.`);
+        }else{
+          showFeedback(4,"bad",`Actually, ${est} is not very close to the exact product ${exact}. It is not a great estimate.`);
+        }
+      }
+    }
+
+    function showStep4(){
+      if(state.a === null) return;
+      const reasonable = isEstimateReasonable(state.estimate);
+      const exact = state.exact;
+      const msg = reasonable
+        ? `Our estimate ${state.estimate} is close to the exact product ${exact}, so it is reasonable.`
+        : `Our estimate ${state.estimate} is not close to the exact product ${exact}.`;
+      showReveal(4, reasonable ? "Yes" : "No", msg);
+      $("s4").value = reasonable ? "yes" : "no";
+    }
+
+    // ---------- Strategy check "I don't know" explanations ----------
+    $("usedStrategy").addEventListener("change", ()=>{
+      const v = $("usedStrategy").value;
+      const box = $("usedStrategyExplain");
+      if(v === "idk"){
+        box.style.display = "block";
+        if(state.a === null){
+          box.innerHTML = "<b>Hint:</b> We used estimation by rounding. Round a number to the nearest ten, multiply, and then check if it makes sense.";
+        }else{
+          const from = state.target === "a" ? state.a : state.b;
+          box.innerHTML = `<b>Answer:</b> Estimate Products (Round and Multiply)<br><span class="muted">We rounded ${from} to ${state.roundedTarget}, multiplied, and checked if ${state.estimate} made sense for ${state.a}×${state.b}.</span>`;
+          $("usedStrategy").value = "estimate";
+        }
+      }else{
+        box.style.display = "none";
+      }
+    });
+
+    $("stepsCalled").addEventListener("change", ()=>{
+      const v = $("stepsCalled").value;
+      const box = $("stepsCalledExplain");
+      if(v === "idk"){
+        box.style.display = "block";
+        box.innerHTML = "<b>Answer:</b> Round → Multiply → Estimate reasonableness<br><span class='muted'>That’s the sequence for this estimating routine.</span>";
+        $("stepsCalled").value = "rme";
+      }else{
+        box.style.display = "none";
+      }
+    });
+
+    // ---------- Summary ----------
+    function makeSummary(){
+      if(state.a === null){
+        return "Problem: —\nType/paste a problem first (example: 48×6).";
+      }
+      const hintsUsedSteps = Object.entries(state.hints)
+        .filter(([,n])=>n>0)
+        .map(([k,n])=>`Step ${k} (${n})`)
+        .join(", ") || "None";
+
+      const roundedFrom = state.target === "a" ? state.a : state.b;
+      const other = state.target === "a" ? state.b : state.a;
+
+      return [
+        `Problem: ${state.a} × ${state.b}`,
+        `Strategy: Estimate Products (Round and Multiply)`,
+        ``,
+        `Rounded number: ${roundedFrom} → ${state.roundedTarget}`,
+        `Estimated product: ${state.roundedTarget} × ${other} = ${state.estimate}`,
+        `Exact product: ${state.exact}`,
+        ``,
+        `Answer (estimate): ${state.estimate}`,
+        `Hints used: ${hintsUsedSteps}`
+      ].join("\n");
+    }
+
+    $("summaryBtn").addEventListener("click", ()=>{
+      $("summaryOut").textContent = makeSummary();
+    });
+
+    $("copyBtn").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText($("summaryOut").textContent);
+        $("copyNote").textContent = "Copied.";
+        setTimeout(()=> $("copyNote").textContent = "", 1200);
+      }catch(e){
+        $("copyNote").textContent = "Copy not available in this browser.";
+        setTimeout(()=> $("copyNote").textContent = "", 1600);
+      }
+    });
+
+    // ---------- Bind buttons ----------
+    $("check1").onclick = checkStep1;
+    $("check2").onclick = checkStep2;
+    $("check3").onclick = checkStep3;
+    $("check4").onclick = checkStep4;
+
+    $("show1").onclick = showStep1;
+    $("show2").onclick = showStep2;
+    $("show3").onclick = showStep3;
+    $("show4").onclick = showStep4;
+
+    $("resetBtn").onclick = resetSteps;
+    $("lowMode").addEventListener("change", buildLowModeChoices);
+
+    $("useProblemBtn").onclick = ()=>{
+      const p = parseProblem($("problemInput").value);
+      if(!p){
+        $("parseNote").textContent = "Couldn’t read that. Try: 48×6 (or 48 x 6).";
+        $("bigProblem").innerHTML = "Your problem: <span class='muted'>—</span>";
+        return;
+      }
+
+      state.a = p.a;
+      state.b = p.b;
+
+      state.target = chooseTarget(state.a, state.b);
+      const from = state.target === "a" ? state.a : state.b;
+      state.roundedTarget = nearestTen(from);
+      const other = state.target === "a" ? state.b : state.a;
+
+      state.estimate = state.roundedTarget * other;
+      state.exact = state.a * state.b;
+
+      resetSteps();
+      updateProblemUI();
+    };
+
+    /* =========================
+       ADD-ON JS: mood + needs + report + print
+       (same exact block you provided)
+       ========================= */
+    const reg = {
+      mood: null, // {row:1..5, col:1..5}
+      face: null, // emoji
+      need: null // string
+    };
+
+    function moodColor(row, col){
+      // 5x5: top rows = higher intensity, left cols = "harder" valence.
+      // Simple gradient without naming colors explicitly to keep it minimal and stable.
+      // We'll compute HSL-ish via rgb interpolation (cool -> warm).
+      const r = row; // 1..5 bottom->top is handled by construction
+      const c = col; // 1..5 left->right
+      // Map to 0..1
+      const tRow = (r-1)/4; // intensity
+      const tCol = (c-1)/4; // valence
+      // Blend: left=blue-ish, right=green-ish, top adds red warmth.
+      const red  = Math.round( 40 + 150*tRow + 20*(1-tCol) );
+      const green = Math.round( 70 + 140*tCol + 20*(1-tRow) );
+      const blue  = Math.round( 180 - 120*tCol + 20*(1-tRow) );
+      return `rgb(${red},${green},${blue})`;
+    }
+
+    function buildMoodGrid(){
+      const grid = $("moodGrid");
+      grid.innerHTML = "";
+
+      // row 5 at top, row 1 at bottom (like your image)
+      for(let displayRow=5; displayRow>=1; displayRow--){
+        for(let col=1; col<=5; col++){
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.style.background = moodColor(displayRow, col);
+          cell.setAttribute("role","gridcell");
+          cell.setAttribute("tabindex","0");
+          cell.dataset.row = String(displayRow);
+          cell.dataset.col = String(col);
+          cell.onclick = ()=> selectMood(displayRow, col);
+          cell.onkeydown = (e)=>{
+            if(e.key === "Enter" || e.key === " "){
+              e.preventDefault();
+              selectMood(displayRow, col);
+            }
+          };
+          grid.appendChild(cell);
+        }
+      }
+    }
+
+    function selectMood(row, col){
+      reg.mood = {row, col};
+      // clear selection
+      Array.from(document.querySelectorAll(".cell.selected")).forEach(el=> el.classList.remove("selected"));
+      // find matching cell
+      const match = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+      if(match) match.classList.add("selected");
+      updateMoodReadout();
+    }
+
+    function updateMoodReadout(){
+      const parts = [];
+      if(reg.mood) parts.push(`grid ${reg.mood.row}/${reg.mood.col}`);
+      if(reg.face) parts.push(`face ${reg.face}`);
+      $("moodReadout").textContent = "Selected: " + (parts.length ? parts.join(" • ") : "—");
+    }
+
+    function bindFaces(){
+      Array.from(document.querySelectorAll(".faceBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          Array.from(document.querySelectorAll(".faceBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          btn.classList.add("selected");
+          reg.face = btn.dataset.face || null;
+          updateMoodReadout();
+        };
+      });
+    }
+
+    function bindNeeds(){
+      Array.from(document.querySelectorAll(".needBtn")).forEach(btn=>{
+        btn.onclick = ()=>{
+          const already = btn.classList.contains("selected");
+          Array.from(document.querySelectorAll(".needBtn.selected")).forEach(b=> b.classList.remove("selected"));
+          if(already){
+            reg.need = null;
+          }else{
+            btn.classList.add("selected");
+            reg.need = btn.dataset.need || null;
+          }
+          $("needReadout").textContent = "Selected: " + (reg.need ?? "—");
+        };
+      });
+    }
+
+    function makeReport(){
+      const base = makeSummary();
+
+      const reflection = $("reflectionPick").value || "—";
+      const myStrats = norm($("myStrategies").value) || "—";
+      const teacherQ = norm($("teacherQ").value) || "—";
+
+      const moodPart = (()=>{
+        const parts = [];
+        if(reg.mood) parts.push(`Mood grid: ${reg.mood.row}/${reg.mood.col}`);
+        if(reg.face) parts.push(`Face: ${reg.face}`);
+        return parts.length ? parts.join(" | ") : "—";
+      })();
+
+      const needPart = reg.need ?? "—";
+
+      return [
+        base,
+        "",
+        "=== Check-In ===",
+        `Feeling: ${moodPart}`,
+        `Need: ${needPart}`,
+        `My strategies: ${myStrats}`,
+        "",
+        "=== Reflection ===",
+        `Today: ${reflection}`,
+        "",
+        "=== Question to teacher ===",
+        teacherQ
+      ].join("\n");
+    }
+
+    $("reportBtn").addEventListener("click", ()=>{
+      $("reportOut").textContent = makeReport();
+      $("printNote").textContent = "Report ready.";
+      setTimeout(()=> $("printNote").textContent = "", 1200);
+    });
+
+    $("printBtn").addEventListener("click", ()=>{
+      // Ensure report is current before printing
+      $("reportOut").textContent = makeReport();
+      window.print(); // user can "Save as PDF" from print dialog
+    });
+
+    // Init add-on UI
+    buildMoodGrid();
+    bindFaces();
+    bindNeeds();
+    $("needReadout").textContent = "Selected: —";
+    updateMoodReadout();
+
+    // Default example for this guide
+    $("problemInput").value = "48×6";
+    $("useProblemBtn").click();
+  </script>
 </body>
 </html>
