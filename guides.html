@@ -1,49 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Guides</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Guides for 4th Grade</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --primary:#2563eb;
+      --primary-hover:#1d4ed8;
+      --shadow:0 10px 24px rgba(15,23,42,.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:radial-gradient(1200px 600px at 20% 0%, #e8f0ff 0%, transparent 60%),
+                 radial-gradient(900px 500px at 90% 10%, #e9fff6 0%, transparent 55%),
+                 var(--bg);
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:28px 18px 44px}
+    header{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px 20px;
+    }
+    h1{margin:0 0 6px;font-size:clamp(28px,4vw,44px);letter-spacing:-.02em}
+    .sub{margin:0;color:var(--muted);font-size:16px}
+    .topbar{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      margin-top:14px;
+    }
+    .crumb{
+      display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;
+      padding:10px 12px;border:1px solid var(--border);border-radius:999px;background:#fff;
+    }
+    .crumb:hover{border-color:#cbd5e1}
+    .nav{
+      display:flex;gap:10px;flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;color:var(--text);text-decoration:none;font-weight:600;
+    }
+    .btn:hover{border-color:#cbd5e1}
+    .btn.primary{
+      background:var(--primary);border-color:transparent;color:#fff;
+    }
+    .btn.primary:hover{background:var(--primary-hover)}
+    main{
+      margin-top:16px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    h2{margin:0 0 10px;font-size:20px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12, 1fr);
+      gap:12px;
+      margin-top:10px;
+    }
+    .card{
+      grid-column:span 6;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      background:#fff;
+      display:flex;flex-direction:column;gap:10px;
+      min-height:110px;
+    }
+    .title{margin:0;font-size:16px;line-height:1.25}
+    .meta{margin:0;color:var(--muted);font-size:13px}
+    .actions{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+    .note{margin:14px 2px 0;color:var(--muted);font-size:13px}
+    @media (max-width:720px){
+      .card{grid-column:span 12}
+      .topbar{justify-content:flex-start}
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Math Guides</h1>
-        <p><a href="index.html">← Back to Home</a></p>
-        
-        <h2>Available Guides</h2>
-        <ul style="line-height: 2;">
-            <li><a href="Chapter 3.1 Strategy break-apart-guide.html">Break Apart (Distributive Property)</a></li>
-            <a href="3.1ZerosRule1.html">3.1 Zeros Rule Strategy Guide: 6 × 700</a>
-             <a href="3.1break-apart-guide.html">3.1 Break Apart Guide: 8 × 91</a>
-            <a href="3.1-equation-model-6x600.html">3.1 GANOBI RIVER WORD PROBLEM </a>
-           
-        </ul>
-        
-        <p style="color: #6b7280; font-size: 13px; margin-top: 20px;">More guides coming soon...</p>
-    </div>
+  <div class="wrap">
+    <header>
+      <h1>Math Guides for 4th Grade</h1>
+      <p class="sub">Pick a guide below to get started.</p>
+
+      <div class="topbar">
+        <a class="crumb" href="index.html" aria-label="Back to Home">← Back to Home</a>
+
+        <nav class="nav" aria-label="Site">
+          <a class="btn" href="index.html">Home</a>
+          <a class="btn" href="about.html">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <h2>Available Guides</h2>
+
+      <section class="grid" aria-label="Guide list">
+        <article class="card">
+          <p class="title">3.1 Zeros Rule Strategy Guide</p>
+          <p class="meta">Example: <strong>6 × 700</strong></p>
+          <div class="actions">
+            <a class="btn primary" href="3.1ZerosRule1.html">Open guide</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <p class="title">Break Apart (Distributive Property)</p>
+          <p class="meta">Chapter 3.1 resource</p>
+          <div class="actions">
+            <a class="btn primary" href="Chapter 3.1 Strategy break-apart-guide.html">Open guide</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <p class="title">3.1 Equation Model Word Problem</p>
+          <p class="meta">“Ganobi River” problem</p>
+          <div class="actions">
+            <a class="btn primary" href="3.1-equation-model-6x600.html">Open guide</a>
+          </div>
+        </article>
+      </section>
+
+      <p class="note">More guides coming soon…</p>
+    </main>
+  </div>
 </body>
 </html>
