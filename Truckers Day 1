@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Truckers - Real Photo Comic Poster</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #ffffff; padding: 20px; }
+  .poster { max-width: 900px; margin: auto; }
+  .panel { border: 3px solid #000; padding: 15px; margin-bottom: 25px; background: #fefefe; }
+  .panel h2 { margin-top: 0; font-size: 1.4em; }
+  .panel img { width: 100%; max-height: 350px; object-fit: cover; border: 2px solid #222; margin-bottom: 10px; }
+  .caption { font-style: italic; margin-bottom: 10px; }
+</style>
+</head>
+
+<body>
+<div class="poster">
+
+<h1 style="text-align:center;">🚛 TRUCKERS — REAL PHOTO COMIC POSTER</h1>
+
+<!-- PANEL 1 -->
+<div class="panel">
+  <h2>🟦 PANEL 1 — WHAT IS A NOME?</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Gnomes_garden_figurines_02.jpg" alt="Garden gnomes">
+  <p class="caption">These real garden gnome statues help us imagine tiny 4-inch Nomes.</p>
+  <ul>
+    <li>Nomes are about 4 inches tall.</li>
+    <li>They hide from humans.</li>
+    <li>Being small makes the world dangerous.</li>
+  </ul>
+</div>
+
+<!-- PANEL 2 -->
+<div class="panel">
+  <h2>🟫 PANEL 2 — THE LORRY PARK</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Truck_Parking_Lot.jpg" alt="Truck parking lot">
+  <p class="caption">A rainy truck parking lot — like the muddy Lorry Park where Masklin waits.</p>
+  <ul>
+    <li>The story begins in a wet, cold truck area.</li>
+    <li>Masklin hides near a trash bin.</li>
+    <li>The nomes plan to climb onto a lorry.</li>
+  </ul>
+</div>
+
+<!-- PANEL 3 -->
+<div class="panel">
+  <h2>🏬 PANEL 3 — INSIDE THE STORE</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/5/5d/Department_store_interior_2019.jpg" alt="Department store interior">
+  <p class="caption">A real department store — similar to where the Store Nomes live.</p>
+  <ul>
+    <li>Store Nomes have lived inside for generations.</li>
+    <li>They believe nothing exists outside.</li>
+    <li>Their world is bright, structured, and indoors.</li>
+  </ul>
+</div>
+
+<!-- PANEL 4 -->
+<div class="panel">
+  <h2>🚛 PANEL 4 — THE LORRY (AMERICAN SEMI TRUCK)</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/2018_Freightliner_Cascadia_126_semi_tractor%2C_front_8.1.19.jpg" alt="American semi truck">
+  <p class="caption">A real American-style semi truck — very large compared to a Nome.</p>
+  <ul>
+    <li>This is the type of truck the nomes try to climb onto.</li>
+    <li>It is huge and dangerous for tiny nomes.</li>
+    <li>This lorry becomes their escape vehicle.</li>
+  </ul>
+</div>
+
+<!-- PANEL 5 -->
+<div class="panel">
+  <h2>🟧 PANEL 5 — THE TARPAULIN (TARP)</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Tarpaulin_cover_on_truck.jpg" alt="Truck tarp">
+  <p class="caption">A real truck tarpaulin — the waterproof cover the nomes hide beneath.</p>
+  <ul>
+    <li>Tarpaulin = waterproof truck cover.</li>
+    <li>The nomes use it to stay hidden and dry.</li>
+    <li>It is pulled tight over truck cargo.</li>
+  </ul>
+</div>
+
+<!-- PANEL 6 -->
+<div class="panel">
+  <h2>⬛ PANEL 6 — THE THING</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Black_box.jpg" alt="Black cube">
+  <p class="caption">A simple black cube — representing “The Thing” carried by the nomes.</p>
+  <ul>
+    <li>The nomes believe The Thing is important.</li>
+    <li>It gets dropped during the escape.</li>
+    <li>Masklin risks himself to retrieve it.</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>
